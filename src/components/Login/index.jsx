@@ -7,6 +7,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Divider, IconButton, InputAdornment, Paper } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { postLogin } from "../../backend";
@@ -15,6 +16,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate()
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -31,6 +34,7 @@ const Login = () => {
       password: password,
     });
     postLogin(email, password);
+    navigate("/")
   };
 
   return (
