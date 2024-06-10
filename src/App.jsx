@@ -5,16 +5,19 @@ import Transferencia from './components/Transferencia'
 import Perfil from './components/Perfil'
 import SimularPlazoFijo from './components/SimularPlazoFijo'
 import Login from './components/Login'
+import Page from './UI/Page'
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/deposito" element={<Deposito />} />
-      <Route path="/transferencia" element={<Transferencia />} />
-      <Route path="/perfil" element={<Perfil />} />
-      <Route path="/simular-plazo-fijo" element={<SimularPlazoFijo />} />
-    </Routes>
+    <Page>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/deposito" element={<Deposito />} />
+        <Route path="/transferencia" element={<Transferencia />} />
+        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/simular-plazo-fijo" element={<SimularPlazoFijo />} />
+      </Routes>
+    </Page>
   )
 }
 
