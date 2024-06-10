@@ -14,6 +14,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -23,28 +25,64 @@ const Login = () => {
     event.preventDefault();
   };
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const handleLogin = (event) => {
     event.preventDefault();
-    console.log({
-      email: email,
-      password: password,
-    });
-    postLogin(email, password);
+
+    let valid = true;
+
+    if (!validateEmail(email)) {
+      setEmailError("Por favor, ingrese un correo electrónico válido.");
+      valid = false;
+    } else {
+      setEmailError("");
+    }
+
+    if (password.length < 4) { //TODO: En el back tenemos como seeder user0, user1, ...
+      setPasswordError("La contraseña debe tener al menos 4 caracteres.");
+      valid = false;
+    } else {
+      setPasswordError("");
+    }
+
+    if (valid) {
+      console.log({
+        email: email,
+        password: password,
+      });
+      postLogin(email, password);
+    }
   };
 
   return (
-    <Grid container spacing={3} sx={{margin: '0 auto', bgcolor: "#fff", width: 500, p: 5, borderRadius: 5, boxShadow: 3, display: "flex"}}>
-      <Grid item xs={12} sx={{ paddingLeft: '0px !important' }}>
-        <Avatar sx={{ margin: '0 auto', bgcolor: "secondary.main" }}>
+    <Grid
+      container
+      spacing={3}
+      sx={{
+        margin: "0 auto",
+        bgcolor: "#fff",
+        width: 500,
+        p: 5,
+        borderRadius: 5,
+        boxShadow: 3,
+        display: "flex",
+      }}
+    >
+      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+        <Avatar sx={{ margin: "0 auto", bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: '0px !important' }}>
+      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
         <Typography component="h1" variant="h5">
           Hola, Bienvenido 👋
         </Typography>
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: '0px !important' }}>
+      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
         <TextField
           required
           fullWidth
@@ -54,9 +92,11 @@ const Login = () => {
           autoFocus
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          error={Boolean(emailError)}
+          helperText={emailError}
         />
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: '0px !important' }}>
+      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
         <TextField
           required
           fullWidth
@@ -67,6 +107,8 @@ const Login = () => {
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          error={Boolean(passwordError)}
+          helperText={passwordError}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -81,7 +123,7 @@ const Login = () => {
           }}
         />
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: '0px !important' }}>
+      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
         <Button
           variant="contained"
           color="primary"
@@ -92,10 +134,10 @@ const Login = () => {
           Iniciar Sesión
         </Button>
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: '0px !important' }}>
+      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
         <Divider />
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: '0px !important' }}>
+      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
         <Link href="#" variant="body2">
           {"¿No tienes una cuenta? Registrate"}
         </Link>
