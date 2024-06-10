@@ -11,7 +11,7 @@ import { Box, Divider, IconButton, InputAdornment, Paper } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { postLogin } from "../../backend";
 
-export default function Login() {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -110,10 +110,11 @@ export default function Login() {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Divider sx={{ my: 3 }}/>
+            <Divider sx={{ my: 3 }} />
           </Grid>
-          <Grid item >
-            <Link href="#" variant="body2" >
+          <Grid item>
+            {/* TODO: Redireccionar a /register */}
+            <Link href="#" variant="body2">
               {"¿No tienes una cuenta? Registrate"}
             </Link>
           </Grid>
@@ -121,4 +122,6 @@ export default function Login() {
       </Box>
     </Container>
   );
-}
+};
+
+export default Login;
