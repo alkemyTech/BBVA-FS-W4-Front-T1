@@ -6,9 +6,16 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import { Divider, IconButton, InputAdornment } from "@mui/material";
-import { postLogin } from "../../backend";
+import {
+  Alert,
+  Divider,
+  IconButton,
+  InputAdornment,
+  Snackbar,
+} from "@mui/material";
+import { postLogin } from "../../api/auth";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,6 +23,11 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -24,13 +36,20 @@ const Login = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+
+  };
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
   };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
     let valid = true;
@@ -42,7 +61,8 @@ const Login = () => {
       setEmailError("");
     }
 
-    if (password.length < 4) { //TODO: En el back tenemos como seeder user0, user1, ...
+    if (password.length < 4) {
+      //TODO: En el back tenemos como seeder user0, user1, ...
       setPasswordError("La contraseña debe tener al menos 4 caracteres.");
       valid = false;
     } else {
@@ -54,7 +74,23 @@ const Login = () => {
         email: email,
         password: password,
       });
-      postLogin(email, password);
+      setLoading(true);
+      try {
+        const response = await postLogin(email, password);
+        if (response) {
+          navigate("/home");
+        }
+      } catch (error) {
+        if (error.message === "Email o contraseña inválidos") {
+          setSnackbarMessage(error.message);
+          setSnackbarOpen(true);
+          setEmail('');
+          setPassword('');
+        }
+        console.error("Error during login:", error);
+      } finally {
+        setLoading(false); // Finaliza la carga
+      }
     }
   };
 
@@ -131,7 +167,7 @@ const Login = () => {
           sx={{ mt: 3, mb: 2 }}
           onClick={handleLogin}
         >
-          Iniciar Sesión
+          {loading ? "Cargando..." : "Iniciar Sesión"}
         </Button>
       </Grid>
       <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
@@ -142,6 +178,15 @@ const Login = () => {
           {"¿No tienes una cuenta? Registrate"}
         </Link>
       </Grid>
+      <Snackbar //TODO: change to MySnackBar when it is implemented
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity="error">
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };
