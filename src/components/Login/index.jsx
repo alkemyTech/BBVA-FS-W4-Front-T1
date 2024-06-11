@@ -11,7 +11,6 @@ import {
   Divider,
   IconButton,
   InputAdornment,
-  Snackbar,
 } from "@mui/material";
 import { postLogin } from "../../api/auth";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -24,8 +23,7 @@ const Login = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [showAuthError, setShowAuthError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,13 +33,6 @@ const Login = () => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
-  };
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSnackbarOpen(false);
-
   };
 
   const validateEmail = (email) => {
@@ -78,12 +69,11 @@ const Login = () => {
       try {
         const response = await postLogin(email, password);
         if (response) {
-          navigate("/home");
+          navigate("/");
         }
       } catch (error) {
         if (error.message === "Email o contraseña inválidos") {
-          setSnackbarMessage(error.message);
-          setSnackbarOpen(true);
+          setShowAuthError(true);
           setEmail('');
           setPassword('');
         }
@@ -159,6 +149,11 @@ const Login = () => {
           }}
         />
       </Grid>
+      {showAuthError && (
+        <Grid item xs={12} sx={{ paddingLeft: '0px !important' }}>
+          <Alert severity="error">Email o contraseña inválidos</Alert>
+        </Grid>
+      )}
       <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
         <Button
           variant="contained"
@@ -174,19 +169,10 @@ const Login = () => {
         <Divider />
       </Grid>
       <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
-        <Link href="#" variant="body2">
-          {"¿No tienes una cuenta? Registrate"}
+        <Link href="/register" variant="body2"> 
+          {"¿No tienes una cuenta? Registrate"} 
         </Link>
       </Grid>
-      <Snackbar //TODO: change to MySnackBar when it is implemented
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert onClose={handleSnackbarClose} severity="error">
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Grid>
   );
 };
