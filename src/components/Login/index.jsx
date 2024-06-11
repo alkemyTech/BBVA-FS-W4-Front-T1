@@ -159,7 +159,7 @@ const Login = () => {
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mt: 3, mb: 2 }}
+          sx={{ mt: 3, mb: 2, backgroundColor: "#472183"}}
           onClick={handleLogin}
         >
           {loading ? "Cargando..." : "Iniciar Sesión"}
