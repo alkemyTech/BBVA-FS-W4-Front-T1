@@ -1,60 +1,78 @@
 import { Grid, Card, CardContent, Typography, Box } from '@mui/material';
+import PropTypes from 'prop-types';
 
 const AccountCard = ({ accountData }) => {
     return (
         <Grid container spacing={2}>
-            {accountData.accountArs.length > 0 && (
-                <Grid item xs={12} md={4}>
-                    <Card sx={{ backgroundColor: '#007bff', color: '#ffffff', padding: '16px', borderRadius: '8px' }}>
+            {accountData.accountArs.map((account, index) => (
+                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                    <Card sx={{ backgroundColor: '#4B56D2', color: '#ffffff', padding: '16px', borderRadius: '8px' }}>
                         <CardContent>
                             <Typography variant="h6" component="div">
-                                Cuentas en ARS
+                                ${account.balance.toFixed(2)}
                             </Typography>
-                            {accountData.accountArs.map((account, index) => (
-                                <Box key={index}>
-                                    <Typography variant="body1" component="div">
-                                        Cuenta {index + 1}: ${account.balance}
-                                    </Typography>
-                                </Box>
-                            ))}
+                            <Box>
+                                <Typography variant="body1" component="div">
+                                    {account.accountType === "CAJA_AHORRO" ? "Caja de Ahorro" : "Cuenta Corriente"} en AR$
+                                </Typography>
+                            </Box>
                         </CardContent>
                     </Card>
                 </Grid>
-            )}
+            ))}
+
             {accountData.accountUsd && (
-                <Grid item xs={12} md={4}>
-                    <Card sx={{ backgroundColor: '#007bff', color: '#ffffff', padding: '16px', borderRadius: '8px' }}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <Card sx={{ backgroundColor: '#472183', color: '#ffffff', padding: '16px', borderRadius: '8px' }}>
                         <CardContent>
                             <Typography variant="h6" component="div">
-                                Cuenta en USD
+                                U$S {accountData.accountUsd.balance.toFixed(2)}
                             </Typography>
                             <Typography variant="body1" component="div">
-                                ${accountData.accountUsd.balance}
+                                Cuenta en USD
                             </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
             )}
-            {accountData.fixedTerms.length > 0 && (
-                <Grid item xs={12} md={4}>
-                    <Card sx={{ backgroundColor: '#007bff', color: '#ffffff', padding: '16px', borderRadius: '8px' }}>
+
+            {accountData.fixedTerms.map((term, index) => (
+                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                    <Card sx={{ backgroundColor: '#82C3EC', color: '#ffffff', padding: '16px', borderRadius: '8px' }}>
                         <CardContent>
                             <Typography variant="h6" component="div">
-                                Plazos fijos
+                                ${term.amount}
                             </Typography>
-                            {accountData.fixedTerms.map((term, index) => (
-                                <Box key={index}>
-                                    <Typography variant="body1" component="div">
-                                        Plazo {index + 1}: ${term.balance}
-                                    </Typography>
-                                </Box>
-                            ))}
+                            <Box>
+                                <Typography variant="body1" component="div">
+                                    Plazo fijo
+                                </Typography>
+                            </Box>
                         </CardContent>
                     </Card>
                 </Grid>
-            )}
+            ))}
         </Grid>
     );
+};
+
+AccountCard.propTypes = {
+    accountData: PropTypes.shape({
+        accountArs: PropTypes.arrayOf(
+            PropTypes.shape({
+                balance: PropTypes.number.isRequired,
+                accountType: PropTypes.string.isRequired,
+            })
+        ).isRequired,
+        accountUsd: PropTypes.shape({
+            balance: PropTypes.number.isRequired,
+        }),
+        fixedTerms: PropTypes.arrayOf(
+            PropTypes.shape({
+                amount: PropTypes.number.isRequired,
+            })
+        ).isRequired,
+    }).isRequired,
 };
 
 export default AccountCard;

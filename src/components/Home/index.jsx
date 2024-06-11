@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { CircularProgress, Container } from '@mui/material';
 import BankAccountCard from './AccountCard';
 import TransactionList from './TransactionList';
-import { getAccountBalance } from '../../backend/Account';
+import { getAccountBalance } from '../../api/Account';
 
 const Home = () => {
     const [loading, setLoading] = useState(true);
@@ -23,7 +23,7 @@ const Home = () => {
         };
 
         fetchData();
-    }, []);
+    }, [loading]);
 
     return (
         <Container>
