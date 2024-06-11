@@ -23,6 +23,9 @@ export const postLogin = async (email, password) => {
     console.log(token);
     console.log(token.split(" ")[1]);
 
+    localStorage.setItem("userData", JSON.stringify(response.data));
+    localStorage.setItem("token", response.headers["authorization"].split(" ")[1]);
+
     return response.data;
   } catch (err) {
     if (err.response && err.response.status === 401) {
