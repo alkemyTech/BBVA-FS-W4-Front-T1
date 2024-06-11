@@ -69,7 +69,7 @@ const Login = () => {
       try {
         const response = await postLogin(email, password);
         if (response) {
-          navigate("/");
+          navigate("/home");
         }
       } catch (error) {
         if (error.message === "Email o contraseña inválidos") {
@@ -87,7 +87,7 @@ const Login = () => {
   return (
     <Grid
       container
-      spacing={3}
+      rowSpacing={3}
       sx={{
         margin: "0 auto",
         bgcolor: "#fff",
@@ -98,17 +98,17 @@ const Login = () => {
         display: "flex",
       }}
     >
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <Avatar sx={{ margin: "0 auto", bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <Typography component="h1" variant="h5">
           Hola, Bienvenido 👋
         </Typography>
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <TextField
           required
           fullWidth
@@ -122,7 +122,7 @@ const Login = () => {
           helperText={emailError}
         />
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <TextField
           required
           fullWidth
@@ -150,11 +150,11 @@ const Login = () => {
         />
       </Grid>
       {showAuthError && (
-        <Grid item xs={12} sx={{ paddingLeft: '0px !important' }}>
+        <Grid item xs={12}>
           <Alert severity="error">Email o contraseña inválidos</Alert>
         </Grid>
       )}
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <Button
           variant="contained"
           color="primary"
@@ -165,10 +165,10 @@ const Login = () => {
           {loading ? "Cargando..." : "Iniciar Sesión"}
         </Button>
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <Divider />
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <Link href="/register" variant="body2"> 
           {"¿No tienes una cuenta? Registrate"} 
         </Link>
