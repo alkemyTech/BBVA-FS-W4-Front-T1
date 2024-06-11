@@ -2,14 +2,14 @@ import { Grid, Box, Typography } from "@mui/material";
 import "./index.css"
 import React from "react";
 
-export default function Footer() {
+const Footer = () => {
   return (
     <Grid container spacing={2} alignItems="center" className="footer-container">
       <Grid item xs={8}>
         <Box display="flex" flexDirection="column" alignItems="flex-start">
-          <Typography variant="h6">Redes sociales</Typography>
-          <Typography variant="h6">Contacto</Typography>
-          <Typography variant="h6">Mi cuenta</Typography>
+          <Typography variant="subtitle1">Redes sociales</Typography>
+          <Typography variant="subtitle1">Contacto</Typography>
+          <Typography variant="subtitle1">Mi cuenta</Typography>
         </Box>
       </Grid>      
       <Grid item xs={4}>
@@ -27,3 +27,5 @@ export default function Footer() {
     </Grid>
   );
 }
+
+export default Footer;
