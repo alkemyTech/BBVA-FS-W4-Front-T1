@@ -11,7 +11,6 @@ import {
   Divider,
   IconButton,
   InputAdornment,
-  Snackbar,
 } from "@mui/material";
 import { postLogin } from "../../api/auth";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -24,8 +23,7 @@ const Login = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [showAuthError, setShowAuthError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,13 +33,6 @@ const Login = () => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
-  };
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSnackbarOpen(false);
-
   };
 
   const validateEmail = (email) => {
@@ -82,8 +73,7 @@ const Login = () => {
         }
       } catch (error) {
         if (error.message === "Email o contraseña inválidos") {
-          setSnackbarMessage(error.message);
-          setSnackbarOpen(true);
+          setShowAuthError(true);
           setEmail('');
           setPassword('');
         }
@@ -97,7 +87,7 @@ const Login = () => {
   return (
     <Grid
       container
-      spacing={3}
+      rowSpacing={3}
       sx={{
         margin: "0 auto",
         bgcolor: "#fff",
@@ -108,17 +98,17 @@ const Login = () => {
         display: "flex",
       }}
     >
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <Avatar sx={{ margin: "0 auto", bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <Typography component="h1" variant="h5">
           Hola, Bienvenido 👋
         </Typography>
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <TextField
           required
           fullWidth
@@ -132,7 +122,7 @@ const Login = () => {
           helperText={emailError}
         />
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <TextField
           required
           fullWidth
@@ -159,7 +149,12 @@ const Login = () => {
           }}
         />
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      {showAuthError && (
+        <Grid item xs={12}>
+          <Alert severity="error">Email o contraseña inválidos</Alert>
+        </Grid>
+      )}
+      <Grid item xs={12}>
         <Button
           variant="contained"
           color="primary"
@@ -170,23 +165,14 @@ const Login = () => {
           {loading ? "Cargando..." : "Iniciar Sesión"}
         </Button>
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
+      <Grid item xs={12}>
         <Divider />
       </Grid>
-      <Grid item xs={12} sx={{ paddingLeft: "0px !important" }}>
-        <Link href="#" variant="body2">
-          {"¿No tienes una cuenta? Registrate"}
+      <Grid item xs={12}>
+        <Link href="/register" variant="body2"> 
+          {"¿No tienes una cuenta? Registrate"} 
         </Link>
       </Grid>
-      <Snackbar //TODO: change to MySnackBar when it is implemented
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert onClose={handleSnackbarClose} severity="error">
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Grid>
   );
 };
