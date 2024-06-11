@@ -9,8 +9,6 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { useState } from 'react';
 
 const pages = ['Transferencias', 'Plazo fijo', 'Deposito'];
@@ -36,14 +34,13 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position="fixed" sx={{backdropFilter: blur(8)}}>
+    <AppBar position="fixed" sx={{backgroundColor: 'rgba(100, 50, 150)'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/*Logo y nombre*/}
-          
           <Typography variant="h6" noWrap component="a" href="#Home"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, fontFamily: 'monospace',
-              fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none',}}>
+              fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none'}}>
             MagicDogs
           </Typography>
           {/*Menu Hambur pantalla chica*/}
@@ -59,11 +56,16 @@ export default function Navbar() {
               transformOrigin={{ vertical: 'top', horizontal: 'left',}}
               open={Boolean(anchorElNav)} onClose={handleCloseNavMenu}
               sx={{display: { xs: 'block', md: 'none' }}}>
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              
+              <Button onClick={handleCloseNavMenu} href='#transferencia'
+                sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
+                Transferencias </Button>  
+              <Button onClick={handleCloseNavMenu} href='#plazo-fijo'
+                sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
+                Plazo fijo </Button>
+              <Button onClick={handleCloseNavMenu} href='#deposito'
+                sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
+                Deposito </Button>
             </Menu>
           </Box>
           {/*Logo y nombre pantalla chica*/}
@@ -74,15 +76,19 @@ export default function Navbar() {
             MagicDogs
           </Typography>
           {/*Navbar opciones pantalla grande*/}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end',
+                paddingRight: '80px'}}>
             <Button onClick={handleCloseNavMenu} href='#transferencia'
-                sx={{ my: 2, color: 'white', display: 'block', padding: '6px 50px' }}>
+                sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px',
+                     fontFamily: 'monospace', fontWeight: 600, fontSize: 18 }}>
                 Transferencias </Button>
             <Button onClick={handleCloseNavMenu} href='#plazo-fijo'
-                sx={{ my: 2, color: 'white', display: 'block', padding: '6px 50px' }}>
+                sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px',
+                   fontFamily: 'monospace', fontWeight: 600, fontSize: 18  }}>
                 Plazo fijo </Button>
             <Button onClick={handleCloseNavMenu} href='#deposito'
-                sx={{ my: 2, color: 'white', display: 'block', padding: '6px 50px' }}>
+                sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px', 
+                    fontFamily: 'monospace' , fontWeight: 600, fontSize: 18 }}>
                 Deposito </Button>
           </Box>
           {/*Perfil usuario pantalla grande*/}
@@ -90,6 +96,7 @@ export default function Navbar() {
             {/*Foto perfil pantalla grande*/}
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                
                 <Avatar alt="Imagen de usuario" src="Imagen de usuario" />
               </IconButton>
             </Tooltip>
@@ -98,12 +105,17 @@ export default function Navbar() {
               anchorOrigin={{ vertical: 'top', horizontal: 'right'}} keepMounted
               transformOrigin={{ vertical: 'top', horizontal: 'right'}}
               open={Boolean(anchorElUser)} onClose={handleCloseUserMenu}>
+              <Typography sx={{ my: 1, color: 'black', display: 'block', padding:'10px 15px'}}>Nombre de usuario</Typography>
             {/*Menu usuario opciones*/}
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <Button onClick={handleCloseUserMenu} href='#perfil'
+                sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
+                Perfil</Button>
+              <Button onClick={handleCloseUserMenu} href='#cuentas'
+                sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
+                Cuentas</Button> 
+              <Button onClick={handleCloseUserMenu} href='#logout'
+                sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
+                Logout</Button>  
             </Menu>
           </Box>
         </Toolbar>
