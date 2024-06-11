@@ -23,10 +23,13 @@ export const postLogin = async (email, password) => {
     console.log(token);
     console.log(token.split(" ")[1]);
 
-    // TODO: Redireccionar a Home
     return response.data;
   } catch (err) {
+    if (err.response && err.response.status === 401) {
+      throw new Error("Email o contraseña inválidos");
+    }
     // TODO: Snackbar de error
     console.log(err);
+    throw err;
   }
 };
