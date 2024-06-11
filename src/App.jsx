@@ -6,6 +6,7 @@ import Perfil from './components/Perfil'
 import SimularPlazoFijo from './components/SimularPlazoFijo'
 import Login from './components/Login'
 import Page from './UI/Page'
+import Inicio from './components/Inicio'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/transferencia" element={<Transferencia />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/simular-plazo-fijo" element={<SimularPlazoFijo />} />
+        <Route path="/inicio" element={<Inicio/>} />
       </Routes>
     </Page>
   )

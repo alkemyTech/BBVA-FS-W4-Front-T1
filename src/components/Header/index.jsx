@@ -2,9 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Header(){
+  const token = localStorage.getItem('token');
   return (
-    <header>
+    <>
+    { token && <header>
       <h1>Header</h1>
-    </header>
+    </header>}
+    </>
   );
 };
