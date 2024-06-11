@@ -1,21 +1,25 @@
-import { Grid, Card, CardContent, Typography, Box } from '@mui/material';
+import { Grid, Card, CardContent, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const AccountCard = ({ accountData }) => {
+
+    const formatDate = (dateArray) => {
+        const [year, month, day] = dateArray;
+        return `${day}/${month}/${year} `;
+    };
+
     return (
         <Grid container spacing={2}>
             {accountData.accountArs.map((account, index) => (
                 <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                    <Card sx={{ backgroundColor: '#4B56D2', color: '#ffffff', padding: '16px', borderRadius: '8px' }}>
+                    <Card sx={{ backgroundColor: '#472183', color: '#ffffff', padding: '16px', borderRadius: '8px', height: '100px' }}>
                         <CardContent>
                             <Typography variant="h6" component="div">
-                                ${account.balance.toFixed(2)}
+                            <strong>${account.balance.toFixed(2)}</strong>
                             </Typography>
-                            <Box>
-                                <Typography variant="body1" component="div">
-                                    {account.accountType === "CAJA_AHORRO" ? "Caja de Ahorro" : "Cuenta Corriente"} en AR$
-                                </Typography>
-                            </Box>
+                            <Typography variant="subtitle1" component="div">
+                            {account.accountType === "CAJA_AHORRO" ? "Caja de Ahorro" : "Cuenta Corriente"} en AR$
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -23,13 +27,13 @@ const AccountCard = ({ accountData }) => {
 
             {accountData.accountUsd && (
                 <Grid item xs={12} sm={6} md={4} lg={3}>
-                    <Card sx={{ backgroundColor: '#472183', color: '#ffffff', padding: '16px', borderRadius: '8px' }}>
+                    <Card sx={{ backgroundColor: '#4B56D2', color: '#ffffff', padding: '16px', borderRadius: '8px', height: '100px' }}>
                         <CardContent>
                             <Typography variant="h6" component="div">
-                                U$S {accountData.accountUsd.balance.toFixed(2)}
+                                <strong> U$S {accountData.accountUsd.balance.toFixed(2)}</strong>
                             </Typography>
-                            <Typography variant="body1" component="div">
-                                Cuenta en USD
+                            <Typography variant="subtitle1" component="div">
+                                Cuenta en U$D
                             </Typography>
                         </CardContent>
                     </Card>
@@ -38,16 +42,17 @@ const AccountCard = ({ accountData }) => {
 
             {accountData.fixedTerms.map((term, index) => (
                 <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                    <Card sx={{ backgroundColor: '#82C3EC', color: '#ffffff', padding: '16px', borderRadius: '8px' }}>
+                    <Card sx={{ backgroundColor: '#82C3EC', color: '#ffffff', padding: '16px', borderRadius: '8px', height: '100px', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                         <CardContent>
                             <Typography variant="h6" component="div">
-                                ${term.amount}
+                                <strong>${term.amount}</strong>
                             </Typography>
-                            <Box>
-                                <Typography variant="body1" component="div">
-                                    Plazo fijo
-                                </Typography>
-                            </Box>
+                            <Typography variant="subtitle1" component="div">
+                                Plazo fijo
+                            </Typography>
+                            <Typography variant="body2" component="div">
+                                Fecha de cierre: {formatDate(term.closingDate)}
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
