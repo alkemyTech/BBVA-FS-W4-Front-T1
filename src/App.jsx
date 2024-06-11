@@ -6,11 +6,13 @@ import Perfil from './components/Perfil'
 import SimularPlazoFijo from './components/SimularPlazoFijo'
 import Login from './components/Login'
 import Page from './UI/Page'
+import Home from './components/Home'
 
 function App() {
   return (
     <Page>
       <Routes>
+        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/deposito" element={<Deposito />} />
         <Route path="/transferencia" element={<Transferencia />} />
