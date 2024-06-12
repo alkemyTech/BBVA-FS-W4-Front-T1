@@ -10,6 +10,9 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearUser } from '../../../Redux/slice/userSlice';
+// import { store } from '../../../Redux/store';
 
 const pages = ['Transferencias', 'Plazo fijo', 'Deposito'];
 const settings = ['Perfil', 'Cuentas', 'Logout'];
@@ -17,6 +20,9 @@ const settings = ['Perfil', 'Cuentas', 'Logout'];
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -34,8 +40,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
-    //limpiar token redux
+    dispatch(clearUser());
   }
 
   return (
@@ -110,7 +115,7 @@ export default function Navbar() {
               anchorOrigin={{ vertical: 'top', horizontal: 'right'}} keepMounted
               transformOrigin={{ vertical: 'top', horizontal: 'right'}}
               open={Boolean(anchorElUser)} onClose={handleCloseUserMenu}>
-              <Typography sx={{ my: 1, color: 'black', display: 'block', padding:'10px 15px'}}>Nombre de usuario</Typography>
+              <Typography sx={{ my: 1, color: 'black', display: 'block', padding:'10px 15px'}}>{user.firstName + " " + user.lastName}</Typography>
             {/*Menu usuario opciones*/}
               <Button onClick={handleCloseUserMenu} href='#perfil'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
