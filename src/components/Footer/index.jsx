@@ -24,7 +24,7 @@ const Footer = () => {
           <Grid item xs={4}>
             <Box display="flex" justifyContent="flex-end">
               <img
-                src="/src\assets\LOGO SIN FONDO letras blancas.png"
+                src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png"
                 alt="Logo"
                 style={{ height: "50px" }}
               />

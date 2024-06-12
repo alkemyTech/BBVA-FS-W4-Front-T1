@@ -98,7 +98,7 @@ const Login = () => {
     >
       <Grid item xs={12}>
         <img 
-          src="src/assets/LOGO SIN FONDO.png"
+          src="https://i.ibb.co/qn2SwBB/LOGO-SIN-FONDO.png"
           alt="Logo"  
         />
       </Grid>

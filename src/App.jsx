@@ -32,12 +32,12 @@ function App() {
       <Page>
         <Routes>
           <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          {/*<Route path="/login" element={<Login />} />*/}
           <Route path="/deposito" element={<Deposito />} />
           <Route path="/transferencia" element={<Transferencia />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/simular-plazo-fijo" element={<SimularPlazoFijo />} />
-          <Route path="/inicio" element={<Inicio />} />
+          <Route path="/" element={<Inicio />} />
         </Routes>
       </Page>
     </ThemeProvider>
