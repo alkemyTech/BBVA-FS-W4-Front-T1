@@ -4,19 +4,6 @@
   --font-base: 'Outfit', sans-serif;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 html {
   font-family: var(--font-base);
-}
-
-body {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }

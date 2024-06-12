@@ -1,17 +1,36 @@
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import { Provider } from 'react-redux'
-import { store,persistor } from './Redux/store.js'
-import { BrowserRouter } from 'react-router-dom'
-import { PersistGate } from 'redux-persist/integration/react'
-import './index.css';
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import { Provider } from "react-redux";
+import { store, persistor } from "./Redux/store.js";
+import { BrowserRouter } from "react-router-dom";
+import { PersistGate } from "redux-persist/integration/react";
+import "./index.css";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const theme = createTheme({
+  typography: {
+    fontFamily: "Outfit, sans serif",
+  },
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#472183",
+        },
+      },
+    },
+  },
+});
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
           <App />
-        </BrowserRouter>
-      </PersistGate>
-    </Provider>
-)
+        </ThemeProvider>
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>
+);

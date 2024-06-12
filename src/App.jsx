@@ -8,27 +8,9 @@ import Login from "./components/Login";
 import Page from "./UI/Page";
 import Inicio from "./components/Inicio";
 import Home from "./components/Home";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-
-const theme = createTheme({
-  typography: {
-    fontFamily: "Outfit, sans serif"
-  },
-  components: {
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          backgroundColor: "#472183"
-        },
-      },
-    },
-  },
-});
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
       <Page>
         <Routes>
           <Route path="/home" element={<Home />} />
@@ -40,7 +22,6 @@ function App() {
           <Route path="/" element={<Inicio />} />
         </Routes>
       </Page>
-    </ThemeProvider>
   );
 }
 
