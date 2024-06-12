@@ -34,13 +34,13 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position="fixed" sx={{backgroundColor: 'rgba(100, 50, 150)'}}>
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/*Logo y nombre*/}
           <Typography variant="h6" noWrap component="a" href="#Home"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, fontFamily: 'monospace',
-              fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none'}}>
+            sx={{ mr: 2, display: { xs: 'none', md: 'flex' },
+            fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none'}}>
             MagicDogs
           </Typography>
           {/*Menu Hambur pantalla chica*/}
@@ -71,7 +71,7 @@ export default function Navbar() {
           {/*Logo y nombre pantalla chica*/}
           <Typography variant="h5" noWrap component="a" href="#Home"
             sx={{mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1,
-              fontFamily: 'monospace', fontWeight: 700, letterSpacing: '.3rem',
+              fontWeight: 700, letterSpacing: '.3rem',
               color: 'inherit', textDecoration: 'none'}}>
             MagicDogs
           </Typography>
@@ -80,15 +80,15 @@ export default function Navbar() {
                 paddingRight: '80px'}}>
             <Button onClick={handleCloseNavMenu} href='#transferencia'
                 sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px',
-                     fontFamily: 'monospace', fontWeight: 600, fontSize: 18 }}>
+                     fontWeight: 600, fontSize: 18 }}>
                 Transferencias </Button>
             <Button onClick={handleCloseNavMenu} href='#plazo-fijo'
                 sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px',
-                   fontFamily: 'monospace', fontWeight: 600, fontSize: 18  }}>
+                   fontWeight: 600, fontSize: 18  }}>
                 Plazo fijo </Button>
             <Button onClick={handleCloseNavMenu} href='#deposito'
                 sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px', 
-                    fontFamily: 'monospace' , fontWeight: 600, fontSize: 18 }}>
+                    fontWeight: 600, fontSize: 18 }}>
                 Deposito </Button>
           </Box>
           {/*Perfil usuario pantalla grande*/}

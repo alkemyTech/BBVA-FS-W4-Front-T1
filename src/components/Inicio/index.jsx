@@ -18,13 +18,10 @@ import Login from "../Login";
 import { Copyright } from "@mui/icons-material";
 
 const Inicio = () => {
-  const defaultTheme = createTheme();
 
   return (
     <div>
-      <ThemeProvider theme={defaultTheme}>
         <Grid container component="main" >
-          <CssBaseline />
           <Grid
             item
             xs={false}
@@ -52,7 +49,6 @@ const Inicio = () => {
             </Box>
           </Grid>
         </Grid>
-      </ThemeProvider>
     </div>
   );
 };
