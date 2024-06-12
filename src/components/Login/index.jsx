@@ -1,9 +1,7 @@
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import {
@@ -99,9 +97,10 @@ const Login = () => {
       }}
     >
       <Grid item xs={12}>
-        <Avatar sx={{ margin: "0 auto", bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <img 
+          src="src/assets/LOGO SIN FONDO.png"
+          alt="Logo"  
+        />
       </Grid>
       <Grid item xs={12}>
         <Typography component="h1" variant="h5">
