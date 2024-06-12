@@ -7,7 +7,7 @@ const Footer = () => {
   const token = localStorage.getItem("token");
   return (
     <>
-      {!token && (
+      {token && (
         <Grid
           container
           spacing={2}
@@ -38,6 +38,20 @@ const Footer = () => {
             </Box>
           </Grid>
         </Grid>
+      )} {!token && (
+        <Grid
+          container
+          alignItems="center"
+          className="footer-container"
+          sx={{ backgroundColor: "#F1F6F5", color: "#472183" }}
+        >
+          <Grid item xs={12} >
+            <Typography variant="body2" align="center">
+              <Copyright sx={{ fontSize: 20 }} />
+              Copyright © 2024 - Magic Dogs Alkywall
+            </Typography>
+          </Grid>
+        </Grid>
       )}
     </>
   );
@@ -46,17 +60,3 @@ const Footer = () => {
 export default Footer;
 
 
-// {!token && (
-//   <Grid
-//     container
-//     alignItems="center"
-//     className="footer-container"
-//   >
-//     <Grid item xs={12} sx={{ backgroundColor: "#F1F6F5", color: "#472183" }}>
-//       <Typography variant="body2" align="center">
-//         <Copyright style={{ fontSize: 20 }} />
-//         Copyright © 2024 - Magic Dogs Alkywall
-//       </Typography>
-//     </Grid>
-//   </Grid>
-// )}
