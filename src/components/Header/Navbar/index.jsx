@@ -41,7 +41,7 @@ export default function Navbar() {
           <Typography variant="h6" noWrap component="a" href="#Home"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' },
             fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none'}}>
-            MagicDogs
+            <img src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png" style={{ height: "60px" }} />
           </Typography>
           {/*Menu Hambur pantalla chica*/}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
