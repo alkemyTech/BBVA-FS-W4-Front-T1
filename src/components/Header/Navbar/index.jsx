@@ -33,6 +33,11 @@ export default function Navbar() {
     setAnchorElUser(null);
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    //limpiar token redux
+  }
+
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
@@ -113,7 +118,7 @@ export default function Navbar() {
               <Button onClick={handleCloseUserMenu} href='#cuentas'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Cuentas</Button> 
-              <Button onClick={handleCloseUserMenu} href='#logout'
+              <Button onClick={handleLogout} href='/'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Logout</Button>  
             </Menu>
