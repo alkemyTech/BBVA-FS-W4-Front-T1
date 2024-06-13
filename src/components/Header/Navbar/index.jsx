@@ -33,12 +33,17 @@ export default function Navbar() {
     setAnchorElUser(null);
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    //limpiar token redux
+  }
+
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/*Logo y nombre*/}
-          <Typography variant="h6" noWrap component="a" href="#Home"
+          <Typography variant="h6" noWrap component="a" href="/home"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' },
             fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none'}}>
             <img src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png" style={{ height: "60px" }} />
@@ -113,7 +118,7 @@ export default function Navbar() {
               <Button onClick={handleCloseUserMenu} href='#cuentas'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Cuentas</Button> 
-              <Button onClick={handleCloseUserMenu} href='#logout'
+              <Button onClick={handleLogout} href='/'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Logout</Button>  
             </Menu>

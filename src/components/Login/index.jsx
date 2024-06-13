@@ -68,6 +68,7 @@ const Login = () => {
         const response = await postLogin(email, password);
         if (response) {
           navigate("/home");
+          window.location.reload(); //recarga la pagina en home
         }
       } catch (error) {
         if (error.message === "Email o contraseña inválidos") {
