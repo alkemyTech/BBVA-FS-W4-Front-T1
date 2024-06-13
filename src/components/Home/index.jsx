@@ -32,7 +32,7 @@ const Home = () => {
             ) : (
                 <>
                     <BankAccountCard accountData={accountData} />
-                    <TransactionList transactions={transactions} />
+                    <TransactionList accountData={accountData} />
                 </>
             )}
         </Container>
