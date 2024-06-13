@@ -43,7 +43,7 @@ export default function Navbar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/*Logo y nombre*/}
-          <Typography variant="h6" noWrap component="a" href="#Home"
+          <Typography variant="h6" noWrap component="a" href="/home"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' },
             fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none'}}>
             <img src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png" style={{ height: "60px" }} />

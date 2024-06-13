@@ -1,13 +1,24 @@
 import PropTypes from 'prop-types';
-import { Card, CardContent, Typography, List, ListItem, Divider, Box, ListItemText, useMediaQuery } from '@mui/material';
+import { Card, CardContent, Typography, List, ListItem, Divider, Box, ListItemText, useMediaQuery, Pagination } from '@mui/material';
+import { useState } from 'react';
 
 const TransactionList = ({ transactions }) => {
 
     const isWideScreen = useMediaQuery('(min-width:600px)');
+    const [currentPage, setCurrentPage] = useState(1);
+    const transactionsPerPage = 10;
 
     const formatDate = (dateArray) => {
         const [year, month, day] = dateArray;
         return `${day}/${month}/${year} `;
+    };
+
+    const indexOfLastTransaction = currentPage * transactionsPerPage;
+    const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
+    const currentTransactions = transactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
+
+    const handleChangePage = (event, page) => {
+        setCurrentPage(page);
     };
 
     return (
@@ -17,7 +28,7 @@ const TransactionList = ({ transactions }) => {
                     Últimos movimientos
                 </Typography>
                 <List>
-                    {transactions.map((transaction, index) => {
+                    {currentTransactions.map((transaction, index) => {
                         const currencySymbol = transaction.accountCurrency === 'USD' ? 'U$S' : '$';
                         const formattedDate = formatDate(transaction.transactionDate);
 
@@ -43,12 +54,17 @@ const TransactionList = ({ transactions }) => {
                                         }
                                     />
                                 </ListItem>
-                                {index < transactions.length - 1 && <Divider />}
+                                {index < currentTransactions.length - 1 && <Divider />}
                             </Box>
                         );
                     })}
                 </List>
             </CardContent>
+            <Box justifyContent={'center'} display={'flex'}>
+                <Pagination count={Math.ceil(transactions.length / transactionsPerPage)}
+                            page={currentPage}
+                            onChange={handleChangePage}/>
+            </Box>
         </Card>
     );
 };
