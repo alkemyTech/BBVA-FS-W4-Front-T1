@@ -18,4 +18,21 @@ const deposit = async (depositData) => {
     }
 };
 
-export { deposit };
+const payment = async (paymentData) => {
+    const config = {
+        withCredentials: true,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+
+    try {
+        const response = await axios.post(`${API_BASE_URL}/payment`, paymentData, config);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
+export { deposit, payment };

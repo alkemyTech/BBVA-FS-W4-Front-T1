@@ -44,19 +44,32 @@ const Deposito = () => {
   useEffect(() => {
     if (currency === 'USD' && accountType === 'CUENTA_CORRIENTE') {
       setAccountType('CAJA_AHORRO');
+      dispatch(
+        showNotification({
+          message: "No tienes cuenta corriente en US$. Seleccionamos tu caja de ahorro",
+          status: "error",
+        })
+      );
     }
   }, [currency]);
 
   const onChangeAmount = (e) => {
-    let result = e.target.value.replace(/\D/g, '');
+    let result = e.target.value.replace(/[^0-9,]/g, "");
+
+    const parts = result.split(",");
+    if (parts.length > 2) {
+      result = parts[0] + "," + parts.slice(1).join("");
+    }
+
     setAmount(result);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (amount > 0) {
+    const amountNumber = parseFloat(amount.replace(',', '.'));
+    if (amountNumber > 0) {
       const depositData = {
-        amount: parseFloat(amount),
+        amount: amountNumber,
         concept,
         description,
         accountType,
@@ -90,15 +103,21 @@ const Deposito = () => {
       </Typography>
       <form onSubmit={handleSubmit}>
         <TextField
-          label='Monto'
+          label="Monto"
           value={amount}
           onChange={onChangeAmount}
           fullWidth
-          margin='normal'
+          margin="normal"
+          error={parseFloat(amount.replace(',', '.')) <= 0}
+          helperText={
+            parseFloat(amount.replace(',', '.')) <= 0
+              ? "El monto debe ser mayor a cero"
+              : ""
+          }
           sx={{
-            '& .MuiOutlinedInput-root': {
-              '&:hover fieldset': {
-                borderColor: '#4B56D2',
+            "& .MuiOutlinedInput-root": {
+              "&:hover fieldset": {
+                borderColor: "#4B56D2",
               },
             },
           }}
@@ -183,13 +202,18 @@ const Deposito = () => {
           <MenuItem value='ARS'>ARS</MenuItem>
         </TextField>
         <Button
-          type='submit'
-          variant='contained'
+          type="submit"
+          variant="contained"
           fullWidth
-          sx={{ mt: 2, backgroundColor: '#d1d8c5', '&:hover': { backgroundColor: '#c0c9b5' }, color: '#000000' }}
-          disabled={isLoading}
+          sx={{
+            mt: 2,
+            backgroundColor: "#d1d8c5",
+            "&:hover": { backgroundColor: "#c0c9b5" },
+            color: "#000000",
+          }}
+          disabled={isLoading || parseFloat(amount.replace(',', '.')) <= 0}
         >
-          {isLoading ? 'Cargando...' : 'Cargar'}
+          {isLoading ? "Cargando..." : "Cargar"}
         </Button>
       </form>
       <MySnackbar
