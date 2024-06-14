@@ -13,6 +13,7 @@ import {
 import { postLogin } from "../../api/auth";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,6 +24,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showAuthError, setShowAuthError] = useState(false);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => {
@@ -65,7 +67,7 @@ const Login = () => {
       });
       setLoading(true);
       try {
-        const response = await postLogin(email, password);
+        const response = await dispatch(postLogin(email, password));
         if (response) {
           navigate("/home");
           window.location.reload(); //recarga la pagina en home

@@ -6,6 +6,7 @@ import { getAccountBalance } from "../../api/Account";
 import MySnackbar from "../../UI/MySnackBar";
 import { useSelector, useDispatch } from "react-redux";
 import { hideNotification } from "../../Redux/slice/snackBarSlice";
+import { useNavigate } from "react-router";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -14,7 +15,14 @@ const Home = () => {
   const notification = useSelector((state) => state.notification);
   const dispatch = useDispatch();
 
+  let navigate = useNavigate();
+
+  const token = useSelector((state) => state.user.token);
+
   useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
     const fetchData = async () => {
       try {
         const data = await getAccountBalance();
