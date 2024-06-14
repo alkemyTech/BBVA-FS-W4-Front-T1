@@ -10,6 +10,8 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearUser } from '../../../Redux/slice/userSlice';
 
 const pages = ['Transferencias', 'Plazo fijo', 'Deposito'];
 const settings = ['Perfil', 'Cuentas', 'Logout'];
@@ -17,6 +19,9 @@ const settings = ['Perfil', 'Cuentas', 'Logout'];
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -33,9 +38,8 @@ export default function Navbar() {
     setAnchorElUser(null);
   };
 
-  const handleLogout = () => {
-    localStorage.clear();
-    //limpiar token redux
+  const handleLogout = () => {  
+    dispatch(clearUser());
   }
 
   return (
@@ -68,7 +72,7 @@ export default function Navbar() {
               <Button onClick={handleCloseNavMenu} href='#plazo-fijo'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Plazo fijo </Button>
-              <Button onClick={handleCloseNavMenu} href='#deposito'
+              <Button onClick={handleCloseNavMenu} href='/cargar-saldo'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Deposito </Button>
             </Menu>
@@ -91,7 +95,7 @@ export default function Navbar() {
                 sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px',
                    fontWeight: 600, fontSize: 18  }}>
                 Plazo fijo </Button>
-            <Button onClick={handleCloseNavMenu} href='#deposito'
+            <Button onClick={handleCloseNavMenu} href='/cargar-saldo'
                 sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px', 
                     fontWeight: 600, fontSize: 18 }}>
                 Deposito </Button>
@@ -110,7 +114,7 @@ export default function Navbar() {
               anchorOrigin={{ vertical: 'top', horizontal: 'right'}} keepMounted
               transformOrigin={{ vertical: 'top', horizontal: 'right'}}
               open={Boolean(anchorElUser)} onClose={handleCloseUserMenu}>
-              <Typography sx={{ my: 1, color: 'black', display: 'block', padding:'10px 15px'}}>Nombre de usuario</Typography>
+              <Typography sx={{ my: 1, color: 'black', display: 'block', padding:'10px 15px'}}>{user.firstName + " " + user.lastName}</Typography>
             {/*Menu usuario opciones*/}
               <Button onClick={handleCloseUserMenu} href='#perfil'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>

@@ -1,42 +1,64 @@
-import { useState, useEffect } from 'react';
-import { CircularProgress, Container } from '@mui/material';
-import BankAccountCard from './AccountCard';
-import TransactionList from './TransactionList';
-import { getAccountBalance } from '../../api/Account';
+import { useState, useEffect } from "react";
+import { CircularProgress, Container } from "@mui/material";
+import BankAccountCard from "./AccountCard";
+import TransactionList from "./TransactionList";
+import { getAccountBalance } from "../../api/Account";
+import MySnackbar from "../../UI/MySnackBar";
+import { useSelector, useDispatch } from "react-redux";
+import { hideNotification } from "../../Redux/slice/snackBarSlice";
+import { useNavigate } from "react-router";
 
 const Home = () => {
-    const [loading, setLoading] = useState(true);
-    const [accountData, setAccountData] = useState(null);
-    const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [accountData, setAccountData] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await getAccountBalance();
-                setAccountData(data);
-                setTransactions(data.history);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setLoading(false);
-            }
-        };
+  const notification = useSelector((state) => state.notification);
+  const dispatch = useDispatch();
 
-        fetchData();
-    }, [loading]);
+  let navigate = useNavigate();
 
-    return (
-        <Container>
-            {loading ? (
-                <CircularProgress />
-            ) : (
-                <>
-                    <BankAccountCard accountData={accountData} />
-                    <TransactionList transactions={transactions} />
-                </>
-            )}
-        </Container>
-    );
+  const token = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+    const fetchData = async () => {
+      try {
+        const data = await getAccountBalance();
+        setAccountData(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [loading]);
+
+  const handleSnackbarClose = () => {
+    dispatch(hideNotification());
+  };
+
+  return (
+    <Container>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <BankAccountCard accountData={accountData} />
+          <TransactionList accountData={accountData} />
+          <MySnackbar
+            open={notification.open}
+            handleClose={handleSnackbarClose}
+            message={notification.message}
+            status={notification.status}
+          />
+        </>
+      )}
+    </Container>
+  );
 };
 
 export default Home;
