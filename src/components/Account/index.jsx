@@ -1,33 +1,20 @@
 import React, { useState } from "react";
 import { getAccountDetaileByCBU } from "../../api/Account";
+import { Container } from "@mui/material";
+import { useLocation } from "react-router";
+import AccountDetailsCard from "./AccountDetails";
 const Account = () => {
-  const [loading, setLoading] = useState(true);
-  const [accountData, setAccountData] = useState(null);
+  const location = useLocation();
+  const { account } = location.state || {};
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getAccountDetaileByCBU();
-        setAccountData(data);
-
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [loading]);
+  console.log("Las props son:", account);
 
   return (
     <Container>
-      {loading ? (
-        <CircularProgress />
+      {account ? (       
+        <AccountDetailsCard account={account}/>        
       ) : (
-        <>
-          <BankAccountCard accountData={accountData} />
-        </>
+        <p>No se recibieron datos de la cuenta</p>
       )}
     </Container>
   );

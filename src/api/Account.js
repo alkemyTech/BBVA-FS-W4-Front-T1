@@ -36,3 +36,22 @@ const getAccountDetaileByCBU = async(value) => {
 };
 
 export { getAccountDetaileByCBU };
+
+const getTransactionsByIdAccount = async(value) => {
+    // LE FALTA LA LOGICA DEL ENDPOINT QUE NO EXIATE. 
+    const config = {
+        withCredentials: true,
+        params: {
+            value: value // Aquí es donde se define el parámetro de solicitud
+        }
+    };
+
+    try {
+        const response = await axios.get(`${API_BASE_URL}/search`, config);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export { getTransactionsByIdAccount };

@@ -5,30 +5,21 @@ import {
   Grid,
 } from "@mui/material";
 import Login from "../Login";
-// import { Copyright } from "@mui/icons-material";
-import localStorage from "redux-persist/es/storage";
+import { useSelector } from "react-redux";
 
 const Inicio = () => {
-  const navigate = useNavigate();
-  const token = localStorage.getItem('token'); 
+  const navigate = useNavigate();  
+  const token = useSelector((state) => state.user.token);
   console.log("Token:", token);
   useEffect(() => {
-    if (token) {
-      console.log("Token:", token);         
-      
-      if(localStorage.getItem('token').PromiseResult){
-        const token2 = localStorage.getItem('token');  
-        console.log("Token2:", token2.PromiseResult);
-        
-        // Descomenta esto para navegar después de eliminar el token
-         navigate("/home");
-      }     
+    if (token) {   
+         navigate("/home");          
     }
   }, [token, navigate]);
 
   return (
     <>
-      {/*!token && */
+      {!token && 
         <Grid container component="main" >
           <Grid
             item
