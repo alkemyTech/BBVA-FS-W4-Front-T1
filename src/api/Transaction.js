@@ -18,7 +18,7 @@ const deposit = async (depositData) => {
         throw error;
     }
 };
-export { deposit };
+
 const getTransactionsByIdAccount = async (value, token, page = 0) => {
     const config = {
         withCredentials: true,
@@ -42,4 +42,25 @@ const getTransactionsByIdAccount = async (value, token, page = 0) => {
     }
 };
 
-export { getTransactionsByIdAccount };
+
+const payment = async (paymentData) => {
+    const config = {
+        withCredentials: true,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+
+    try {
+        const response = await axios.post(`${API_BASE_URL}/payment`, paymentData, config);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+
+        throw error;
+    }
+};
+
+
+export { deposit, payment, getTransactionsByIdAccount};
+
