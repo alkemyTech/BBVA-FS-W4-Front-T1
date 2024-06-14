@@ -12,7 +12,6 @@ import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '../../../Redux/slice/userSlice';
-// import { store } from '../../../Redux/store';
 
 const pages = ['Transferencias', 'Plazo fijo', 'Deposito'];
 const settings = ['Perfil', 'Cuentas', 'Logout'];
@@ -39,7 +38,7 @@ export default function Navbar() {
     setAnchorElUser(null);
   };
 
-  const handleLogout = () => {
+  const handleLogout = () => {  
     dispatch(clearUser());
   }
 
@@ -48,7 +47,7 @@ export default function Navbar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/*Logo y nombre*/}
-          <Typography variant="h6" noWrap component="a" href="#Home"
+          <Typography variant="h6" noWrap component="a" href="/home"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' },
             fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none'}}>
             <img src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png" style={{ height: "60px" }} />
@@ -73,7 +72,7 @@ export default function Navbar() {
               <Button onClick={handleCloseNavMenu} href='#plazo-fijo'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Plazo fijo </Button>
-              <Button onClick={handleCloseNavMenu} href='#deposito'
+              <Button onClick={handleCloseNavMenu} href='/cargar-saldo'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Deposito </Button>
             </Menu>
@@ -96,7 +95,7 @@ export default function Navbar() {
                 sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px',
                    fontWeight: 600, fontSize: 18  }}>
                 Plazo fijo </Button>
-            <Button onClick={handleCloseNavMenu} href='#deposito'
+            <Button onClick={handleCloseNavMenu} href='/cargar-saldo'
                 sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px', 
                     fontWeight: 600, fontSize: 18 }}>
                 Deposito </Button>
