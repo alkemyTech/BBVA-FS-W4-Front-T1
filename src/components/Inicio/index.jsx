@@ -1,26 +1,34 @@
-import { ThemeProvider } from "@emotion/react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  Avatar,
   Box,
-  Button,
-  Checkbox,
-  CssBaseline,
-  FormControlLabel,
   Grid,
-  TextField,
-  Typography,
-  createTheme,
 } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Login from "../Login";
-import { Copyright } from "@mui/icons-material";
+// import { Copyright } from "@mui/icons-material";
+import localStorage from "redux-persist/es/storage";
 
 const Inicio = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token'); 
+  console.log("Token:", token);
+  useEffect(() => {
+    if (token) {
+      console.log("Token:", token);         
+      
+      if(localStorage.getItem('token').PromiseResult){
+        const token2 = localStorage.getItem('token');  
+        console.log("Token2:", token2.PromiseResult);
+        
+        // Descomenta esto para navegar después de eliminar el token
+         navigate("/home");
+      }     
+    }
+  }, [token, navigate]);
 
   return (
-    <div>
+    <>
+      {/*!token && */
         <Grid container component="main" >
           <Grid
             item
@@ -44,12 +52,12 @@ const Inicio = () => {
                 alignItems: "center",
               }}
             >
-              <Login />
-             {/* <Copyright sx={{ mt: 5 }} />*/}
+              <Login />              
             </Box>
           </Grid>
         </Grid>
-    </div>
+      }
+    </>
   );
 };
 
