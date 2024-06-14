@@ -2,9 +2,11 @@ import { Grid, Box, Typography } from "@mui/material";
 import "./index.css";
 import React from "react";
 import { Copyright } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
-  const token = localStorage.getItem("token");
+  const token = useSelector((state) => state.user.token);
+
   return (
     <>
       {token && (
