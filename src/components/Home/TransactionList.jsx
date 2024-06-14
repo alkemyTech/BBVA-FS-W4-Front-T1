@@ -71,6 +71,7 @@ const TransactionList = ({ accountData }) => {
                         variant="outlined"
                         value={minAmount}
                         onChange={(e) => setMinAmount(e.target.value)}
+                        sx={{ borderStyle: '#4B56D2' }}
                     />
                     <TextField
                         label="Monto máximo"
