@@ -20,6 +20,7 @@ function App() {
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/simular-plazo-fijo" element={<SimularPlazoFijo />} />
           <Route path="/" element={<Inicio />} />
+          <Route path="/cargar-saldo" element={<Deposito />} />
         </Routes>
       </Page>
   );

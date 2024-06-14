@@ -68,7 +68,7 @@ export default function Navbar() {
               <Button onClick={handleCloseNavMenu} href='#plazo-fijo'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Plazo fijo </Button>
-              <Button onClick={handleCloseNavMenu} href='#deposito'
+              <Button onClick={handleCloseNavMenu} href='/cargar-saldo'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Deposito </Button>
             </Menu>
@@ -91,7 +91,7 @@ export default function Navbar() {
                 sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px',
                    fontWeight: 600, fontSize: 18  }}>
                 Plazo fijo </Button>
-            <Button onClick={handleCloseNavMenu} href='#deposito'
+            <Button onClick={handleCloseNavMenu} href='/cargar-saldo'
                 sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px', 
                     fontWeight: 600, fontSize: 18 }}>
                 Deposito </Button>
