@@ -9,6 +9,7 @@ import Page from "./UI/Page";
 import Inicio from "./components/Inicio";
 import Home from "./components/Home";
 import Account from "./components/Account";
+import PlazoFijo from "./components/PlazoFijo";
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
           <Route path="/" element={<Inicio />} />
           <Route path="/cargar-saldo" element={<Deposito />} />
           <Route path="/account" element={<Account />} />
-          
+          <Route path="/plazo-fijo" element={<PlazoFijo />} />
         </Routes>
       </Page>
   );
