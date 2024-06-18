@@ -6,6 +6,9 @@ import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import "./index.css";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import "dayjs/locale/es";
 
 const theme = createTheme({
   typography: {
@@ -19,6 +22,30 @@ const theme = createTheme({
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          transition: 'background-color 0.2s ease-in-out',
+          '&:hover': {
+            backgroundColor: '#764EB7',
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            '&.Mui-focused fieldset': {
+              borderColor: '#472183', // Cambia el color del borde al hacer focus
+            },
+          },
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#472183', // Cambia el color del label
+          },
+        },
+      },
+    },
   },
 });
 
@@ -26,10 +53,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
-        </ThemeProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"es"}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <App />
+          </ThemeProvider>
+        </LocalizationProvider>
       </BrowserRouter>
     </PersistGate>
   </Provider>

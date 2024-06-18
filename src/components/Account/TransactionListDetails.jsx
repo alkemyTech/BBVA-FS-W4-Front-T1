@@ -27,6 +27,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const TransactionListDetails = ({ accountId }) => {
   const [loading, setLoading] = useState(true);
+  const [haveTransactions, setHaveTransactions] = useState(true);
   const [transactions, setTransactions] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -54,11 +55,20 @@ const TransactionListDetails = ({ accountId }) => {
     const fetchData = async (page) => {
       setLoading(true);
       try {
-        const data = await getTransactionsByIdAccount(accountId, token, page);
-        console.log("DATA", data);
-        setTransactions(data.transactios);
-        setTotalPages(Math.ceil(data.total / transactionsPerPage)); // Suponiendo que `total` es el número total de transacciones
-        setLoading(false);
+        const data2 = await getTransactionsByIdAccount(accountId, token, page);
+        console.log("DATA2::: ", data2);
+        if (data2 != 404) {
+          const data = data2.data;
+          console.log("DATA", data);
+          setTransactions(data.transactios);
+          setTotalPages(data.countPages);
+          console.log("TOTAL PAGE:", data.countPages);
+          setLoading(false);
+        } else {
+          console.log("NO HAY TRANSACIONES");
+          setHaveTransactions(false);
+          setLoading(false);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
@@ -109,7 +119,6 @@ const TransactionListDetails = ({ accountId }) => {
       [index]: !prevExpanded[index],
     }));
   };
- 
 
   return (
     <>
@@ -199,84 +208,92 @@ const TransactionListDetails = ({ accountId }) => {
                   </Select>
                 </FormControl>
               </Box>
-              <List>
-                {filteredTransactions.map((transaction, index) => {
-                  const formattedDate = formatDate(transaction.transactionDate);
-                  return (
-                    <Box key={index}>
-                      <ListItem>
-                        <ListItemText
-                          primary={
-                            <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <Typography style={{ fontWeight: "bold" }}>
-                                {transaction.type === "INCOME"
-                                  ? "Ingreso"
-                                  : transaction.type === "PAYMENT"
-                                  ? "Pago"
-                                  : "Depósito"}
-                              </Typography>
-                              <Typography>{transaction.amount}</Typography>
-                            </Box>
-                          }
-                          secondary={
-                            <Box component="span">
+              {haveTransactions ? (
+                <List>
+                  {filteredTransactions.map((transaction, index) => {
+                    const formattedDate = formatDate(
+                      transaction.transactionDate
+                    );
+                    return (
+                      <Box key={index}>
+                        <ListItem>
+                          <ListItemText
+                            primary={
                               <Box
-                                component="span"
                                 sx={{
-                                  color: "gray",
-                                  fontSize: "0.875rem",
                                   display: "flex",
                                   justifyContent: "space-between",
-                                  alignItems: "center",
                                 }}
                               >
-                                <Typography component="span">
-                                  Fecha: {formattedDate}
+                                <Typography style={{ fontWeight: "bold" }}>
+                                  {transaction.type === "INCOME"
+                                    ? "Ingreso"
+                                    : transaction.type === "PAYMENT"
+                                    ? "Pago"
+                                    : "Depósito"}
                                 </Typography>
-                                <IconButton
-                                  onClick={() => toggleExpand(index)}
-                                  aria-expanded={expanded[index]}
-                                  aria-label="show more"
-                                >
-                                  <ExpandMoreIcon />
-                                </IconButton>
+                                <Typography>{transaction.amount}</Typography>
                               </Box>
-                              <Collapse
-                                in={expanded[index]}
-                                timeout="auto"
-                                unmountOnExit
-                              >
-                                {transaction.destinationIdAccount && (
-                                  <Typography component="div">
-                                    Destino: {transaction.destinationIdAccount}
+                            }
+                            secondary={
+                              <Box component="span">
+                                <Box
+                                  component="span"
+                                  sx={{
+                                    color: "gray",
+                                    fontSize: "0.875rem",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <Typography component="span">
+                                    Fecha: {formattedDate}
                                   </Typography>
-                                )}
-                                {transaction.concept && (
-                                  <Typography component="div">
-                                    Concepto: {transaction.concept}
-                                  </Typography>
-                                )}
-                                {transaction.description &&
-                                  transaction.description.trim() && (
+                                  <IconButton
+                                    onClick={() => toggleExpand(index)}
+                                    aria-expanded={expanded[index]}
+                                    aria-label="show more"
+                                  >
+                                    <ExpandMoreIcon />
+                                  </IconButton>
+                                </Box>
+                                <Collapse
+                                  in={expanded[index]}
+                                  timeout="auto"
+                                  unmountOnExit
+                                >
+                                  {transaction.destinationIdAccount && (
                                     <Typography component="div">
-                                      Descripción: {transaction.description}
+                                      Destino: {transaction.destinationIdAccount}
                                     </Typography>
                                   )}
-                              </Collapse>
-                            </Box>
-                          }
-                        />
-                      </ListItem>
-                      {index < filteredTransactions.length - 1 && <Divider />}
-                    </Box>
-                  );
-                })}
-              </List>
+                                  {transaction.concept && (
+                                    <Typography component="div">
+                                      Concepto: {transaction.concept}
+                                    </Typography>
+                                  )}
+                                  {transaction.description &&
+                                    transaction.description.trim() && (
+                                      <Typography component="div">
+                                        Descripción: {transaction.description}
+                                      </Typography>
+                                    )}
+                                </Collapse>
+                              </Box>
+                            }
+                          />
+                        </ListItem>
+                        {index < filteredTransactions.length - 1 && (
+                          <Divider />
+                        )}
+                      </Box>
+                    );
+                  })}
+                </List>
+              ) : (
+                <Typography>No hay transacciones</Typography>
+              )}
             </CardContent>
             <Box justifyContent={"center"} display={"flex"}>
               <Pagination
