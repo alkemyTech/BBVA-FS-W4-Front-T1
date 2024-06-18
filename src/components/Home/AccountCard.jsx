@@ -44,6 +44,7 @@ const AccountCard = ({ accountData }) => {
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
+              cursor: "pointer"
             }}
             onClick={() => handleCardClick(`/account`, account)}
           >
@@ -78,6 +79,7 @@ const AccountCard = ({ accountData }) => {
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
+              cursor: "pointer"
             }}
             onClick={() => handleCardClick(`/account`, accountData.accountUsd)}
           >
@@ -113,6 +115,7 @@ const AccountCard = ({ accountData }) => {
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
+              cursor: "pointer"
             }}
             onClick={() => handleCardClick(`/inversiones`, accountData.fixedTerms)}
 
