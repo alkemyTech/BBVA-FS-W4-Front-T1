@@ -9,9 +9,11 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Button,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router";
 
 const AccountDetailsCard = ({ account }) => {
   const formatCurrency = (amount, currency) => {
@@ -19,6 +21,12 @@ const AccountDetailsCard = ({ account }) => {
       style: "currency",
       currency,
     }).format(amount);
+  };
+  const navigate2 = useNavigate();
+
+  const handleCardClick = (path, account) => {
+    console.log("Transferir", account);
+    navigate2(path, { state: { account } });
   };
 
   return (
@@ -49,17 +57,35 @@ const AccountDetailsCard = ({ account }) => {
           <Typography
             variant="body2"
             component="div"
-            sx={{ marginBottom: "16px", color: "#4b56d2" }}
+            sx={{ marginBottom: "0vh", color: "#4b56d2" }}
           >
             Balance disponible (a partir de hoy)
           </Typography>
+          <Button
+            variant="contained"
+            sx={{
+              marginBottom: "2vh",
+              color: "#ffffff",
+              backgroundColor: "#4b56d2",
+              border: "1px solid #4b56d2",
+              padding: "1vh",
+              maxWidth: "14vh",
+              "&:hover": {
+                backgroundColor: "#3c4370", // Color oscuro al pasar el mouse
+                borderColor: "#3c4370", // Borde oscuro al pasar el mouse
+              },
+            }}
+            onClick={() => handleCardClick("/transferencia", account)}
+          >
+            <b>Transferir</b>
+          </Button>
+
           <Accordion
             sx={{
               boxShadow: "none",
               borderTop: "none",
               backgroundColor: "transparent",
-              "&:before":{display:"none"}
-                           
+              "&:before": { display: "none" },
             }}
             disableGutters
           >
