@@ -7,6 +7,7 @@ import MySnackbar from "../../UI/MySnackBar";
 import { useSelector, useDispatch } from "react-redux";
 import { hideNotification } from "../../Redux/slice/snackBarSlice";
 import { useNavigate } from "react-router";
+import { clearUser } from "../../Redux/slice/userSlice";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -29,13 +30,18 @@ const Home = () => {
         setAccountData(data);
         setLoading(false);
       } catch (error) {
+        if (error.message == "Usuario no autenticado") {
+            dispatch(clearUser());
+            window.location.reload();
+            navigate("/")
+          }
         console.error("Error fetching data:", error);
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [loading]);
+  }, [loading, token]);
 
   const handleSnackbarClose = () => {
     dispatch(hideNotification());
