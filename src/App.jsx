@@ -10,6 +10,7 @@ import Inicio from "./components/Inicio";
 import Home from "./components/Home";
 import Pago from "./components/Pago";
 import Account from "./components/Account";
+import AllAccounts from "./components/Account/AllAccounts";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/cargar-saldo" element={<Deposito />} />
           <Route path="/cargar-pago" element={<Pago />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/cuentas" element={<AllAccounts />} />
         </Routes>
       </Page>
   );
