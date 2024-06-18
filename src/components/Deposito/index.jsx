@@ -11,6 +11,7 @@ import { deposit } from '../../api/Transaction';
 import MySnackbar from '../../UI/MySnackBar';
 import { useNavigate } from 'react-router';
 import { showNotification, hideNotification } from '../../Redux/slice/snackBarSlice';
+import ArrowBackComponent from '../../UI/ArrowBack';
 
 const transactionConcepts = [
   'VARIOS',
@@ -98,6 +99,7 @@ const Deposito = () => {
 
   return (
     <Box sx={{ maxWidth: 400, ml: 'auto', mr: 'auto', mt: 9, mb: 10, '@media (max-width: 450px)': { maxWidth: '90%' } }}>
+      <ArrowBackComponent/> 
       <Typography variant='h4' component='h1' gutterBottom>
         Cargar Saldo
       </Typography>

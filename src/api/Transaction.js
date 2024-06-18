@@ -35,10 +35,11 @@ const getTransactionsByIdAccount = async (value, token, page = 0) => {
         const response = await axios.get(`${API_BASE_URL}/userAccountId/${value}`, config);
         console.log("response:", response);
         console.log("response data:", response.data);
-        return response.data;
+        return response;
     } catch (error) {
         // Enhanced error logging
         console.error("An error occurred:", error);
+        return "404";
         if (error.response) {
             console.error("Response data:", error.response.data);
             console.error("Response status:", error.response.status);
