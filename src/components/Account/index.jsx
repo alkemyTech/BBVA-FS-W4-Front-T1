@@ -4,6 +4,7 @@ import { Container, Grid } from "@mui/material";
 import { useLocation } from "react-router";
 import AccountDetailsCard from "./AccountDetails";
 import TransactionListDetails from "./TransactionListDetails";
+import ArrowBackComponent from "../../UI/ArrowBack";
 const Account = () => {
   const location = useLocation();
   const { account } = location.state || {};
@@ -12,6 +13,7 @@ const Account = () => {
 
   return (
     <Container>
+      <ArrowBackComponent/>    
       {account ? (      
         <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}> 
         <AccountDetailsCard account={account}/>  

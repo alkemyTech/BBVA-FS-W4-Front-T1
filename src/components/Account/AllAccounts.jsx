@@ -6,6 +6,8 @@ import { CircularProgress, Container, Grid } from "@mui/material";
 import TransactionList from "../Home/TransactionList";
 import MySnackbar from "../../UI/MySnackBar";
 import AccountDetailsCard from "./AccountDetails";
+import { ArrowBack } from "@mui/icons-material";
+import ArrowBackComponent from "../../UI/ArrowBack";
 
 const AllAccounts = () => {
   const [loading, setLoading] = useState(true);
@@ -47,6 +49,7 @@ const AllAccounts = () => {
         <CircularProgress />
       ) : (
         <>
+        <ArrowBackComponent/>        
           <Grid container spacing={2} sx={{ marginTop: "1vh" }}>
             {accountData.accountArs &&
               accountData.accountArs.map((account, index) => (
