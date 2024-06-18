@@ -12,6 +12,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { postRegister } from "../../api/auth";
+import { useDispatch } from "react-redux";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -40,6 +41,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [showAuthError, setShowAuthError] = useState(false);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const firstNameRef = useRef();
@@ -60,8 +62,24 @@ const Register = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
+  const handleKeyEnter = (e) => {
+    if (e.key === 'Enter') {
+      handleRegister(e);
+    }
+  };
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const handleInputRestriction = (allowedCharacters = '') => (e) => {
+    const isAllowedCharacter = new RegExp(`[^${allowedCharacters}]`).test(e.key);
+    const isBackspace = e.key === 'Backspace';
+    const isTab = e.key === 'Tab'; // Check for Tab key
+  
+    if (isAllowedCharacter && !isBackspace && !isTab) {
+      e.preventDefault();
+    }
   };
 
   const validateEmail = (email) => {
@@ -203,7 +221,7 @@ const Register = () => {
       });
       setLoading(true);
       try {
-        const response = await postRegister(
+        const response = await dispatch(postRegister(
           firstName,
           lastName,
           birthDate,
@@ -212,10 +230,9 @@ const Register = () => {
           documentNumber,
           email,
           password
-        );
+        ));
         if (response) {
           navigate("/home");
-          window.location.reload();
         }
       } catch (error) {
         if (error.message === "El email ingresado ya se encuentra registrado") {
@@ -251,6 +268,8 @@ const Register = () => {
         boxShadow: 3,
         display: "flex",
       }}
+      onSubmit={handleRegister}
+      onKeyDown={handleKeyEnter}
     >
       <Grid item xs={12}>
         <img src="https://i.ibb.co/qn2SwBB/LOGO-SIN-FONDO.png" alt="Logo" />
@@ -272,6 +291,7 @@ const Register = () => {
           error={Boolean(firstNameError)}
           helperText={firstNameError}
           inputRef={firstNameRef}
+          onKeyDown={handleInputRestriction("a-zA-ZáéíóúÁÉÍÓÚñÑ ")}
         />
       </Grid>
       <Grid item xs={12}>
@@ -286,6 +306,7 @@ const Register = () => {
           error={Boolean(lastNameError)}
           helperText={lastNameError}
           inputRef={lastNameRef}
+          onKeyDown={handleInputRestriction("a-zA-ZáéíóúÁÉÍÓÚñÑ ")}
         />
       </Grid>
       <Grid item xs={12}>
@@ -355,6 +376,7 @@ const Register = () => {
           error={Boolean(documentNumberError)}
           helperText={documentNumberError}
           inputRef={documentNumberRef}
+          onKeyDown={handleInputRestriction("0-9")}
         />
       </Grid>
       <Grid item xs={12}>
@@ -369,6 +391,7 @@ const Register = () => {
           error={Boolean(emailError)}
           helperText={emailError}
           inputRef={emailRef}
+          onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ.@_-")}
         />
       </Grid>
       <Grid item xs={12}>
@@ -385,12 +408,14 @@ const Register = () => {
           error={Boolean(passwordError)}
           helperText={passwordError}
           inputRef={passwordRef}
+          onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ._-")}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
+                  tabIndex={-1}
                 >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
@@ -406,19 +431,21 @@ const Register = () => {
           name="confirmPassword"
           label="Repetir Contraseña"
           id="confirmPassword"
-          type={showPassword ? "text" : "password"}
+          type={showConfirmPassword ? "text" : "password"}
           autoComplete="current-password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           error={Boolean(confirmPasswordError)}
           helperText={confirmPasswordError}
           inputRef={confirmPasswordRef}
+          onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ._-")}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
                   onClick={handleClickShowConfirmPassword}
                   onMouseDown={handleMouseDownPassword}
+                  tabIndex={-1}
                 >
                   {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>

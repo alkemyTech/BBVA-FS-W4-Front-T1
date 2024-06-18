@@ -26,6 +26,7 @@ export const postLogin = (email, password) => async (dispatch) => {
 
     const tokenValue = response.headers["authorization"].split(" ")[1];
 
+    console.log(response.data);
     dispatch(setUser(response.data));
     dispatch(setToken(tokenValue));
 
@@ -39,7 +40,7 @@ export const postLogin = (email, password) => async (dispatch) => {
   }
 };
 
-export const postRegister = async (firstName, lastName, birthDate, gender, documentType, documentNumber, email, password) => {
+export const postRegister = (firstName, lastName, birthDate, gender, documentType, documentNumber, email, password) => async (dispatch) => {
   try {
     const userRegisterData = {
       firstName: firstName,
@@ -61,8 +62,11 @@ export const postRegister = async (firstName, lastName, birthDate, gender, docum
     console.log(token);
     console.log(token.split(" ")[1]);
 
-    localStorage.setItem("userData", JSON.stringify(response.data));
-    localStorage.setItem("token", response.headers["authorization"].split(" ")[1]);
+    const tokenValue = response.headers["authorization"].split(" ")[1];
+
+    console.log(response.data);
+    dispatch(setUser(response.data));
+    dispatch(setToken(tokenValue));
 
     return response.data;
   } catch (err) {

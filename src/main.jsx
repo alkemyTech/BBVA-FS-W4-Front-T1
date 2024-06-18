@@ -25,9 +25,23 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          transition: 'background-color 0.3s ease',
+          transition: 'background-color 0.2s ease-in-out',
           '&:hover': {
-            backgroundColor: '#4B56D2',
+            backgroundColor: '#764EB7',
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            '&.Mui-focused fieldset': {
+              borderColor: '#472183', // Cambia el color del borde al hacer focus
+            },
+          },
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#472183', // Cambia el color del label
           },
         },
       },
