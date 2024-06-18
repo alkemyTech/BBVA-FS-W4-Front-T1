@@ -223,7 +223,7 @@ const Deposito = () => {
         </Button>
         <Button onClick={handleGoBack} variant="outlined" fullWidth
             sx={{ mt: 2, borderColor: '#d1d8c5', color: '#000000', '&:hover': { borderColor: '#c0c9b5' } }}>
-            Volver
+            Volver al inicio
         </Button>
       </form>
       <MySnackbar
