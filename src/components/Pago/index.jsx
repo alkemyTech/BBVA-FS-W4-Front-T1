@@ -9,6 +9,7 @@ import {
   hideNotification,
 } from "../../Redux/slice/snackBarSlice";
 import { getAccountBalance } from "../../api/Account";
+import ArrowBackComponent from "../../UI/ArrowBack";
 
 const transactionConcepts = [
   "VARIOS",
@@ -182,6 +183,7 @@ const Pago = () => {
         "@media (max-width: 450px)": { maxWidth: "90%" },
       }}
     >
+      <ArrowBackComponent/> 
       <Typography variant="h4" component="h1" gutterBottom>
         Cargar Pago
       </Typography>
