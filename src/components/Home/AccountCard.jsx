@@ -21,6 +21,15 @@ const AccountCard = ({ accountData }) => {
     navigate(path, { state: { account } });
   };
 
+  const today = new Date();
+  const totalFixedTerms = accountData.fixedTerms
+    .filter(term => {
+      const [year, month, day] = term.closingDate;
+      const closingDate = new Date(year, month - 1, day); // Los meses son 0-indexed en JavaScript
+      return closingDate >= today;
+    })
+    .reduce((total, term) => total + term.amount, 0);
+
   return (
     <Grid container spacing={2} sx={{ marginTop: "5vh" }}>
       {accountData.accountArs.map((account, index) => (
@@ -92,8 +101,8 @@ const AccountCard = ({ accountData }) => {
         </Grid>
       )}
 
-      {accountData.fixedTerms.map((term, index) => (
-        <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+      {totalFixedTerms > 0 && (
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <Card
             sx={{
               backgroundColor: "#D1D8C5",
@@ -105,22 +114,20 @@ const AccountCard = ({ accountData }) => {
               flexDirection: "column",
               justifyContent: "center",
             }}
+            onClick={() => handleCardClick(`/inversiones`, accountData.fixedTerms)}
+
           >
             <CardContent>
               <Typography variant="h6" component="div">
-                <strong>{formatCurrency(term.amount, "ARS")}</strong>
+                <strong>{formatCurrency(totalFixedTerms, "ARS")}</strong>
               </Typography>
               <Typography variant="subtitle1" component="div">
-                Plazo fijo
-              </Typography>
-              <Typography variant="body2" component="div">
-                Fecha de cierre: {formatDate(term.closingDate)}
+                Total Invertido en Plazos Fijos
               </Typography>
             </CardContent>
           </Card>
         </Grid>
-      ))}
-    </Grid>
+      )}    </Grid>
   );
 };
 
