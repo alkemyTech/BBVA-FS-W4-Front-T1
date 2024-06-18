@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Page from "./UI/Page";
 import Inicio from "./components/Inicio";
 import Home from "./components/Home";
+import Pago from "./components/Pago";
 import Account from "./components/Account";
 import PlazoFijo from "./components/PlazoFijo";
 
@@ -23,8 +24,9 @@ function App() {
           <Route path="/simular-plazo-fijo" element={<SimularPlazoFijo />} />
           <Route path="/" element={<Inicio />} />
           <Route path="/cargar-saldo" element={<Deposito />} />
+          <Route path="/cargar-pago" element={<Pago />} />
           <Route path="/account" element={<Account />} />
-          <Route path="/plazo-fijo" element={<PlazoFijo />} />
+          <Route path="/plazo-fijo" element={<PlazoFijo />}/>
         </Routes>
       </Page>
   );

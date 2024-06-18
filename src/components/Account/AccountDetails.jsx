@@ -9,9 +9,11 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Button,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router";
 
 const AccountDetailsCard = ({ account }) => {
   const formatCurrency = (amount, currency) => {
@@ -20,120 +22,106 @@ const AccountDetailsCard = ({ account }) => {
       currency,
     }).format(amount);
   };
+  const navigate2 = useNavigate();
+
+  const handleCardClick = (path, account) => {
+    console.log("Transferir", account);
+    navigate2(path, { state: { account } });
+  };
 
   return (
-    <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}>
-      <Grid item xs={12}>
-        <Card
-          sx={{
-            backgroundColor: "#f1f6f5",
-            color: "#000000",
-            borderRadius: "12px",
-            padding: "24px",
-            boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
-          }}
-        >
-          <CardContent>
-            <Typography
-              variant="h5"
-              component="div"
-              sx={{ marginBottom: "16px", color: "#472183" }}
+    <Grid item xs={12}>
+      <Card
+        sx={{
+          backgroundColor: "#f1f6f5",
+          color: "#000000",
+          borderRadius: "12px",
+          padding: "24px",
+          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+        }}
+      >
+        <CardContent>
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{ marginBottom: "16px", color: "#472183" }}
+          >
+            {account.accountType === "CAJA_AHORRO"
+              ? "Caja de Ahorro"
+              : "Cuenta Corriente"}
+          </Typography>
+          <Typography variant="h4" component="div" color="#000000">
+            {formatCurrency(account.balance, account.currency)}
+            {account.currency}
+          </Typography>
+          <Typography
+            variant="body2"
+            component="div"
+            sx={{ marginBottom: "0vh", color: "#4b56d2" }}
+          >
+            Balance disponible (a partir de hoy)
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{
+              marginBottom: "2vh",
+              color: "#ffffff",
+              backgroundColor: "#4b56d2",
+              border: "1px solid #4b56d2",
+              padding: "1vh",
+              maxWidth: "14vh",
+              "&:hover": {
+                backgroundColor: "#3c4370", // Color oscuro al pasar el mouse
+                borderColor: "#3c4370", // Borde oscuro al pasar el mouse
+              },
+            }}
+            onClick={() => handleCardClick("/transferencia", account)}
+          >
+            <b>Transferir</b>
+          </Button>
+
+          <Accordion
+            sx={{
+              boxShadow: "none",
+              borderTop: "none",
+              backgroundColor: "transparent",
+              "&:before": { display: "none" },
+            }}
+            disableGutters
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              sx={{ padding: 0 }} // Agrega esta línea para eliminar el padding
             >
-              {account.accountType === "CAJA_AHORRO"
-                ? "Caja de Ahorro"
-                : "Cuenta Corriente"}
-            </Typography>
-            <Typography variant="h4" component="div" color="#000000">
-              {formatCurrency(account.balance, account.currency)}
-              {account.currency}
-            </Typography>
-            <Typography
-              variant="body2"
-              component="div"
-              sx={{ marginBottom: "16px", color: "#4b56d2" }}
-            >
-              Balance disponible (a partir de hoy)
-            </Typography>
-            <Accordion
-              sx={{ boxShadow: "none", backgroundColor: "transparent" }}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                sx={{ padding: 0 }} // Agrega esta línea para eliminar el padding
-              >
-                <Typography sx={{ color: "#82c3ec" }}>
-                  Ver detalles de la cuenta
+              <Typography sx={{ color: "#82c3ec" }}>
+                Ver detalles de la cuenta
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ padding: 0 }}>
+              <Box>
+                <Typography variant="subtitle1" component="div" color="#4b56d2">
+                  Alias:
                 </Typography>
-              </AccordionSummary>
-              <AccordionDetails sx={{ padding: 0 }}>
-                {" "}
-                {/* Agrega esta línea para eliminar el padding */}
-                <Box>
-                  <Typography
-                    variant="subtitle1"
-                    component="div"
-                    color="#4b56d2"
-                  >
-                    Alias:
-                  </Typography>
-                  <Typography variant="body1" component="div" color="#000000">
-                    {account.alias}
-                  </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    component="div"
-                    color="#4b56d2"
-                  >
-                    CBU:
-                  </Typography>
-                  <Typography variant="body1" component="div" color="#000000">
-                    {account.cbu}
-                  </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    component="div"
-                    color="#4b56d2"
-                  >
-                    Límite de Transacción:
-                  </Typography>
-                  <Typography variant="body1" component="div" color="#000000">
-                    {formatCurrency(account.transactionLimit, account.currency)}                    
-                  </Typography>
-                </Box>
-              </AccordionDetails>
-            </Accordion>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item xs={12} sx={{marginTop:"2vh"}}>
-        <Card
-          sx={{
-            backgroundColor: "#f1f6f5",
-            color: "#000000",
-            borderRadius: "12px",
-            padding: "12px",
-            boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
-          }}
-        >
-          <CardContent>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ marginBottom: "5px", color: "#472183" }}
-            >
-              Transacciones
-            </Typography>
-            <Divider
-              sx={{ backgroundColor: "#472183", marginBottom: "16px" }}
-            />
-            <Typography variant="body2" component="div" color="#4b56d2">
-              No hay transacciones disponibles.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
+                <Typography variant="body1" component="div" color="#000000">
+                  {account.alias}
+                </Typography>
+                <Typography variant="subtitle1" component="div" color="#4b56d2">
+                  CBU:
+                </Typography>
+                <Typography variant="body1" component="div" color="#000000">
+                  {account.cbu}
+                </Typography>
+                <Typography variant="subtitle1" component="div" color="#4b56d2">
+                  Límite de Transacción:
+                </Typography>
+                <Typography variant="body1" component="div" color="#000000">
+                  {formatCurrency(account.transactionLimit, account.currency)}
+                </Typography>
+              </Box>
+            </AccordionDetails>
+          </Accordion>
+        </CardContent>
+      </Card>
     </Grid>
   );
 };
