@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setToken, setUser } from "../Redux/slice/userSlice";
 
 const apiClient = axios.create({
   baseURL: "http://localhost:8080",
@@ -7,7 +8,7 @@ const apiClient = axios.create({
   allowCredentials: true,
 });
 
-export const postLogin = async (email, password) => {
+export const postLogin = (email, password) => async (dispatch) => {
   try {
     const userLoginData = {
       email: email,
@@ -23,15 +24,16 @@ export const postLogin = async (email, password) => {
     console.log(token);
     console.log(token.split(" ")[1]);
 
-    localStorage.setItem("userData", JSON.stringify(response.data));
-    localStorage.setItem("token", response.headers["authorization"].split(" ")[1]);
+    const tokenValue = response.headers["authorization"].split(" ")[1];
+
+    dispatch(setUser(response.data));
+    dispatch(setToken(tokenValue));
 
     return response.data;
   } catch (err) {
     if (err.response && err.response.status === 401) {
       throw new Error("Email o contraseña inválidos");
     }
-    // TODO: Snackbar de error
     console.log(err);
     throw err;
   }

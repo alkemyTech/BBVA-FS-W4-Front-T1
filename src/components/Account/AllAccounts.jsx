@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
-import { CircularProgress, Container } from "@mui/material";
-import BankAccountCard from "./AccountCard";
-import TransactionList from "./TransactionList";
-import { getAccountBalance } from "../../api/Account";
-import MySnackbar from "../../UI/MySnackBar";
-import { useSelector, useDispatch } from "react-redux";
-import { hideNotification } from "../../Redux/slice/snackBarSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { getAccountBalance } from "../../api/Account";
+import { CircularProgress, Container, Grid } from "@mui/material";
+import TransactionList from "../Home/TransactionList";
+import MySnackbar from "../../UI/MySnackBar";
+import AccountDetailsCard from "./AccountDetails";
 
-const Home = () => {
+const AllAccounts = () => {
   const [loading, setLoading] = useState(true);
   const [accountData, setAccountData] = useState(null);
 
@@ -40,6 +39,7 @@ const Home = () => {
   const handleSnackbarClose = () => {
     dispatch(hideNotification());
   };
+  console.log("ACCOUN DATA:", accountData);
 
   return (
     <Container>
@@ -47,18 +47,19 @@ const Home = () => {
         <CircularProgress />
       ) : (
         <>
-          <BankAccountCard accountData={accountData} />
-          <TransactionList accountData={accountData} />
-          <MySnackbar
-            open={notification.open}
-            handleClose={handleSnackbarClose}
-            message={notification.message}
-            status={notification.status}
-          />
+          <Grid container spacing={2} sx={{ marginTop: "1vh" }}>
+            {accountData.accountArs &&
+              accountData.accountArs.map((account, index) => (
+                <AccountDetailsCard account={account} />
+              ))}
+            {accountData.accountUsd && (
+              <AccountDetailsCard account={accountData.accountUsd} />
+            )}
+          </Grid>
         </>
       )}
     </Container>
   );
 };
 
-export default Home;
+export default AllAccounts;
