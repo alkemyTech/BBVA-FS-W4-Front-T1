@@ -11,6 +11,7 @@ import Home from "./components/Home";
 import Pago from "./components/Pago";
 import Account from "./components/Account";
 import AllAccounts from "./components/Account/AllAccounts";
+import Register from "./components/Register";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/home" element={<Home />} />
           {/*<Route path="/login" element={<Login />} />*/}
+          <Route path="/register" element={<Register />} />
           <Route path="/deposito" element={<Deposito />} />
           <Route path="/transferencia" element={<Transferencia />} />
           <Route path="/perfil" element={<Perfil />} />

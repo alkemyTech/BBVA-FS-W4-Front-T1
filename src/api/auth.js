@@ -38,3 +38,39 @@ export const postLogin = (email, password) => async (dispatch) => {
     throw err;
   }
 };
+
+export const postRegister = async (firstName, lastName, birthDate, gender, documentType, documentNumber, email, password) => {
+  try {
+    const userRegisterData = {
+      firstName: firstName,
+      lastName: lastName,
+      birthDate: birthDate,
+      gender: gender,
+      documentType: documentType,
+      documentNumber: documentNumber,
+      email: email,
+      password: password,
+    };
+
+    const response = await apiClient.post("/auth/register", userRegisterData);
+
+    console.log(response.data);
+    console.log(response.headers);
+    // Extraer la cookie jwt-token de la respuesta
+    const token = response.headers["authorization"];
+    console.log(token);
+    console.log(token.split(" ")[1]);
+
+    localStorage.setItem("userData", JSON.stringify(response.data));
+    localStorage.setItem("token", response.headers["authorization"].split(" ")[1]);
+
+    return response.data;
+  } catch (err) {
+    if (err.response && err.response.status === 400) {
+      throw new Error("El email ingresado ya se encuentra registrado");
+    }
+    // TODO: Snackbar de error
+    console.log(err);
+    throw err;
+  }
+};

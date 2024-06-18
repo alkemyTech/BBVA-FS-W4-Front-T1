@@ -13,14 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 } */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-
-:root {
-  --font-base: 'Outfit', sans-serif;
-}
-
-html {
-  font-family: var(--font-base);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 #root {
@@ -29,10 +25,4 @@ html {
   flex-direction: column;
   justify-content: space-between;
   background-color: #F1F6F5;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
