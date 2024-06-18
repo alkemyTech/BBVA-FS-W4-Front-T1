@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextField, Button, Box, MenuItem, Typography } from "@mui/material";
+import { TextField, Button, Box, MenuItem, Typography, Select, FormControl, InputLabel } from "@mui/material";
 import { payment } from "../../api/Transaction";
 import MySnackbar from "../../UI/MySnackBar";
 import { useNavigate } from "react-router";
@@ -42,6 +42,7 @@ const Pago = () => {
   const [balance, setBalance] = useState(0);
   const [isFetchingBalance, setIsFetchingBalance] = useState(true);
   const [loadingDots, setLoadingDots] = useState(".");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -138,6 +139,7 @@ const Pago = () => {
 
       try {
         setIsLoading(true);
+        setIsSubmitted(true);
         await payment(paymentData);
         dispatch(
           showNotification({
@@ -183,7 +185,7 @@ const Pago = () => {
         "@media (max-width: 450px)": { maxWidth: "90%" },
       }}
     >
-      <ArrowBackComponent/> 
+      <ArrowBackComponent disabled={isSubmitted}/> 
       <Typography variant="h4" component="h1" gutterBottom>
         Cargar Pago
       </Typography>
@@ -213,6 +215,7 @@ const Pago = () => {
             },
           }}
           required
+          disabled={isSubmitted}
         />
         <Typography
           variant="body2"
@@ -289,28 +292,21 @@ const Pago = () => {
           )}
         </Typography>
 
-        <TextField
-          select
-          label="Concepto"
-          value={concept}
-          onChange={(e) => setConcept(e.target.value)}
-          fullWidth
-          margin="normal"
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "&:hover fieldset": {
-                borderColor: "#4B56D2",
-              },
-            },
-          }}
-          required
-        >
-          {transactionConcepts.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </TextField>
+        <FormControl fullWidth margin="normal" required disabled={isSubmitted}>
+          <InputLabel>Concepto</InputLabel>
+          <Select
+            label="Concepto"
+            value={concept}
+            onChange={(e) => setConcept(e.target.value)}
+          >
+            {transactionConcepts.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <TextField
           label="Descripción"
           type="text"
@@ -325,29 +321,24 @@ const Pago = () => {
               },
             },
           }}
+          disabled={isSubmitted}
         />
-        <TextField
-          select
-          label="Tipo de cuenta"
-          value={accountType}
-          onChange={(e) => setAccountType(e.target.value)}
-          fullWidth
-          margin="normal"
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "&:hover fieldset": {
-                borderColor: "#4B56D2",
-              },
-            },
-          }}
-          required
-        >
-          {accountTypes[currency].map((option) => (
-            <MenuItem key={option} value={option}>
-              {option === "CAJA_AHORRO" ? "Caja de Ahorro" : "Cuenta Corriente"}
-            </MenuItem>
-          ))}
-        </TextField>
+
+        <FormControl fullWidth margin="normal" required disabled={isSubmitted}>
+          <InputLabel>Tipo de cuenta</InputLabel>
+          <Select
+            label="Tipo de cuenta"
+            value={accountType}
+            onChange={(e) => setAccountType(e.target.value)}
+          >
+            {accountTypes[currency].map((option) => (
+              <MenuItem key={option} value={option}>
+                {option === "CAJA_AHORRO" ? "Caja de Ahorro" : "Cuenta Corriente"}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <TextField
           select
           label="Moneda"
@@ -363,6 +354,7 @@ const Pago = () => {
             },
           }}
           required
+          disabled={isSubmitted}
         >
           <MenuItem value="USD">USD</MenuItem>
           <MenuItem value="ARS">ARS</MenuItem>
@@ -380,7 +372,8 @@ const Pago = () => {
           disabled={
             isLoading ||
             parseFloat(amount.replace(",", ".")) > balance ||
-            parseFloat(amount.replace(",", ".")) <= 0
+            parseFloat(amount.replace(",", ".")) <= 0 ||
+            isSubmitted
           }
         >
           {isLoading ? "Pagando..." : "Pagar"}
