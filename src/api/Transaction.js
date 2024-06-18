@@ -21,13 +21,13 @@ const deposit = async (depositData) => {
 
 const getTransactionsByIdAccount = async (value, token, page = 0) => {
     const config = {
-        withCredentials: true,
+        withCredentials: true, // Remove if not needed
         params: {
-            page: page, // página dinámica
-            size: 10 // tamaño por defecto
+            page: page, // Dynamic page
+            size: 10 // Default size
         },
         headers: {
-            Authorization: `Bearer ${token}` // Asumiendo que guardas el token en localStorage
+            Authorization: `Bearer ${token}` // Assuming you store the token in localStorage
         }
     };
 
@@ -37,7 +37,17 @@ const getTransactionsByIdAccount = async (value, token, page = 0) => {
         console.log("response data:", response.data);
         return response.data;
     } catch (error) {
-        console.error(error);
+        // Enhanced error logging
+        console.error("An error occurred:", error);
+        if (error.response) {
+            console.error("Response data:", error.response.data);
+            console.error("Response status:", error.response.status);
+            console.error("Response headers:", error.response.headers);
+        } else if (error.request) {
+            console.error("Request data:", error.request);
+        } else {
+            console.error("Error message:", error.message);
+        }
         throw error;
     }
 };
