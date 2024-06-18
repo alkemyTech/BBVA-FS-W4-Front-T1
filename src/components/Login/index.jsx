@@ -31,6 +31,12 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleKeyEnter = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin(e);
+    }
+  };
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -70,7 +76,6 @@ const Login = () => {
         const response = await dispatch(postLogin(email, password));
         if (response) {
           navigate("/home");
-          window.location.reload(); //recarga la pagina en home
         }
       } catch (error) {
         if (error.message === "Email o contraseña inválidos") {
@@ -92,12 +97,14 @@ const Login = () => {
       sx={{
         margin: "0 auto",
         bgcolor: "#fff",
-        width: 500,
+        width: 480,
         p: 5,
         borderRadius: 5,
         boxShadow: 3,
         display: "flex",
       }}
+      onSubmit={handleLogin}
+      onKeyDown={handleKeyEnter}
     >
       <Grid item xs={12}>
         <img 
@@ -143,6 +150,7 @@ const Login = () => {
                 <IconButton
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
+                  tabIndex={-1}
                 >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
