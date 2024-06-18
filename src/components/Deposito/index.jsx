@@ -96,6 +96,10 @@ const Deposito = () => {
     dispatch(hideNotification());
   };
 
+  const handleGoBack = () => {
+      navigate('/home');
+  };
+
   return (
     <Box sx={{ maxWidth: 400, ml: 'auto', mr: 'auto', mt: 9, mb: 10, '@media (max-width: 450px)': { maxWidth: '90%' } }}>
       <Typography variant='h4' component='h1' gutterBottom>
@@ -214,6 +218,10 @@ const Deposito = () => {
           disabled={isLoading || parseFloat(amount.replace(',', '.')) <= 0}
         >
           {isLoading ? "Cargando..." : "Cargar"}
+        </Button>
+        <Button onClick={handleGoBack} variant="outlined" fullWidth
+            sx={{ mt: 2, borderColor: '#d1d8c5', color: '#000000', '&:hover': { borderColor: '#c0c9b5' } }}>
+            Volver
         </Button>
       </form>
       <MySnackbar

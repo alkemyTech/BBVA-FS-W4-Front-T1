@@ -1,60 +1,95 @@
-import { Box, TextField, Button, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Checkbox, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, TextField, Button, FormControlLabel, Checkbox, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showNotification, hideNotification } from '../../Redux/slice/snackBarSlice';
 import MySnackbar from '../../UI/MySnackBar';
 import { fixedTerm } from '../../api/FixedTermDeposit';
+import { getAccountBalance } from '../../api/Account';
 import { useNavigate } from "react-router";
 
 export default function PlazoFijo() {
 
     const [amount, setAmount] = useState('');
     const [closingDate, setClosingDate] = useState('');
-    //const [termType, setTermType] = useState('');
     const [acceptTerms, setAcceptTerms] = useState(false);
+    const [balance, setBalance] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const notification = useSelector((state) => state.notification);
 
+    useEffect(() => {
+        const fetchBalance = async () => {
+            try {
+                const data = await getAccountBalance();
+                setBalance(data);
+                setIsLoading(false)
+            } catch (error) {
+                console.log();
+                setIsLoading(false)
+            }
+        };
+
+        fetchBalance();
+    }, [isLoading]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (amount > 0) {
-            const fixedTermData = {
-              amount: parseFloat(amount),
-              closingDate,
-            };
-      
-            try {
-              setIsLoading(true);
-              await fixedTerm(fixedTermData);
-              dispatch(showNotification({ message: 'Plazo fijo realizado con éxito', status: 'success' }));
-              navigate('/home');
-            } catch (error) {
-              dispatch(showNotification({ message: error.response ? error.response.data : 'Error del servidor', status: 'error' }));
-            } finally {
-              setIsLoading(false);
-            }
-        } else {
+        
+        const accountArs = balance.accountArs.find(account => account.accountType === "CAJA_AHORRO");
+        const fechaActual = new Date();
+        const fechaDeCierre = new Date(closingDate);
+        const diferencia = ((fechaDeCierre - fechaActual)/ (1000 * 3600 * 24))+1;
+
+        if (parseFloat(amount) > accountArs.balance) {
+            dispatch(showNotification({ message: 'El monto no puede ser mayor que el balance de la cuenta', status: 'error' }));
+            return;
+        }
+        if (parseFloat(amount) <= 0) {
             dispatch(showNotification({ message: 'El monto debe ser mayor que cero', status: 'error' }));
+            return;
         }
         if (!acceptTerms) {
             dispatch(showNotification({ message: 'Debe aceptar los términos y condiciones', status: 'error' }));
+            return;
         }
-        
-        //dispatch(createPlazoFijo({ amount, closingDate, termType }))
-        //    .finally(() => setIsLoading(false));
+        if (diferencia < 30) {
+            dispatch(showNotification({ message: 'La fecha de cierre mínima debe ser de 30 días a partir de hoy', status: 'error' }));
+            return;
+        }
+
+        const fixedTermData = {
+            amount: parseFloat(amount),
+            closingDate,
+        };
+
+        try {
+            setIsLoading(true);
+            await fixedTerm(fixedTermData);
+            dispatch(showNotification({ message: 'Plazo fijo realizado con éxito', status: 'success' }));
+            navigate('/home');
+        } catch (error) {
+            dispatch(showNotification({ message: error.response ? error.response.data : 'Error del servidor', status: 'error' }));
+        } finally {
+            setIsLoading(false);
+        }
     };
     
     const handleSnackbarClose = () => {
         dispatch(hideNotification());
     };
     
+    const handleGoBack = () => {
+        navigate('/home');
+    };
 
     return(
     <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 400, ml: 'auto', mr: 'auto', mt: 9, mb: 10, '@media (max-width: 450px)': { maxWidth: '90%' } }}>
         <Typography variant='h4' component='h1' gutterBottom>
-            Crear Plazo Fijo
+            Plazo Fijo
+        </Typography>
+        <Typography variant='h9' component='h9' gutterBottom>
+            Caja de Ahorro ARS
         </Typography>
         <TextField
             label="Monto"
@@ -75,7 +110,6 @@ export default function PlazoFijo() {
             label="Fecha de Cierre"
             type="date"
             value={closingDate}
-            //defaultValue="aaaa-mm-dd"
             fullWidth
             margin='normal'
             sx={{
@@ -89,18 +123,6 @@ export default function PlazoFijo() {
             required
             InputLabelProps={{ shrink: true }}
         />
-        {/* <FormControl required fullWidth margin='normal'
-            sx={{'& .MuiOutlinedInput-root': {'&:hover fieldset': {borderColor: '#4B56D2',},},}}>
-            <InputLabel>Tipo de Plazo</InputLabel>
-            <Select label="Tipo de Plazo"
-                value={termType}
-                onChange={(e) => setTermType(e.target.value)}
-            >
-                <MenuItem value="30">30 días</MenuItem>
-                <MenuItem value="60">60 días</MenuItem>
-                <MenuItem value="90">90 días</MenuItem>
-            </Select>
-        </FormControl> */}
         <FormControlLabel
             control={<Checkbox checked={acceptTerms} onChange={(e) => setAcceptTerms(e.target.checked)} />}
             label="Acepto los términos y condiciones"
@@ -113,6 +135,10 @@ export default function PlazoFijo() {
                     '&:hover': { backgroundColor: '#c0c9b5' }, 
                     color: '#000000' }}>
             {isLoading ? 'Cargando...' : 'Crear Plazo Fijo'}
+        </Button>
+        <Button onClick={handleGoBack} variant="outlined" fullWidth
+            sx={{ mt: 2, borderColor: '#d1d8c5', color: '#000000', '&:hover': { borderColor: '#c0c9b5' } }}>
+            Volver
         </Button>
         <MySnackbar
             open={notification.open}
