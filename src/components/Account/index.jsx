@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { getAccountDetaileByCBU } from "../../api/Account";
 import { Container, Grid } from "@mui/material";
+import React from "react";
 import { useLocation } from "react-router";
+import ArrowBackComponent from "../../UI/ArrowBack";
 import AccountDetailsCard from "./AccountDetails";
 import TransactionListDetails from "./TransactionListDetails";
 const Account = () => {
@@ -12,6 +12,7 @@ const Account = () => {
 
   return (
     <Container>
+      <ArrowBackComponent/>    
       {account ? (      
         <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}> 
         <AccountDetailsCard account={account}/>  

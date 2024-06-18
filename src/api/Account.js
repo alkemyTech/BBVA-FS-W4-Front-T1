@@ -13,6 +13,9 @@ const getAccountBalance = async() => {
         const response = await axios.get(`${API_BASE_URL}/balance`, config);
         return response.data;
     } catch (error) {
+        if (error.response && error.response.status === 403) {
+            throw new Error("Usuario no autenticado");
+        }
         console.log(error);
     }
 };
