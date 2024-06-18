@@ -66,10 +66,10 @@ export default function Navbar() {
               open={Boolean(anchorElNav)} onClose={handleCloseNavMenu}
               sx={{display: { xs: 'block', md: 'none' }}}>
               
-              <Button onClick={handleCloseNavMenu} href='#transferencia'
+              <Button onClick={handleCloseNavMenu} href='/transferencia'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Transferencias </Button>  
-              <Button onClick={handleCloseNavMenu} href='#plazo-fijo'
+              <Button onClick={handleCloseNavMenu} href='/plazo-fijo'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Plazo fijo </Button>
               <Button onClick={handleCloseNavMenu} href='/cargar-saldo'
@@ -78,7 +78,7 @@ export default function Navbar() {
             </Menu>
           </Box>
           {/*Logo y nombre pantalla chica*/}
-          <Typography variant="h5" noWrap component="a" href="#Home"
+          <Typography variant="h5" noWrap component="a" href="/Home"
             sx={{mr: 2, display: { xs: 'flex', md: 'none' }, flexGrow: 1,
               fontWeight: 700, letterSpacing: '.3rem',
               color: 'inherit', textDecoration: 'none'}}>
@@ -87,11 +87,11 @@ export default function Navbar() {
           {/*Navbar opciones pantalla grande*/}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end',
                 paddingRight: '80px'}}>
-            <Button onClick={handleCloseNavMenu} href='#transferencia'
+            <Button onClick={handleCloseNavMenu} href='/transferencia'
                 sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px',
                      fontWeight: 600, fontSize: 18 }}>
                 Transferencias </Button>
-            <Button onClick={handleCloseNavMenu} href='#plazo-fijo'
+            <Button onClick={handleCloseNavMenu} href='/plazo-fijo'
                 sx={{ my: 1, color: 'white', display: 'block', padding: '6px 30px',
                    fontWeight: 600, fontSize: 18  }}>
                 Plazo fijo </Button>
@@ -116,10 +116,10 @@ export default function Navbar() {
               open={Boolean(anchorElUser)} onClose={handleCloseUserMenu}>
               <Typography sx={{ my: 1, color: 'black', display: 'block', padding:'10px 15px'}}>{user.firstName + " " + user.lastName}</Typography>
             {/*Menu usuario opciones*/}
-              <Button onClick={handleCloseUserMenu} href='#perfil'
+              <Button onClick={handleCloseUserMenu} href='/perfil'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Perfil</Button>
-              <Button onClick={handleCloseUserMenu} href='#cuentas'
+              <Button onClick={handleCloseUserMenu} href='/cuentas'
                 sx={{ my: 1, color: 'black', display: 'block', paddingLeft:'15px'}}>
                 Cuentas</Button> 
               <Button onClick={handleLogout} href='/'

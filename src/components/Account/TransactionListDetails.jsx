@@ -57,10 +57,11 @@ const TransactionListDetails = ({ accountId }) => {
         const data = await getTransactionsByIdAccount(accountId, token, page);
         console.log("DATA", data);
         setTransactions(data.transactios);
-        setTotalPages(Math.ceil(data.total / transactionsPerPage)); // Suponiendo que `total` es el número total de transacciones
+        setTotalPages(data.countPages); // Suponiendo que `total` es el número total de transacciones
+        console.log("TOTAL PAGE:", data.countPages);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:", data.error);
         setLoading(false);
       }
     };
@@ -109,7 +110,6 @@ const TransactionListDetails = ({ accountId }) => {
       [index]: !prevExpanded[index],
     }));
   };
- 
 
   return (
     <>

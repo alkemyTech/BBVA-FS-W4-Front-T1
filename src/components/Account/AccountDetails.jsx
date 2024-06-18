@@ -35,16 +35,19 @@ const AccountDetailsCard = ({ account }) => {
         sx={{
           backgroundColor: "#f1f6f5",
           color: "#000000",
-          borderRadius: "12px",
-          padding: "24px",
+          borderRadius: "2vh",
+          padding: "1vh",
           boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+          display:"centre"
         }}
       >
         <CardContent>
+          <Grid container>
+            <Grid item xs={12}sm={10}>
           <Typography
-            variant="h5"
+            variant="subtitle"
             component="div"
-            sx={{ marginBottom: "16px", color: "#472183" }}
+            sx={{ marginBottom: "8px", color: "#472183" }}
           >
             {account.accountType === "CAJA_AHORRO"
               ? "Caja de Ahorro"
@@ -61,6 +64,8 @@ const AccountDetailsCard = ({ account }) => {
           >
             Balance disponible (a partir de hoy)
           </Typography>
+          </Grid>
+          <Grid item xs={12} sm={2}>
           <Button
             variant="contained"
             sx={{
@@ -79,7 +84,9 @@ const AccountDetailsCard = ({ account }) => {
           >
             <b>Transferir</b>
           </Button>
+          </Grid>
 
+          <Grid item xs={12}>
           <Accordion
             sx={{
               boxShadow: "none",
@@ -93,25 +100,25 @@ const AccountDetailsCard = ({ account }) => {
               expandIcon={<ExpandMoreIcon />}
               sx={{ padding: 0 }} // Agrega esta línea para eliminar el padding
             >
-              <Typography sx={{ color: "#82c3ec" }}>
+              <Typography sx={{ color: "#609AF6" }}>
                 Ver detalles de la cuenta
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }}>
               <Box>
-                <Typography variant="subtitle1" component="div" color="#4b56d2">
+                <Typography variant="subtitle1" component="div" color="#609AF6">
                   Alias:
                 </Typography>
                 <Typography variant="body1" component="div" color="#000000">
                   {account.alias}
                 </Typography>
-                <Typography variant="subtitle1" component="div" color="#4b56d2">
+                <Typography variant="subtitle1" component="div" color="#609AF6">
                   CBU:
                 </Typography>
                 <Typography variant="body1" component="div" color="#000000">
                   {account.cbu}
                 </Typography>
-                <Typography variant="subtitle1" component="div" color="#4b56d2">
+                <Typography variant="subtitle1" component="div" color="#609AF6">
                   Límite de Transacción:
                 </Typography>
                 <Typography variant="body1" component="div" color="#000000">
@@ -120,6 +127,8 @@ const AccountDetailsCard = ({ account }) => {
               </Box>
             </AccordionDetails>
           </Accordion>
+          </Grid>
+          </Grid>
         </CardContent>
       </Card>
     </Grid>
