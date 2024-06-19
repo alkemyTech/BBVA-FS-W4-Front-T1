@@ -57,7 +57,20 @@ const Inversiones = () => {
     <Container>
       <ArrowBackComponent />
       {loading ? (
-        <CircularProgress />
+        <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <CircularProgress sx={{ color: "#472183" }} />
+      </div>
       ) : (
         <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}>
           <FixedTermDetails totalFixedTerms={totalFixedTerms} />
