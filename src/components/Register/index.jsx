@@ -11,7 +11,7 @@ import {
   InputAdornment,
   MenuItem,
 } from "@mui/material";
-import { postRegister } from "../../api/auth";
+import { postRegister } from "../../api/Auth";
 import { useDispatch } from "react-redux";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router";
@@ -40,6 +40,7 @@ const Register = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showAuthError, setShowAuthError] = useState(false);
+  const [registerError, setRegisterError] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ const Register = () => {
   };
 
   const handleKeyEnter = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleRegister(e);
     }
   };
@@ -72,15 +73,19 @@ const Register = () => {
     event.preventDefault();
   };
 
-  const handleInputRestriction = (allowedCharacters = '') => (e) => {
-    const isAllowedCharacter = new RegExp(`[^${allowedCharacters}]`).test(e.key);
-    const isBackspace = e.key === 'Backspace';
-    const isTab = e.key === 'Tab'; // Check for Tab key
-  
-    if (isAllowedCharacter && !isBackspace && !isTab) {
-      e.preventDefault();
-    }
-  };
+  const handleInputRestriction =
+    (allowedCharacters = "") =>
+    (e) => {
+      const isAllowedCharacter = new RegExp(`[^${allowedCharacters}]`).test(
+        e.key
+      );
+      const isBackspace = e.key === "Backspace";
+      const isTab = e.key === "Tab"; // Check for Tab key
+
+      if (isAllowedCharacter && !isBackspace && !isTab) {
+        e.preventDefault();
+      }
+    };
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -221,26 +226,27 @@ const Register = () => {
       });
       setLoading(true);
       try {
-        const response = await dispatch(postRegister(
-          firstName,
-          lastName,
-          birthDate,
-          gender,
-          documentType,
-          documentNumber,
-          email,
-          password
-        ));
+        const response = await dispatch(
+          postRegister(
+            firstName,
+            lastName,
+            birthDate,
+            gender,
+            documentType,
+            documentNumber,
+            email,
+            password
+          )
+        );
         if (response) {
           navigate("/home");
         }
       } catch (error) {
-        if (error.message === "El email ingresado ya se encuentra registrado") {
-          setShowAuthError(true);
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-        }
+        setShowAuthError(true);
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setRegisterError(error.message)
         console.error("Error during register:", error);
       } finally {
         setLoading(false); // Finaliza la carga
@@ -457,7 +463,7 @@ const Register = () => {
       {showAuthError && (
         <Grid item xs={12}>
           <Alert severity="error">
-            El email ingresado ya se encuentra registrado
+            {registerError}
           </Alert>
         </Grid>
       )}
