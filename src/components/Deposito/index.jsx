@@ -1,44 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
-  TextField,
-  Button,
   Box,
+  Button,
   MenuItem,
-  Typography,
-  Select,
-  FormControl,
-  InputLabel
-} from '@mui/material';
-import { deposit } from '../../api/Transaction';
-import MySnackbar from '../../UI/MySnackBar';
-import { useNavigate } from 'react-router';
-import { showNotification, hideNotification } from '../../Redux/slice/snackBarSlice';
-import ArrowBackComponent from '../../UI/ArrowBack';
+  TextField,
+  Typography
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import {
+  hideNotification,
+  showNotification,
+} from "../../Redux/slice/snackBarSlice";
+import ArrowBackComponent from "../../UI/ArrowBack";
+import MySnackbar from "../../UI/MySnackBar";
+import { deposit } from "../../api/Transaction";
 
 const transactionConcepts = [
-  'VARIOS',
-  'ALQUILERES',
-  'CUOTAS',
-  'EXPENSAS',
-  'HONORARIOS',
-  'FACTURAS',
-  'HABERES',
-  'PRESTAMOS',
-  'SEGUROS',
+  "VARIOS",
+  "ALQUILERES",
+  "CUOTAS",
+  "EXPENSAS",
+  "HONORARIOS",
+  "FACTURAS",
+  "HABERES",
+  "PRESTAMOS",
+  "SEGUROS",
 ];
 
 const accountTypes = {
-  USD: ['CAJA_AHORRO'],
-  ARS: ['CAJA_AHORRO', 'CUENTA_CORRIENTE'],
+  USD: ["CAJA_AHORRO"],
+  ARS: ["CAJA_AHORRO", "CUENTA_CORRIENTE"],
 };
 
 const Deposito = () => {
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState("");
   const [concept, setConcept] = useState(transactionConcepts[0]);
-  const [description, setDescription] = useState('');
-  const [accountType, setAccountType] = useState('CAJA_AHORRO');
-  const [currency, setCurrency] = useState('ARS');
+  const [description, setDescription] = useState("");
+  const [accountType, setAccountType] = useState("CAJA_AHORRO");
+  const [currency, setCurrency] = useState("ARS");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -47,11 +47,12 @@ const Deposito = () => {
   const notification = useSelector((state) => state.notification);
 
   useEffect(() => {
-    if (currency === 'USD' && accountType === 'CUENTA_CORRIENTE') {
-      setAccountType('CAJA_AHORRO');
+    if (currency === "USD" && accountType === "CUENTA_CORRIENTE") {
+      setAccountType("CAJA_AHORRO");
       dispatch(
         showNotification({
-          message: "No tienes cuenta corriente en US$. Seleccionamos tu caja de ahorro",
+          message:
+            "No tienes cuenta corriente en US$. Seleccionamos tu caja de ahorro",
           status: "error",
         })
       );
@@ -71,7 +72,7 @@ const Deposito = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const amountNumber = parseFloat(amount.replace(',', '.'));
+    const amountNumber = parseFloat(amount.replace(",", "."));
     if (amountNumber > 0) {
       const depositData = {
         amount: amountNumber,
@@ -86,16 +87,33 @@ const Deposito = () => {
         setIsLoading(true);
         setIsSubmitted(true);
         await deposit(depositData);
-        dispatch(showNotification({ message: 'Depósito realizado con éxito', status: 'success' }));
-        navigate('/home');
+        dispatch(
+          showNotification({
+            message: "Depósito realizado con éxito",
+            status: "success",
+          })
+        );
+        navigate("/home");
       } catch (error) {
-        dispatch(showNotification({ message: error.response ? error.response.data : 'Error del servidor', status: 'error' }));
+        dispatch(
+          showNotification({
+            message: error.response
+              ? error.response.data
+              : "Error del servidor",
+            status: "error",
+          })
+        );
       } finally {
         setIsLoading(false);
         setIsSubmitted(false);
       }
     } else {
-      dispatch(showNotification({ message: 'El monto debe ser mayor que cero', status: 'error' }));
+      dispatch(
+        showNotification({
+          message: "El monto debe ser mayor que cero",
+          status: "error",
+        })
+      );
     }
   };
 
@@ -104,13 +122,22 @@ const Deposito = () => {
   };
 
   const handleGoBack = () => {
-      navigate('/home');
+    navigate("/home");
   };
 
   return (
-    <Box sx={{ maxWidth: 400, ml: 'auto', mr: 'auto', mt: 9, mb: 10, '@media (max-width: 450px)': { maxWidth: '90%' } }}>
-      <ArrowBackComponent disabled={isSubmitted}/> 
-      <Typography variant='h4' component='h1' gutterBottom>
+    <Box
+      sx={{
+        maxWidth: 400,
+        ml: "auto",
+        mr: "auto",
+        mt: 9,
+        mb: 10,
+        "@media (max-width: 450px)": { maxWidth: "90%" },
+      }}
+    >
+      <ArrowBackComponent disabled={isSubmitted} />
+      <Typography variant="h4" component="h1" gutterBottom>
         Cargar Saldo
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -120,9 +147,9 @@ const Deposito = () => {
           onChange={onChangeAmount}
           fullWidth
           margin="normal"
-          error={parseFloat(amount.replace(',', '.')) <= 0}
+          error={parseFloat(amount.replace(",", ".")) <= 0}
           helperText={
-            parseFloat(amount.replace(',', '.')) <= 0
+            parseFloat(amount.replace(",", ".")) <= 0
               ? "El monto debe ser mayor a cero"
               : ""
           }
@@ -137,27 +164,52 @@ const Deposito = () => {
           disabled={isSubmitted}
         />
 
-        <FormControl fullWidth margin="normal" required>
-          <InputLabel>Concepto</InputLabel>
-          <Select
-            label="Concepto"
-            value={concept}
-            onChange={(e) => setConcept(e.target.value)}
-            disabled={isSubmitted}
-          >
-            {transactionConcepts.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <TextField
+          select
+          label="Concepto"
+          value={concept}
+          onChange={(e) => setConcept(e.target.value)}
+          fullWidth
+          margin="normal"
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "&:hover fieldset": {
+                borderColor: "#4B56D2",
+              },
+            },
+          }}
+          required
+          disabled={isSubmitted}
+        >
+          {transactionConcepts.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
 
         <TextField
-          label='Descripción'
-          type='text'
+          label="Descripción"
+          type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          fullWidth
+          margin="normal"
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "&:hover fieldset": {
+                borderColor: "#4B56D2",
+              },
+            },
+          }}
+          disabled={isSubmitted}
+        />
+
+        <TextField
+          select
+          label='Tipo de cuenta'
+          value={accountType}
+          onChange={(e) => setAccountType(e.target.value)}
           fullWidth
           margin='normal'
           sx={{
@@ -167,37 +219,36 @@ const Deposito = () => {
               },
             },
           }}
+          required
           disabled={isSubmitted}
-        />
+        >
+          {accountTypes[currency].map((option) => (
+            <MenuItem key={option} value={option}>
+              {option === 'CAJA_AHORRO' ? 'Caja de Ahorro' : 'Cuenta Corriente'}
+            </MenuItem>
+          ))}
+        </TextField>
 
-        <FormControl fullWidth margin="normal" required>
-          <InputLabel>Tipo de cuenta</InputLabel>
-          <Select
-            label="Tipo de cuenta"
-            value={accountType}
-            onChange={(e) => setAccountType(e.target.value)}
-            disabled={isSubmitted}
-          >
-            {accountTypes[currency].map((option) => (
-              <MenuItem key={option} value={option}>
-                {option === 'CAJA_AHORRO' ? 'Caja de Ahorro' : 'Cuenta Corriente'}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl fullWidth margin="normal" required>
-          <InputLabel>Moneda</InputLabel>
-          <Select
-            label="Moneda"
-            value={currency}
-            onChange={(e) => setCurrency(e.target.value)}
-            disabled={isSubmitted}
-          >
-            <MenuItem value='USD'>USD</MenuItem>
-            <MenuItem value='ARS'>ARS</MenuItem>
-          </Select>
-        </FormControl>
+        <TextField
+          select
+          label='Moneda'
+          value={currency}
+          onChange={(e) => setCurrency(e.target.value)}
+          fullWidth
+          margin='normal'
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              '&:hover fieldset': {
+                borderColor: '#4B56D2',
+              },
+            },
+          }}
+          required
+          disabled={isSubmitted}
+        >
+          <MenuItem value='USD'>USD</MenuItem>
+          <MenuItem value='ARS'>ARS</MenuItem>
+        </TextField>
 
         <Button
           type="submit"
@@ -209,13 +260,22 @@ const Deposito = () => {
             "&:hover": { backgroundColor: "#c0c9b5" },
             color: "#000000",
           }}
-          disabled={isSubmitted || parseFloat(amount.replace(',', '.')) <= 0}
+          disabled={isSubmitted || parseFloat(amount.replace(",", ".")) <= 0}
         >
           {isSubmitted ? "Cargando..." : "Cargar"}
         </Button>
-        <Button onClick={handleGoBack} variant="outlined" fullWidth
-            sx={{ mt: 2, borderColor: '#d1d8c5', color: '#000000', '&:hover': { borderColor: '#c0c9b5' } }}>
-            Volver al inicio
+        <Button
+          onClick={handleGoBack}
+          variant="outlined"
+          fullWidth
+          sx={{
+            mt: 2,
+            borderColor: "#d1d8c5",
+            color: "#000000",
+            "&:hover": { borderColor: "#c0c9b5" },
+          }}
+        >
+          Volver al inicio
         </Button>
       </form>
       <MySnackbar
