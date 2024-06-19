@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Button,
+  MenuItem,
+  TextField,
+  Typography
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextField, Button, Box, MenuItem, Typography } from "@mui/material";
-import { payment } from "../../api/Transaction";
-import MySnackbar from "../../UI/MySnackBar";
 import { useNavigate } from "react-router";
 import {
-  showNotification,
   hideNotification,
+  showNotification,
 } from "../../Redux/slice/snackBarSlice";
-import { getAccountBalance } from "../../api/Account";
 import ArrowBackComponent from "../../UI/ArrowBack";
+import MySnackbar from "../../UI/MySnackBar";
+import { getAccountBalance } from "../../api/Account";
+import { payment } from "../../api/Transaction";
 
 const transactionConcepts = [
   "VARIOS",
@@ -42,22 +48,24 @@ const Pago = () => {
   const [balance, setBalance] = useState(0);
   const [isFetchingBalance, setIsFetchingBalance] = useState(true);
   const [loadingDots, setLoadingDots] = useState(".");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const notification = useSelector((state) => state.notification);
 
   useEffect(() => {
-    if (currency === 'USD' && accountType === 'CUENTA_CORRIENTE') {
-      setAccountType('CAJA_AHORRO');
+    if (currency === "USD" && accountType === "CUENTA_CORRIENTE") {
+      setAccountType("CAJA_AHORRO");
       dispatch(
         showNotification({
-          message: "No tienes cuenta corriente en US$. Seleccionamos tu caja de ahorro",
+          message:
+            "No tienes cuenta corriente en US$. Seleccionamos tu caja de ahorro",
           status: "error",
         })
       );
     }
-  }, [currency]);
+  }, [currency, accountType, balances]);
 
   useEffect(() => {
     setBalance(balances[currency][accountType] || 0);
@@ -138,6 +146,7 @@ const Pago = () => {
 
       try {
         setIsLoading(true);
+        setIsSubmitted(true);
         await payment(paymentData);
         dispatch(
           showNotification({
@@ -147,16 +156,18 @@ const Pago = () => {
         );
         navigate("/home");
       } catch (error) {
+        const errorMessage =
+          error.response?.data?.message || "Error del servidor";
+        let status = "error";
         dispatch(
           showNotification({
-            message: error.response
-              ? error.response.data
-              : "Error del servidor",
-            status: "error",
+            message: errorMessage,
+            status,
           })
         );
       } finally {
         setIsLoading(false);
+        setIsSubmitted(false);
       }
     } else {
       dispatch(
@@ -183,7 +194,7 @@ const Pago = () => {
         "@media (max-width: 450px)": { maxWidth: "90%" },
       }}
     >
-      <ArrowBackComponent/> 
+      <ArrowBackComponent disabled={isSubmitted} />
       <Typography variant="h4" component="h1" gutterBottom>
         Cargar Pago
       </Typography>
@@ -205,15 +216,9 @@ const Pago = () => {
               ? "Saldo insuficiente"
               : ""
           }
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "&:hover fieldset": {
-                borderColor: "#4B56D2",
-              },
-            },
-          }}
-          required
+          disabled={isSubmitted}
         />
+
         <Typography
           variant="body2"
           component="div"
@@ -304,6 +309,7 @@ const Pago = () => {
             },
           }}
           required
+          disabled={isSubmitted}
         >
           {transactionConcepts.map((option) => (
             <MenuItem key={option} value={option}>
@@ -311,6 +317,7 @@ const Pago = () => {
             </MenuItem>
           ))}
         </TextField>
+
         <TextField
           label="Descripción"
           type="text"
@@ -325,7 +332,9 @@ const Pago = () => {
               },
             },
           }}
+          disabled={isSubmitted}
         />
+
         <TextField
           select
           label="Tipo de cuenta"
@@ -341,6 +350,7 @@ const Pago = () => {
             },
           }}
           required
+          disabled={isSubmitted}
         >
           {accountTypes[currency].map((option) => (
             <MenuItem key={option} value={option}>
@@ -348,6 +358,7 @@ const Pago = () => {
             </MenuItem>
           ))}
         </TextField>
+
         <TextField
           select
           label="Moneda"
@@ -363,10 +374,12 @@ const Pago = () => {
             },
           }}
           required
+          disabled={isSubmitted}
         >
           <MenuItem value="USD">USD</MenuItem>
           <MenuItem value="ARS">ARS</MenuItem>
         </TextField>
+
         <Button
           type="submit"
           variant="contained"
@@ -380,7 +393,8 @@ const Pago = () => {
           disabled={
             isLoading ||
             parseFloat(amount.replace(",", ".")) > balance ||
-            parseFloat(amount.replace(",", ".")) <= 0
+            parseFloat(amount.replace(",", ".")) <= 0 ||
+            isSubmitted
           }
         >
           {isLoading ? "Pagando..." : "Pagar"}
