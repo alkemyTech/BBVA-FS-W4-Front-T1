@@ -13,7 +13,8 @@ export default function PlazoFijo() {
     const [amount, setAmount] = useState('');
     const [closingDate, setClosingDate] = useState('');
     const [acceptTerms, setAcceptTerms] = useState(false);
-    const [balance, setBalance] = useState(null);
+    const [accountData, setAccountData] = useState(null);
+    const [balance, setBalance] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -23,21 +24,22 @@ export default function PlazoFijo() {
         const fetchBalance = async () => {
             try {
                 const data = await getAccountBalance();
-                setBalance(data);
+                setAccountData(data);
                 setIsLoading(false)
             } catch (error) {
                 console.log();
                 setIsLoading(false)
             }
         };
-
+        
         fetchBalance();
     }, [isLoading]);
-
+    
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        const accountArs = balance.accountArs.find(account => account.accountType === "CAJA_AHORRO");
+        const accountArs = accountData.accountArs.find(account => account.accountType === "CAJA_AHORRO");
         const fechaActual = new Date();
         const fechaDeCierre = new Date(closingDate);
         const diferencia = ((fechaDeCierre - fechaActual)/ (1000 * 3600 * 24))+1;
@@ -68,7 +70,7 @@ export default function PlazoFijo() {
             setIsLoading(true);
             await fixedTerm(fixedTermData);
             dispatch(showNotification({ message: 'Plazo fijo realizado con éxito', status: 'success' }));
-            navigate('/home');
+            navigate('/inversiones');
         } catch (error) {
             dispatch(showNotification({ message: error.response ? error.response.data : 'Error del servidor', status: 'error' }));
         } finally {
