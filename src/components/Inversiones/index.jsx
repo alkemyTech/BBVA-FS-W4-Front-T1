@@ -5,9 +5,9 @@ import { useSelector } from "react-redux";
 import { getFixedTerms } from "../../api/FixedTerm";
 import FixedTermsList from "./FixedTermsList"; // Asegúrate de que la ruta sea correcta
 import FixedTermDetails from "./FixedTermDetails";
+import ArrowBackComponent from "../../UI/ArrowBack";
 
 const Inversiones = () => {
-
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0); // Página inicial
   const [fixedTerms, setFixedTerms] = useState([]);
@@ -19,13 +19,13 @@ const Inversiones = () => {
   const totalMoney = (fixedTerms) => {
     const today = new Date();
     return fixedTerms
-    .filter(term => {
-      const [year, month, day] = term.closingDate;
-      const closingDate = new Date(year, month - 1, day); // Los meses son 0-indexed en JavaScript
-      return closingDate >= today;
-    })
-    .reduce((total, term) => total + term.amount, 0);
-  }
+      .filter((term) => {
+        const [year, month, day] = term.closingDate;
+        const closingDate = new Date(year, month - 1, day); // Los meses son 0-indexed en JavaScript
+        return closingDate >= today;
+      })
+      .reduce((total, term) => total + term.amount, 0);
+  };
 
   const fetchData = async (page) => {
     setLoading(true);
@@ -33,8 +33,8 @@ const Inversiones = () => {
       const data = await getFixedTerms(page);
       setFixedTerms(data.fixedTerms);
       setTotalPages(data.countPages); // Establecemos el total de páginas desde el backend
-      console.log(totalMoney(data.fixedTerms))
-      setTotalFixedTerms(totalMoney(data.fixedTerms))
+      console.log(totalMoney(data.fixedTerms));
+      setTotalFixedTerms(totalMoney(data.fixedTerms));
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -55,22 +55,21 @@ const Inversiones = () => {
 
   return (
     <Container>
+      <ArrowBackComponent />
       {loading ? (
         <CircularProgress />
       ) : (
-        <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}> 
-        <FixedTermDetails totalFixedTerms={totalFixedTerms}/>
-        <Grid item xs={12}>
-        <FixedTermsList
-          fixedTerms={fixedTerms}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          handlePageChange={handlePageChange}
-        />
+        <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}>
+          <FixedTermDetails totalFixedTerms={totalFixedTerms} />
+          <Grid item xs={12}>
+            <FixedTermsList
+              fixedTerms={fixedTerms}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              handlePageChange={handlePageChange}
+            />
+          </Grid>
         </Grid>
-                </Grid>    
-
-
       )}
     </Container>
   );
