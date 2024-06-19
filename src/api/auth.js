@@ -70,11 +70,10 @@ export const postRegister = (firstName, lastName, birthDate, gender, documentTyp
 
     return response.data;
   } catch (err) {
-    if (err.response && err.response.status === 400) {
-      throw new Error("El email ingresado ya se encuentra registrado");
+    if (err.response) {
+      throw new Error(err.response.data.message || err.response.data);
+    } else {
+      throw new Error("Ha ocurrido un error al registrarse");
     }
-    // TODO: Snackbar de error
-    console.log(err);
-    throw err;
   }
 };

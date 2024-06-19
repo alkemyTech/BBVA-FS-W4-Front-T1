@@ -17,6 +17,7 @@ import {
   CircularProgress,
   Collapse,
   IconButton,
+  Container,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -121,9 +122,25 @@ const TransactionListDetails = ({ accountId }) => {
   };
 
   return (
-    <>
+    <Container
+      disableGutters={true}
+      sx={{ position: "relative", minHeight: "70vh" }}
+    >
       {loading ? (
-        <CircularProgress />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <CircularProgress sx={{ color: "#472183" }} />
+        </div>
       ) : (
         <Box sx={{ marginTop: "2vh" }}>
           <Card
@@ -265,7 +282,8 @@ const TransactionListDetails = ({ accountId }) => {
                                 >
                                   {transaction.destinationIdAccount && (
                                     <Typography component="div">
-                                      Destino: {transaction.destinationIdAccount}
+                                      Destino:{" "}
+                                      {transaction.destinationIdAccount}
                                     </Typography>
                                   )}
                                   {transaction.concept && (
@@ -284,9 +302,7 @@ const TransactionListDetails = ({ accountId }) => {
                             }
                           />
                         </ListItem>
-                        {index < filteredTransactions.length - 1 && (
-                          <Divider />
-                        )}
+                        {index < filteredTransactions.length - 1 && <Divider />}
                       </Box>
                     );
                   })}
@@ -305,7 +321,7 @@ const TransactionListDetails = ({ accountId }) => {
           </Card>
         </Box>
       )}
-    </>
+    </Container>
   );
 };
 

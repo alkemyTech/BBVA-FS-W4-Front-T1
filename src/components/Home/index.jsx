@@ -16,14 +16,9 @@ const Home = () => {
   const notification = useSelector((state) => state.notification);
   const dispatch = useDispatch();
 
-  let navigate = useNavigate();
-
-  const token = useSelector((state) => state.user.token);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
-      navigate("/");
-    }
     const fetchData = async () => {
       try {
         const data = await getAccountBalance();
@@ -31,26 +26,38 @@ const Home = () => {
         setLoading(false);
       } catch (error) {
         if (error.message == "Usuario no autenticado") {
-            dispatch(clearUser());
-            window.location.reload();
-            navigate("/")
-          }
+          dispatch(clearUser());
+          navigate("/");
+        }
         console.error("Error fetching data:", error);
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [loading, token]);
+  }, [loading]);
 
   const handleSnackbarClose = () => {
     dispatch(hideNotification());
   };
 
   return (
-    <Container>
+    <Container sx={{ position: "relative", minHeight: "70vh" }}>
       {loading ? (
-        <CircularProgress />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <CircularProgress sx={{ color: "#472183" }} />
+        </div>
       ) : (
         <>
           <BankAccountCard accountData={accountData} />

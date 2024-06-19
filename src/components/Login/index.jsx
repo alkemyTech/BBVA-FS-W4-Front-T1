@@ -10,7 +10,7 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
-import { postLogin } from "../../api/auth";
+import { postLogin } from "../../api/Auth";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
