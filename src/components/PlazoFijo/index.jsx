@@ -6,6 +6,7 @@ import MySnackbar from '../../UI/MySnackBar';
 import { fixedTerm } from '../../api/FixedTermDeposit';
 import { getAccountBalance } from '../../api/Account';
 import { useNavigate } from "react-router";
+import ArrowBackComponent from "../../UI/ArrowBack";
 
 export default function PlazoFijo() {
 
@@ -78,13 +79,10 @@ export default function PlazoFijo() {
     const handleSnackbarClose = () => {
         dispatch(hideNotification());
     };
-    
-    const handleGoBack = () => {
-        navigate('/home');
-    };
 
     return(
     <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 400, ml: 'auto', mr: 'auto', mt: 9, mb: 10, '@media (max-width: 450px)': { maxWidth: '90%' } }}>
+        <ArrowBackComponent/>
         <Typography variant='h4' component='h1' gutterBottom>
             Plazo Fijo
         </Typography>
@@ -135,10 +133,6 @@ export default function PlazoFijo() {
                     '&:hover': { backgroundColor: '#c0c9b5' }, 
                     color: '#000000' }}>
             {isLoading ? 'Cargando...' : 'Crear Plazo Fijo'}
-        </Button>
-        <Button onClick={handleGoBack} variant="outlined" fullWidth
-            sx={{ mt: 2, borderColor: '#d1d8c5', color: '#000000', '&:hover': { borderColor: '#c0c9b5' } }}>
-            Volver al inicio
         </Button>
         <MySnackbar
             open={notification.open}
