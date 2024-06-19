@@ -14,7 +14,6 @@ export default function PlazoFijo() {
     const [closingDate, setClosingDate] = useState('');
     const [acceptTerms, setAcceptTerms] = useState(false);
     const [accountData, setAccountData] = useState(null);
-    const [balance, setBalance] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -24,7 +23,8 @@ export default function PlazoFijo() {
         const fetchBalance = async () => {
             try {
                 const data = await getAccountBalance();
-                setAccountData(data);
+                const accountArs = data.accountArs.find(account => account.accountType === "CAJA_AHORRO");
+                setAccountData(accountArs);
                 setIsLoading(false)
             } catch (error) {
                 console.log();
@@ -39,12 +39,11 @@ export default function PlazoFijo() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        const accountArs = accountData.accountArs.find(account => account.accountType === "CAJA_AHORRO");
         const fechaActual = new Date();
         const fechaDeCierre = new Date(closingDate);
         const diferencia = ((fechaDeCierre - fechaActual)/ (1000 * 3600 * 24))+1;
 
-        if (parseFloat(amount) > accountArs.balance) {
+        if (parseFloat(amount) > accountData.balance) {
             dispatch(showNotification({ message: 'El monto no puede ser mayor que el balance de la cuenta', status: 'error' }));
             return;
         }
@@ -82,14 +81,21 @@ export default function PlazoFijo() {
         dispatch(hideNotification());
     };
 
+    const formatCurrency = (amount, currency) => {
+        return new Intl.NumberFormat("es-AR", {
+          style: "currency",
+          currency,
+        }).format(amount);
+    };
+
     return(
     <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 400, ml: 'auto', mr: 'auto', mt: 9, mb: 10, '@media (max-width: 450px)': { maxWidth: '90%' } }}>
         <ArrowBackComponent/>
         <Typography variant='h4' component='h1' gutterBottom>
             Plazo Fijo
         </Typography>
-        <Typography variant='h9' component='h9' gutterBottom>
-            Caja de Ahorro ARS
+        <Typography variant='h6' component='h7' gutterBottom>
+            Balance actual: {accountData ? formatCurrency(accountData.balance, accountData.currency)+' '+accountData.currency : 'Cargando...'}
         </Typography>
         <TextField
             label="Monto"
