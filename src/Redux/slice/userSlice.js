@@ -18,11 +18,8 @@ export const userSlice = createSlice({
       setToken: (state, action) => {
         state.token = action.payload; // Añade una acción para actualizar el token
       },
-      clearUser: (state) => {
-        state.firstName = "";
-        state.lastName = "";
-        state.email = "";
-        state.token = "";
+      clearUser: () => {
+        return initialState;
       },
     },
   });

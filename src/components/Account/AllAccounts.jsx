@@ -44,12 +44,25 @@ const AllAccounts = () => {
   console.log("ACCOUN DATA:", accountData);
 
   return (
-    <Container>
+    <Container sx={{ position: "relative", minHeight: "70vh" }}>
       {loading ? (
-        <CircularProgress />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <CircularProgress sx={{ color: "#472183" }} />
+        </div>
       ) : (
         <>
-        <ArrowBackComponent/>        
+          <ArrowBackComponent />
           <Grid container spacing={2} sx={{ marginTop: "1vh" }}>
             {accountData.accountArs &&
               accountData.accountArs.map((account, index) => (
