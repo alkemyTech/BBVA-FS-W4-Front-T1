@@ -13,7 +13,8 @@ export const userSlice = createSlice({
     reducers: {
       setUser: (state, action) => {
         console.log(action.payload);
-        return (state = action.payload);
+        // return (state = action.payload);
+        return { ...state, ...action.payload };
       },
       setToken: (state, action) => {
         state.token = action.payload; // Añade una acción para actualizar el token
