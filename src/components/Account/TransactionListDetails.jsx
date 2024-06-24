@@ -20,8 +20,10 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getFilteredTransactionsByIdAccount } from "../../api/Transaction";
+import { hideNotification, showNotification } from "../../Redux/slice/snackBarSlice";
+import MySnackbar from "../../UI/MySnackBar";
 
 const TransactionListDetails = ({ accountId }) => {
   const [loading, setLoading] = useState(true);
@@ -35,20 +37,21 @@ const TransactionListDetails = ({ accountId }) => {
   const [type, setType] = useState("");
   const [concept, setConcept] = useState("");
   const [expanded, setExpanded] = useState({});
-  const[sendButton, setSendButton] = useState(false);
+  const [sendButton, setSendButton] = useState(false);
+  const [documentNumberError, setDocumentNumberError] = useState("");
 
+  const dispatch = useDispatch();
+  const notification = useSelector((state) => state.notification);
   const token = useSelector((state) => state.user.token);
 
   const formatDate = (dateArray) => {
     const [year, month, day, hour, minutes] = dateArray;
-    return `${day}/${month}/${year} ${hour}:${
-      minutes < 10 ? "0" + minutes : minutes
-    }`;
+    return `${day}/${month}/${year} ${hour}:${minutes < 10 ? "0" + minutes : minutes}`;
   };
 
   const fetchFilteredData = useCallback(async () => {
     setLoading(true);
-     try {
+    try {
       const response = await getFilteredTransactionsByIdAccount(
         accountId,
         token,
@@ -66,36 +69,36 @@ const TransactionListDetails = ({ accountId }) => {
         setTotalPages(data.countPages);
         setHaveTransactions(true);
       } else {
+        setTotalPages(0);
         setHaveTransactions(false);
       }
       setLoading(false);
-      //setSendButton(false);
     } catch (error) {
       console.error("Error fetching filtered data:", error);
       setLoading(false);
-      //setSendButton(false);
     }
-  }, [accountId, token,currentPage, transactionsPerPage, type, concept,sendButton]);
+  }, [accountId, token, currentPage, transactionsPerPage, type, concept, sendButton]);
 
   useEffect(() => {
-    
     fetchFilteredData();
-  }, [ currentPage, type, concept,sendButton]);
+  }, [currentPage, type, concept, sendButton]);
 
   const handleChangePage = (event, page) => {
     setCurrentPage(page - 1);
   };
 
   const handleFilterChange = (e) => {
-    console.log("ENTRO ACA VIEJA"); 
-    console.log("MAX",max);
-    console.log("Min",min);
-    e.preventDefault();
-    setCurrentPage(0);
-    setSendButton(!sendButton);
-    //setLoading(true);   
-    
-    //fetchFilteredData();
+    if (max < min) {
+      dispatch(
+        showNotification({
+          message: "El monto máximo no puede ser menor que el monto mínimo.",
+          status: "error",
+        })
+      );
+    } else {
+      setCurrentPage(0);
+      setSendButton(!sendButton);
+    }
   };
 
   const toggleExpand = (index) => {
@@ -103,6 +106,22 @@ const TransactionListDetails = ({ accountId }) => {
       ...prevExpanded,
       [index]: !prevExpanded[index],
     }));
+  };
+
+  const handleInputRestriction =
+    (allowedCharacters = "") =>
+    (e) => {
+      const isAllowedCharacter = new RegExp(`[^${allowedCharacters}]`).test(e.key);
+      const isBackspace = e.key === "Backspace";
+      const isTab = e.key === "Tab";
+
+      if (isAllowedCharacter && !isBackspace && !isTab) {
+        e.preventDefault();
+      }
+    };
+
+  const handleSnackbarClose = () => {
+    dispatch(hideNotification());
   };
 
   return (
@@ -199,18 +218,26 @@ const TransactionListDetails = ({ accountId }) => {
                 </FormControl>
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
                   <TextField
-                    label="Monto Mínimo"
-                    name="min"                    
+                    label="Monto Minimo"
+                    name="min"
                     value={min}
+                    autoComplete="min"
                     onChange={(e) => setMin(e.target.value)}
+                    error={Boolean(documentNumberError)}
+                    helperText={documentNumberError}
+                    onKeyDown={handleInputRestriction("0-9")}
                   />
                 </FormControl>
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
                   <TextField
                     label="Monto Máximo"
-                    name="max"                    
+                    name="max"
                     value={max}
+                    autoComplete="max"
                     onChange={(e) => setMax(e.target.value)}
+                    error={Boolean(documentNumberError)}
+                    helperText={documentNumberError}
+                    onKeyDown={handleInputRestriction("0-9")}
                   />
                 </FormControl>
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
@@ -226,9 +253,7 @@ const TransactionListDetails = ({ accountId }) => {
               {haveTransactions ? (
                 <List>
                   {transactions.map((transaction, index) => {
-                    const formattedDate = formatDate(
-                      transaction.transactionDate
-                    );
+                    const formattedDate = formatDate(transaction.transactionDate);
                     return (
                       <Box key={index}>
                         <ListItem>
@@ -324,6 +349,12 @@ const TransactionListDetails = ({ accountId }) => {
           </Card>
         </Box>
       )}
+      <MySnackbar
+        open={notification.open}
+        handleClose={handleSnackbarClose}
+        message={notification.message}
+        status={notification.status}
+      />
     </Container>
   );
 };
