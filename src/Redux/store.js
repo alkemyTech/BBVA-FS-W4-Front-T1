@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import saldoReducer from './slice/saldoSlice';
 import userReducer from "./slice/userSlice";
 import notificationReducer from './slice/snackBarSlice';
+import transferReducer from './slice/transferSlice';
 
 const persistUserConfig = {
   key: "user",
@@ -23,6 +24,7 @@ export const store = configureStore({
     saldo: persistedSaldoReducer,
     user: persistedUserReducer,
     notification: notificationReducer,
+    transfer: transferReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
