@@ -25,6 +25,7 @@ import { getFilteredTransactionsByIdAccount } from "../../api/Transaction";
 import { hideNotification, showNotification } from "../../Redux/slice/snackBarSlice";
 import MySnackbar from "../../UI/MySnackBar";
 
+
 const TransactionListDetails = ({ accountId }) => {
   const [loading, setLoading] = useState(true);
   const [haveTransactions, setHaveTransactions] = useState(false);
@@ -37,8 +38,10 @@ const TransactionListDetails = ({ accountId }) => {
   const [type, setType] = useState("");
   const [concept, setConcept] = useState("");
   const [expanded, setExpanded] = useState({});
+
   const [sendButton, setSendButton] = useState(false);
   const [documentNumberError, setDocumentNumberError] = useState("");
+
 
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.notification);
@@ -51,7 +54,7 @@ const TransactionListDetails = ({ accountId }) => {
 
   const fetchFilteredData = useCallback(async () => {
     setLoading(true);
-    try {
+     try {
       const response = await getFilteredTransactionsByIdAccount(
         accountId,
         token,
@@ -83,11 +86,13 @@ const TransactionListDetails = ({ accountId }) => {
     fetchFilteredData();
   }, [currentPage, type, concept, sendButton]);
 
+
   const handleChangePage = (event, page) => {
     setCurrentPage(page - 1);
   };
 
   const handleFilterChange = (e) => {
+
     if (max < min) {
       dispatch(
         showNotification({
@@ -96,6 +101,10 @@ const TransactionListDetails = ({ accountId }) => {
         })
       );
     } else {
+        console.log("ENTRO ACA VIEJA"); 
+       console.log("MAX",max);
+       console.log("Min",min);
+       e.preventDefault();
       setCurrentPage(0);
       setSendButton(!sendButton);
     }
@@ -238,6 +247,7 @@ const TransactionListDetails = ({ accountId }) => {
                     error={Boolean(documentNumberError)}
                     helperText={documentNumberError}
                     onKeyDown={handleInputRestriction("0-9")}
+
                   />
                 </FormControl>
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
@@ -253,7 +263,9 @@ const TransactionListDetails = ({ accountId }) => {
               {haveTransactions ? (
                 <List>
                   {transactions.map((transaction, index) => {
-                    const formattedDate = formatDate(transaction.transactionDate);
+                    const formattedDate = formatDate(
+                      transaction.transactionDate
+                    );
                     return (
                       <Box key={index}>
                         <ListItem>
