@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Card, CardContent, Typography, List, ListItem, Divider, Box, ListItemText, useMediaQuery, Pagination, TextField, FormControl, InputLabel, Select, MenuItem, } from '@mui/material';
+import { Card, CardContent, Typography, List, ListItem, Divider, Box, ListItemText, useMediaQuery, Pagination, TextField, FormControl, InputLabel, Select, MenuItem, Grid, } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 const TransactionList = ({ accountData }) => {
@@ -62,7 +62,7 @@ const TransactionList = ({ accountData }) => {
                 <Typography variant="h6" component="div" sx={{ color: '#4B56D2' }}>
                     Últimos movimientos
                 </Typography>
-                <Box sx={{ display: 'flex', gap: '8px', marginBottom: '16px', marginTop: '16px' }}>
+                <Grid container sx={{ display: 'flex', gap: '8px', marginBottom: '16px', marginTop: '16px' }}>
                     <Typography variant="h9" component="div" sx={{ color: '#4B56D2', alignContent: 'center' }}>
                         Filtrar por:
                     </Typography>
@@ -123,7 +123,7 @@ const TransactionList = ({ accountData }) => {
                             <MenuItem value="SEGUROS">SEGUROS</MenuItem>
                         </Select>
                     </FormControl>
-                </Box>
+                </Grid>
                 <List>
                     {currentTransactions.map((transaction, index) => {
                         const currencySymbol = transaction.accountCurrency === 'USD' ? 'U$S' : '$';
