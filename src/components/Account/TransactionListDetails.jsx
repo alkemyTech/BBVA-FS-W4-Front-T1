@@ -88,7 +88,9 @@ const TransactionListDetails = ({ accountId }) => {
   };
 
   const handleFilterChange = (e) => {
-    if (max < min) {
+    e.preventDefault();
+    dispatch(hideNotification());
+    if (parseFloat(max) < parseFloat(min)) {
       dispatch(
         showNotification({
           message: "El monto máximo no puede ser menor que el monto mínimo.",
