@@ -202,7 +202,7 @@ const TransactionListDetails = ({ accountId }) => {
                     label="Tipo"
                   >
                     <MenuItem value="">
-                      <em>-----</em>
+                      <em>Todos</em>
                     </MenuItem>
                     <MenuItem value="DEPOSIT">DEPOSITO</MenuItem>
                     <MenuItem value="INCOME">INGRESO</MenuItem>
@@ -219,7 +219,7 @@ const TransactionListDetails = ({ accountId }) => {
                     label="Concepto"
                   >
                     <MenuItem value="">
-                      <em>-----</em>
+                      <em>Todos</em>
                     </MenuItem>
                     <MenuItem value="VARIOS">VARIOS</MenuItem>
                     <MenuItem value="ALQUILERES">ALQUILERES</MenuItem>
