@@ -144,7 +144,10 @@ export default function Navbar() {
               textDecoration: "none",
             }}
           >
-            MagicDogs
+            <img
+              src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png"
+              style={{ height: "60px" }}
+            />
           </Typography>
           {/*Navbar opciones pantalla grande*/}
           <Box

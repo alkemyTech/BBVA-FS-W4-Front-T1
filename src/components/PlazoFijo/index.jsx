@@ -43,12 +43,12 @@ export default function PlazoFijo() {
         const fechaDeCierre = new Date(closingDate);
         const diferencia = ((fechaDeCierre - fechaActual)/ (1000 * 3600 * 24))+1;
 
-        if (parseFloat(amount) > accountData.balance) {
-            dispatch(showNotification({ message: 'El monto no puede ser mayor que el balance de la cuenta', status: 'error' }));
+        if (!validateNumbers(parseFloat(amount)) || parseFloat(amount) <= 0) {
+            dispatch(showNotification({ message: 'El monto ingresado debe ser un numero mayor a cero', status: 'error' }));
             return;
         }
-        if (parseFloat(amount) <= 0) {
-            dispatch(showNotification({ message: 'El monto debe ser mayor que cero', status: 'error' }));
+        if (parseFloat(amount) > accountData.balance) {
+            dispatch(showNotification({ message: 'El monto no puede ser mayor que el balance de la cuenta', status: 'error' }));
             return;
         }
         if (!acceptTerms) {
@@ -61,7 +61,7 @@ export default function PlazoFijo() {
         }
 
         const fixedTermData = {
-            amount: parseFloat(amount),
+            amount: parseFloat(amount.replace(",", ".")),
             closingDate,
         };
 
@@ -86,6 +86,11 @@ export default function PlazoFijo() {
           style: "currency",
           currency,
         }).format(amount);
+    };
+
+    const validateNumbers = (number) => {
+        const re = /^[0-9]+$/;
+        return re.test(String(number));
     };
 
     return(
