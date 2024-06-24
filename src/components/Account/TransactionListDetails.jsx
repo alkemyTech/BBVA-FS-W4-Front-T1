@@ -9,6 +9,7 @@ import {
   Container,
   Divider,
   FormControl,
+  Grid,
   IconButton,
   List,
   ListItem,
@@ -92,8 +93,9 @@ const TransactionListDetails = ({ accountId }) => {
   };
 
   const handleFilterChange = (e) => {
-
-    if (max < min) {
+    e.preventDefault();
+    dispatch(hideNotification());
+    if (parseFloat(max) < parseFloat(min)) {
       dispatch(
         showNotification({
           message: "El monto máximo no puede ser menor que el monto mínimo.",
@@ -172,7 +174,7 @@ const TransactionListDetails = ({ accountId }) => {
               >
                 Últimos movimientos
               </Typography>
-              <Box
+              <Grid container
                 sx={{
                   display: "flex",
                   gap: "16px",
@@ -182,6 +184,7 @@ const TransactionListDetails = ({ accountId }) => {
                   alignItems: "center",
                 }}
               >
+                <Grid item>
                 <Typography
                   variant="body1"
                   component="div"
@@ -189,6 +192,8 @@ const TransactionListDetails = ({ accountId }) => {
                 >
                   Filtrar por:
                 </Typography>
+                </Grid>
+                <Grid item>
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
                   <TextField
                     select
@@ -204,6 +209,8 @@ const TransactionListDetails = ({ accountId }) => {
                     <MenuItem value="PAYMENT">PAGO</MenuItem>
                   </TextField>
                 </FormControl>
+                </Grid>
+                <Grid item>
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
                   <TextField
                     select
@@ -225,7 +232,9 @@ const TransactionListDetails = ({ accountId }) => {
                     <MenuItem value="SEGUROS">SEGUROS</MenuItem>
                   </TextField>
                 </FormControl>
-                <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+                </Grid>
+                <Grid item>
+                <FormControl variant="outlined" >
                   <TextField
                     label="Monto Minimo"
                     name="min"
@@ -237,7 +246,9 @@ const TransactionListDetails = ({ accountId }) => {
                     onKeyDown={handleInputRestriction("0-9")}
                   />
                 </FormControl>
-                <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+                </Grid>
+                <Grid item>
+                <FormControl variant="outlined" >
                   <TextField
                     label="Monto Máximo"
                     name="max"
@@ -250,7 +261,9 @@ const TransactionListDetails = ({ accountId }) => {
 
                   />
                 </FormControl>
-                <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+                </Grid>
+                <Grid item>
+                <FormControl variant="outlined" >
                   <Button
                     variant="contained"
                     sx={{ height: "56px" }}
@@ -259,7 +272,8 @@ const TransactionListDetails = ({ accountId }) => {
                     Filtrar
                   </Button>
                 </FormControl>
-              </Box>
+                </Grid>
+              </Grid>
               {haveTransactions ? (
                 <List>
                   {transactions.map((transaction, index) => {
