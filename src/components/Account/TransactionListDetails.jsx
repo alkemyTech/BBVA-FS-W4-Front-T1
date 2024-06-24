@@ -1,46 +1,43 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
+  Box,
+  Button,
   Card,
   CardContent,
-  Typography,
-  List,
-  ListItem,
-  Divider,
-  Box,
-  ListItemText,
-  useMediaQuery,
-  Pagination,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   CircularProgress,
   Collapse,
-  IconButton,
   Container,
+  Divider,
+  FormControl,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  Pagination,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import { getTransactionsByIdAccount } from "../../api/Transaction";
 import PropTypes from "prop-types";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { getFilteredTransactionsByIdAccount } from "../../api/Transaction";
 
 const TransactionListDetails = ({ accountId }) => {
   const [loading, setLoading] = useState(true);
-  const [haveTransactions, setHaveTransactions] = useState(true);
+  const [haveTransactions, setHaveTransactions] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const transactionsPerPage = 10;
-  const [minAmount, setMinAmount] = useState("");
-  const [maxAmount, setMaxAmount] = useState("");
+  const [min, setMin] = useState("");
+  const [max, setMax] = useState("");
   const [type, setType] = useState("");
   const [concept, setConcept] = useState("");
   const [expanded, setExpanded] = useState({});
+  const[sendButton, setSendButton] = useState(false);
 
   const token = useSelector((state) => state.user.token);
-  const navigate = useNavigate();
 
   const formatDate = (dateArray) => {
     const [year, month, day, hour, minutes] = dateArray;
@@ -49,70 +46,57 @@ const TransactionListDetails = ({ accountId }) => {
     }`;
   };
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/");
-    }
-    const fetchData = async (page) => {
-      setLoading(true);
-      try {
-        const data2 = await getTransactionsByIdAccount(accountId, token, page);
-        console.log("DATA2::: ", data2);
-        if (data2 != 404) {
-          const data = data2.data;
-          console.log("DATA", data);
-          setTransactions(data.transactios);
-          setTotalPages(data.countPages);
-          console.log("TOTAL PAGE:", data.countPages);
-          setLoading(false);
-        } else {
-          console.log("NO HAY TRANSACIONES");
-          setHaveTransactions(false);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
+  const fetchFilteredData = useCallback(async () => {
+    setLoading(true);
+     try {
+      const response = await getFilteredTransactionsByIdAccount(
+        accountId,
+        token,
+        currentPage,
+        transactionsPerPage,
+        min,
+        max,
+        type,
+        concept
+      );
 
-    fetchData(currentPage);
-  }, [accountId, token, navigate, currentPage]);
+      if (response !== "404") {
+        const data = response.data;
+        setTransactions(data.transactios);
+        setTotalPages(data.countPages);
+        setHaveTransactions(true);
+      } else {
+        setHaveTransactions(false);
+      }
+      setLoading(false);
+      //setSendButton(false);
+    } catch (error) {
+      console.error("Error fetching filtered data:", error);
+      setLoading(false);
+      //setSendButton(false);
+    }
+  }, [accountId, token,currentPage, transactionsPerPage, type, concept,sendButton]);
+
+  useEffect(() => {
+    
+    fetchFilteredData();
+  }, [ currentPage, type, concept,sendButton]);
 
   const handleChangePage = (event, page) => {
     setCurrentPage(page - 1);
   };
 
-  useEffect(() => {
+  const handleFilterChange = (e) => {
+    console.log("ENTRO ACA VIEJA"); 
+    console.log("MAX",max);
+    console.log("Min",min);
+    e.preventDefault();
     setCurrentPage(0);
-  }, [minAmount, maxAmount, type, concept]);
-
-  const sortedTransactions = transactions.sort((a, b) => {
-    const dateA = new Date(
-      a.transactionDate[0],
-      a.transactionDate[1] - 1,
-      a.transactionDate[2],
-      a.transactionDate[3],
-      a.transactionDate[4]
-    );
-    const dateB = new Date(
-      b.transactionDate[0],
-      b.transactionDate[1] - 1,
-      b.transactionDate[2],
-      b.transactionDate[3],
-      b.transactionDate[4]
-    );
-    return dateB - dateA;
-  });
-
-  const filteredTransactions = sortedTransactions.filter((transaction) => {
-    const amountValid =
-      (!minAmount || transaction.amount >= parseFloat(minAmount)) &&
-      (!maxAmount || transaction.amount <= parseFloat(maxAmount));
-    const typeValid = !type || transaction.type === type;
-    const conceptValid = !concept || transaction.concept === concept;
-    return amountValid && typeValid && conceptValid;
-  });
+    setSendButton(!sendButton);
+    //setLoading(true);   
+    
+    //fetchFilteredData();
+  };
 
   const toggleExpand = (index) => {
     setExpanded((prevExpanded) => ({
@@ -163,9 +147,11 @@ const TransactionListDetails = ({ accountId }) => {
               <Box
                 sx={{
                   display: "flex",
-                  gap: "8px",
+                  gap: "16px",
                   marginBottom: "16px",
-                  marginTop: "16px",
+                  marginTop: "24px",
+                  flexWrap: "wrap",
+                  alignItems: "center",
                 }}
               >
                 <Typography
@@ -175,22 +161,9 @@ const TransactionListDetails = ({ accountId }) => {
                 >
                   Filtrar por:
                 </Typography>
-                <TextField
-                  label="Monto mínimo"
-                  variant="outlined"
-                  value={minAmount}
-                  onChange={(e) => setMinAmount(e.target.value)}
-                  sx={{ borderStyle: "#4B56D2" }}
-                />
-                <TextField
-                  label="Monto máximo"
-                  variant="outlined"
-                  value={maxAmount}
-                  onChange={(e) => setMaxAmount(e.target.value)}
-                />
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-                  <InputLabel>Tipo</InputLabel>
-                  <Select
+                  <TextField
+                    select
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                     label="Tipo"
@@ -201,11 +174,11 @@ const TransactionListDetails = ({ accountId }) => {
                     <MenuItem value="DEPOSIT">DEPOSITO</MenuItem>
                     <MenuItem value="INCOME">INGRESO</MenuItem>
                     <MenuItem value="PAYMENT">PAGO</MenuItem>
-                  </Select>
+                  </TextField>
                 </FormControl>
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-                  <InputLabel>Concepto</InputLabel>
-                  <Select
+                  <TextField
+                    select
                     value={concept}
                     onChange={(e) => setConcept(e.target.value)}
                     label="Concepto"
@@ -222,12 +195,37 @@ const TransactionListDetails = ({ accountId }) => {
                     <MenuItem value="HABERES">HABERES</MenuItem>
                     <MenuItem value="PRESTAMOS">PRESTAMOS</MenuItem>
                     <MenuItem value="SEGUROS">SEGUROS</MenuItem>
-                  </Select>
+                  </TextField>
+                </FormControl>
+                <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+                  <TextField
+                    label="Monto Mínimo"
+                    name="min"                    
+                    value={min}
+                    onChange={(e) => setMin(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+                  <TextField
+                    label="Monto Máximo"
+                    name="max"                    
+                    value={max}
+                    onChange={(e) => setMax(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+                  <Button
+                    variant="contained"
+                    sx={{ height: "56px" }}
+                    onClick={handleFilterChange}
+                  >
+                    Filtrar
+                  </Button>
                 </FormControl>
               </Box>
               {haveTransactions ? (
                 <List>
-                  {filteredTransactions.map((transaction, index) => {
+                  {transactions.map((transaction, index) => {
                     const formattedDate = formatDate(
                       transaction.transactionDate
                     );
@@ -302,22 +300,27 @@ const TransactionListDetails = ({ accountId }) => {
                             }
                           />
                         </ListItem>
-                        {index < filteredTransactions.length - 1 && <Divider />}
+                        {index < transactions.length - 1 && <Divider />}
                       </Box>
                     );
                   })}
                 </List>
               ) : (
-                <Typography>No hay transacciones</Typography>
+                <Typography sx={{ marginTop: "16px" }}>
+                  No se encontraron transacciones.
+                </Typography>
               )}
-            </CardContent>
-            <Box justifyContent={"center"} display={"flex"}>
               <Pagination
                 count={totalPages}
-                page={currentPage + 1} // Sumamos 1 para que el componente Pagination muestre el número correcto
+                page={currentPage + 1}
                 onChange={handleChangePage}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "16px",
+                }}
               />
-            </Box>
+            </CardContent>
           </Card>
         </Box>
       )}
@@ -326,7 +329,7 @@ const TransactionListDetails = ({ accountId }) => {
 };
 
 TransactionListDetails.propTypes = {
-  accountId: PropTypes.number.isRequired,
+  accountId: PropTypes.string.isRequired,
 };
 
 export default TransactionListDetails;
