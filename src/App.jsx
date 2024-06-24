@@ -20,6 +20,7 @@ import Register from "./components/Register";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
+import EditarPerfil from "./components/EditarPerfil";
 
 function App() {
   const navigate = useNavigate();
@@ -76,6 +77,7 @@ function App() {
           />
         </Route>
         <Route path="/perfil" element={<Perfil />} />
+        <Route path="/editar-perfil" element={<EditarPerfil />} />
         <Route path="/simular-plazo-fijo" element={<SimularPlazoFijo />} />
         <Route path="/" element={<Inicio />} />
         <Route path="/cargar-saldo" element={<Deposito />} />

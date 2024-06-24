@@ -1,124 +1,138 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
+  Box,
+  Button,
   Card,
   CardContent,
-  Typography,
-  List,
-  ListItem,
-  Divider,
-  Box,
-  ListItemText,
-  useMediaQuery,
-  Pagination,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   CircularProgress,
   Collapse,
-  IconButton,
   Container,
+  Divider,
+  FormControl,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  Pagination,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import { getTransactionsByIdAccount } from "../../api/Transaction";
 import PropTypes from "prop-types";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getFilteredTransactionsByIdAccount } from "../../api/Transaction";
+import { hideNotification, showNotification } from "../../Redux/slice/snackBarSlice";
+import MySnackbar from "../../UI/MySnackBar";
+
 
 const TransactionListDetails = ({ accountId }) => {
   const [loading, setLoading] = useState(true);
-  const [haveTransactions, setHaveTransactions] = useState(true);
+  const [haveTransactions, setHaveTransactions] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const transactionsPerPage = 10;
-  const [minAmount, setMinAmount] = useState("");
-  const [maxAmount, setMaxAmount] = useState("");
+  const [min, setMin] = useState("");
+  const [max, setMax] = useState("");
   const [type, setType] = useState("");
   const [concept, setConcept] = useState("");
   const [expanded, setExpanded] = useState({});
 
+  const [sendButton, setSendButton] = useState(false);
+  const [documentNumberError, setDocumentNumberError] = useState("");
+
+
+  const dispatch = useDispatch();
+  const notification = useSelector((state) => state.notification);
   const token = useSelector((state) => state.user.token);
-  const navigate = useNavigate();
 
   const formatDate = (dateArray) => {
     const [year, month, day, hour, minutes] = dateArray;
-    return `${day}/${month}/${year} ${hour}:${
-      minutes < 10 ? "0" + minutes : minutes
-    }`;
+    return `${day}/${month}/${year} ${hour}:${minutes < 10 ? "0" + minutes : minutes}`;
   };
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/");
-    }
-    const fetchData = async (page) => {
-      setLoading(true);
-      try {
-        const data2 = await getTransactionsByIdAccount(accountId, token, page);
-        console.log("DATA2::: ", data2);
-        if (data2 != 404) {
-          const data = data2.data;
-          console.log("DATA", data);
-          setTransactions(data.transactios);
-          setTotalPages(data.countPages);
-          console.log("TOTAL PAGE:", data.countPages);
-          setLoading(false);
-        } else {
-          console.log("NO HAY TRANSACIONES");
-          setHaveTransactions(false);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
+  const fetchFilteredData = useCallback(async () => {
+    setLoading(true);
+     try {
+      const response = await getFilteredTransactionsByIdAccount(
+        accountId,
+        token,
+        currentPage,
+        transactionsPerPage,
+        min,
+        max,
+        type,
+        concept
+      );
 
-    fetchData(currentPage);
-  }, [accountId, token, navigate, currentPage]);
+      if (response !== "404") {
+        const data = response.data;
+        setTransactions(data.transactios);
+        setTotalPages(data.countPages);
+        setHaveTransactions(true);
+      } else {
+        setTotalPages(0);
+        setHaveTransactions(false);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching filtered data:", error);
+      setLoading(false);
+    }
+  }, [accountId, token, currentPage, transactionsPerPage, type, concept, sendButton]);
+
+  useEffect(() => {
+    fetchFilteredData();
+  }, [currentPage, type, concept, sendButton]);
+
 
   const handleChangePage = (event, page) => {
     setCurrentPage(page - 1);
   };
 
-  useEffect(() => {
-    setCurrentPage(0);
-  }, [minAmount, maxAmount, type, concept]);
-
-  const sortedTransactions = transactions.sort((a, b) => {
-    const dateA = new Date(
-      a.transactionDate[0],
-      a.transactionDate[1] - 1,
-      a.transactionDate[2],
-      a.transactionDate[3],
-      a.transactionDate[4]
-    );
-    const dateB = new Date(
-      b.transactionDate[0],
-      b.transactionDate[1] - 1,
-      b.transactionDate[2],
-      b.transactionDate[3],
-      b.transactionDate[4]
-    );
-    return dateB - dateA;
-  });
-
-  const filteredTransactions = sortedTransactions.filter((transaction) => {
-    const amountValid =
-      (!minAmount || transaction.amount >= parseFloat(minAmount)) &&
-      (!maxAmount || transaction.amount <= parseFloat(maxAmount));
-    const typeValid = !type || transaction.type === type;
-    const conceptValid = !concept || transaction.concept === concept;
-    return amountValid && typeValid && conceptValid;
-  });
+  const handleFilterChange = (e) => {
+    e.preventDefault();
+    dispatch(hideNotification());
+    if (parseFloat(max) < parseFloat(min)) {
+      dispatch(
+        showNotification({
+          message: "El monto máximo no puede ser menor que el monto mínimo.",
+          status: "error",
+        })
+      );
+    } else {
+        console.log("ENTRO ACA VIEJA"); 
+       console.log("MAX",max);
+       console.log("Min",min);
+       e.preventDefault();
+      setCurrentPage(0);
+      setSendButton(!sendButton);
+    }
+  };
 
   const toggleExpand = (index) => {
     setExpanded((prevExpanded) => ({
       ...prevExpanded,
       [index]: !prevExpanded[index],
     }));
+  };
+
+  const handleInputRestriction =
+    (allowedCharacters = "") =>
+    (e) => {
+      const isAllowedCharacter = new RegExp(`[^${allowedCharacters}]`).test(e.key);
+      const isBackspace = e.key === "Backspace";
+      const isTab = e.key === "Tab";
+
+      if (isAllowedCharacter && !isBackspace && !isTab) {
+        e.preventDefault();
+      }
+    };
+
+  const handleSnackbarClose = () => {
+    dispatch(hideNotification());
   };
 
   return (
@@ -160,14 +174,17 @@ const TransactionListDetails = ({ accountId }) => {
               >
                 Últimos movimientos
               </Typography>
-              <Box
+              <Grid container
                 sx={{
                   display: "flex",
-                  gap: "8px",
+                  gap: "16px",
                   marginBottom: "16px",
-                  marginTop: "16px",
+                  marginTop: "24px",
+                  flexWrap: "wrap",
+                  alignItems: "center",
                 }}
               >
+                <Grid item>
                 <Typography
                   variant="body1"
                   component="div"
@@ -175,22 +192,11 @@ const TransactionListDetails = ({ accountId }) => {
                 >
                   Filtrar por:
                 </Typography>
-                <TextField
-                  label="Monto mínimo"
-                  variant="outlined"
-                  value={minAmount}
-                  onChange={(e) => setMinAmount(e.target.value)}
-                  sx={{ borderStyle: "#4B56D2" }}
-                />
-                <TextField
-                  label="Monto máximo"
-                  variant="outlined"
-                  value={maxAmount}
-                  onChange={(e) => setMaxAmount(e.target.value)}
-                />
+                </Grid>
+                <Grid item>
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-                  <InputLabel>Tipo</InputLabel>
-                  <Select
+                  <TextField
+                    select
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                     label="Tipo"
@@ -201,11 +207,13 @@ const TransactionListDetails = ({ accountId }) => {
                     <MenuItem value="DEPOSIT">DEPOSITO</MenuItem>
                     <MenuItem value="INCOME">INGRESO</MenuItem>
                     <MenuItem value="PAYMENT">PAGO</MenuItem>
-                  </Select>
+                  </TextField>
                 </FormControl>
+                </Grid>
+                <Grid item>
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-                  <InputLabel>Concepto</InputLabel>
-                  <Select
+                  <TextField
+                    select
                     value={concept}
                     onChange={(e) => setConcept(e.target.value)}
                     label="Concepto"
@@ -222,12 +230,53 @@ const TransactionListDetails = ({ accountId }) => {
                     <MenuItem value="HABERES">HABERES</MenuItem>
                     <MenuItem value="PRESTAMOS">PRESTAMOS</MenuItem>
                     <MenuItem value="SEGUROS">SEGUROS</MenuItem>
-                  </Select>
+                  </TextField>
                 </FormControl>
-              </Box>
+                </Grid>
+                <Grid item>
+                <FormControl variant="outlined" >
+                  <TextField
+                    label="Monto Minimo"
+                    name="min"
+                    value={min}
+                    autoComplete="min"
+                    onChange={(e) => setMin(e.target.value)}
+                    error={Boolean(documentNumberError)}
+                    helperText={documentNumberError}
+                    onKeyDown={handleInputRestriction("0-9")}
+                  />
+                </FormControl>
+                </Grid>
+                <Grid item>
+                <FormControl variant="outlined" >
+                  <TextField
+                    label="Monto Máximo"
+                    name="max"
+                    value={max}
+                    autoComplete="max"
+                    onChange={(e) => setMax(e.target.value)}
+                    error={Boolean(documentNumberError)}
+                    helperText={documentNumberError}
+                    onKeyDown={handleInputRestriction("0-9")}
+
+                  />
+                </FormControl>
+                </Grid>
+                <Grid item>
+                <FormControl variant="outlined" >
+                  <Button
+                    variant="contained"
+                    sx={{ height: "56px" }}
+                    onClick={handleFilterChange}
+                  >
+                    Filtrar
+                  </Button>
+                </FormControl>
+                </Grid>
+              </Grid>
               {haveTransactions ? (
                 <List>
-                  {filteredTransactions.map((transaction, index) => {
+                  {transactions.map((transaction, index) => {
                     const formattedDate = formatDate(
                       transaction.transactionDate
                     );
@@ -302,31 +351,42 @@ const TransactionListDetails = ({ accountId }) => {
                             }
                           />
                         </ListItem>
-                        {index < filteredTransactions.length - 1 && <Divider />}
+                        {index < transactions.length - 1 && <Divider />}
                       </Box>
                     );
                   })}
                 </List>
               ) : (
-                <Typography>No hay transacciones</Typography>
+                <Typography sx={{ marginTop: "16px" }}>
+                  No se encontraron transacciones.
+                </Typography>
               )}
-            </CardContent>
-            <Box justifyContent={"center"} display={"flex"}>
               <Pagination
                 count={totalPages}
-                page={currentPage + 1} // Sumamos 1 para que el componente Pagination muestre el número correcto
+                page={currentPage + 1}
                 onChange={handleChangePage}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "16px",
+                }}
               />
-            </Box>
+            </CardContent>
           </Card>
         </Box>
       )}
+      <MySnackbar
+        open={notification.open}
+        handleClose={handleSnackbarClose}
+        message={notification.message}
+        status={notification.status}
+      />
     </Container>
   );
 };
 
 TransactionListDetails.propTypes = {
-  accountId: PropTypes.number.isRequired,
+  accountId: PropTypes.string.isRequired,
 };
 
 export default TransactionListDetails;
