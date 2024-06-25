@@ -103,35 +103,6 @@ const AccountCard = ({ accountData }) => {
         </Grid>
       )}
 
-      {/* {accountData.fixedTerms.map((term, index) => (
-        <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-          <Card
-            sx={{
-              backgroundColor: "#D1D8C5",
-              color: "#ffffff",
-              padding: "16px",
-              borderRadius: "8px",
-              height: "100px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              cursor: "pointer"
-            }}
-            onClick={() => handleCardClick(`/inversiones`, accountData.fixedTerms)}
-
-          >
-            <CardContent>
-              <Typography variant="h6" component="div">
-                <strong>{formatCurrency(totalFixedTerms, "ARS")}</strong>
-              </Typography>
-              <Typography variant="subtitle1" component="div">
-                Total Invertido en Plazos Fijos
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      ))} */}
-
       {totalFixedTerms > 0 && (
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Card

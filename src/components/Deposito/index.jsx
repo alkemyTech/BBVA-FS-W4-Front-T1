@@ -15,7 +15,6 @@ import {
 import ArrowBackComponent from "../../UI/ArrowBack";
 import MySnackbar from "../../UI/MySnackBar";
 import { deposit } from "../../api/Transaction";
-import { generateReceipt } from "../../utils/pdfUtils";
 
 const transactionConcepts = [
   "VARIOS",

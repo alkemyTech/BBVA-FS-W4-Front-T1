@@ -171,21 +171,7 @@ export default function PlazoFijo() {
           boxShadow: 3,
           display: "flex",
         }}
-        // onSubmit={handleSubmit}
-        //   onKeyDown={handleKeyEnter}
       >
-        {/* <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{
-            maxWidth: 400,
-            ml: "auto",
-            mr: "auto",
-            mt: 9,
-            mb: 10,
-            "@media (max-width: 450px)": { maxWidth: "90%" },
-          }}
-        > */}
         <Grid item xs={12} sx={{ marginBottom: 2 }}>
           <Typography variant="h4" component="h1" gutterBottom>
             Crear Plazo Fijo
@@ -206,7 +192,6 @@ export default function PlazoFijo() {
             label="Monto"
             value={amount}
             fullWidth
-            // margin="normal"
             marg
             onChange={(e) => setAmount(e.target.value)}
             required
@@ -215,16 +200,6 @@ export default function PlazoFijo() {
         </Grid>
 
         <Grid item xs={12} sx={{ marginBottom: 3 }}>
-          {/* <TextField
-            label="Fecha de Cierre"
-            type="date"
-            value={closingDate}
-            fullWidth
-            // margin="normal"
-            onChange={(e) => setClosingDate(e.target.value)}
-            required
-            InputLabelProps={{ shrink: true }}
-          /> */}
           <DatePicker
             required
             label="Fecha de Cierre"
@@ -280,7 +255,6 @@ export default function PlazoFijo() {
         message={notification.message}
         status={notification.status}
       />
-      {/* </Box> */}
     </Container>
   );
 }

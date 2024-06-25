@@ -27,7 +27,6 @@ const Home = () => {
       } catch (error) {
         if (error.message == "Usuario no autenticado") {
             dispatch(clearUser());
-            window.location.reload();
             navigate("/")
           }
         console.error("Error fetching data:", error);
