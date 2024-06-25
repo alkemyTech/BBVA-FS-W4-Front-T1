@@ -169,15 +169,19 @@ const SimularPlazoFijo = () => {
             onClick={() => handleDayClick("30")}
             variant={selectedDays["30"] ? "contained" : "outlined"}
             sx={{
-              color: "#472183",
-              borderColor: "#472183",
+              color: "#5B67E5",
+              borderColor: "#5B67E5",
               "&.MuiButton-contained": {
-                bgcolor: "#472183",
+                bgcolor: "#5B67E5",
                 color: "#ffffff", // or any other color you want for the text
               },
+              "&.MuiButton-outlined": {
+                bgcolor: "#ffffff",
+                color: "#5B67E5", // or any other color you want for the text
+              },
               "&:hover": {
-                backgroundColor: "#472183",
-                borderColor: "#472183",
+                backgroundColor: "#5B67E5",
+                borderColor: "#5B67E5",
                 color: "#ffffff",
               },
             }}
@@ -191,15 +195,19 @@ const SimularPlazoFijo = () => {
             onClick={() => handleDayClick("60")}
             variant={selectedDays["60"] ? "contained" : "outlined"}
             sx={{
-              color: "#472183",
-              borderColor: "#472183",
+              color: "#5B67E5",
+              borderColor: "#5B67E5",
               "&.MuiButton-contained": {
-                bgcolor: "#472183",
+                bgcolor: "#5B67E5",
                 color: "#ffffff", // or any other color you want for the text
               },
+              "&.MuiButton-outlined": {
+                bgcolor: "#ffffff",
+                color: "#5B67E5", // or any other color you want for the text
+              },
               "&:hover": {
-                backgroundColor: "#472183",
-                borderColor: "#472183",
+                backgroundColor: "#5B67E5",
+                borderColor: "#5B67E5",
                 color: "#ffffff",
               },
             }}
@@ -213,15 +221,19 @@ const SimularPlazoFijo = () => {
             onClick={() => handleDayClick("90")}
             variant={selectedDays["90"] ? "contained" : "outlined"}
             sx={{
-              color: "#472183",
-              borderColor: "#472183",
+              color: "#5B67E5",
+              borderColor: "#5B67E5",
               "&.MuiButton-contained": {
-                bgcolor: "#472183",
+                bgcolor: "#5B67E5",
                 color: "#ffffff", // or any other color you want for the text
               },
+              "&.MuiButton-outlined": {
+                bgcolor: "#ffffff",
+                color: "#5B67E5", // or any other color you want for the text
+              },
               "&:hover": {
-                backgroundColor: "#472183",
-                borderColor: "#472183",
+                backgroundColor: "#5B67E5",
+                borderColor: "#5B67E5",
                 color: "#ffffff",
               },
             }}
@@ -235,15 +247,19 @@ const SimularPlazoFijo = () => {
             onClick={() => handleDayClick("Otro")}
             variant={selectedDays["Otro"] ? "contained" : "outlined"}
             sx={{
-              color: "#472183",
-              borderColor: "#472183",
+              color: "#5B67E5",
+              borderColor: "#5B67E5",
               "&.MuiButton-contained": {
-                bgcolor: "#472183",
+                bgcolor: "#5B67E5",
                 color: "#ffffff", // or any other color you want for the text
               },
+              "&.MuiButton-outlined": {
+                bgcolor: "#ffffff",
+                color: "#5B67E5", // or any other color you want for the text
+              },
               "&:hover": {
-                backgroundColor: "#472183",
-                borderColor: "#472183",
+                backgroundColor: "#5B67E5",
+                borderColor: "#5B67E5",
                 color: "#ffffff",
               },
             }}
