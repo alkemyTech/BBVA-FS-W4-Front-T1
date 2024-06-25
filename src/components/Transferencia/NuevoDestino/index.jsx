@@ -50,36 +50,56 @@ const NuevoDestino = () => {
   return (
     <Grid container>
       <Grid container className="container">
-        <ArrowBackComponent />
         <Grid container justifyContent="center" alignItems="center">
-          <Grid item>
-            <Typography variant="h4" component="h1">
-              Ingresar nuevo destino
-            </Typography>
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            mt={5}
+            ml={4}
+            position="relative"
+          >
+            <Grid item position="absolute">
+              <ArrowBackComponent />
+            </Grid>
           </Grid>
           <Grid
             container
             direction="column"
             justifyContent="center"
             alignItems="center"
-            spacing={2}
+            sx={{
+              margin: "0 auto",
+              backgroundColor: "#fff",
+              width: "50vw",
+              borderRadius: 5,
+              p: 4,
+              boxShadow: 3,
+            }}
             onKeyDown={handleKeyEnterSearch}
           >
+            <Grid item xs mb={1}>
+              <Typography variant="h4" component="h1">
+                Ingrese nuevo destino
+              </Typography>
+            </Grid>
             <Grid
               item
               style={{ maxWidth: "28vw", minWidth: "16rem", width: "100%" }}
+              mt={2}
             >
               <TextField
                 label="CBU o Alias del destinatario"
                 value={accountSearch}
                 onChange={(e) => setAccountSearch(e.target.value)}
                 fullWidth
-                margin="normal"
+                disabled={isLoading}
               />
             </Grid>
             <Grid
               item
               style={{ maxWidth: "12vw", minWidth: "7rem", width: "100%" }}
+              mt={2}
             >
               <Button
                 type="submit"
@@ -87,7 +107,6 @@ const NuevoDestino = () => {
                 disabled={isLoading}
                 onClick={handleSearch}
                 fullWidth
-                sx={{ backgroundColor: "#472183" }}
               >
                 {isLoading ? "Cargando..." : "Buscar"}
               </Button>
