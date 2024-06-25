@@ -33,3 +33,22 @@ const getFixedTerms = async (page = 0) => {
 };
 
 export { getFixedTerms };
+
+const simulateFixedTerm = async (fixedTermData) => {
+    const config = {
+        withCredentials: true,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+
+    try {
+        const response = await axios.post(`${API_BASE_URL}/simulate`, fixedTermData, config);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export { simulateFixedTerm };

@@ -28,6 +28,11 @@ const FixedTermCard = ({ totalFixedTerms }) => {
     navigate("/plazo-fijo");
   };
 
+  const handleSimulateFixedTerm = () => {
+    navigate("/simular-plazo-fijo");
+  };
+
+
   return (
     <Grid item xs={12}>
       <Card
@@ -71,6 +76,25 @@ const FixedTermCard = ({ totalFixedTerms }) => {
                 onClick={handleCreateFixedTerm}
               >
                 <b>Crear Plazo Fijo</b>
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={12} sx={{ textAlign: { xs: "left", sm: "right" } }}>
+              <Button
+                variant="contained"
+                sx={{
+                  marginBottom: "2vh",
+                  color: "#ffffff",
+                  backgroundColor: "#4b56d2",
+                  border: "1px solid #4b56d2",
+                  padding: "1vh",
+                  "&:hover": {
+                    backgroundColor: "#3c4370", 
+                    borderColor: "#3c4370", 
+                  },
+                }}
+                onClick={handleSimulateFixedTerm}
+              >
+                <b>Simular Plazo Fijo</b>
               </Button>
             </Grid>
           </Grid>
