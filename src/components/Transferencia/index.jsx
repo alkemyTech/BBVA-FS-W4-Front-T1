@@ -135,7 +135,7 @@ const Transferencia = () => {
                     onClick={() =>
                       handleSelectAccount(account.destinationAccountCbu)
                     }
-                    raised="true"
+                    raised={true}
                   >
                     <CardContent>
                       <Typography variant="h6" component="div">

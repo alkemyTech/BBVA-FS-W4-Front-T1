@@ -86,7 +86,7 @@ const TransactionList = ({ accountData }) => {
                             onChange={(e) => setType(e.target.value)}
                             label="Tipo"
                         >
-                            <MenuItem value=""><em>-----</em></MenuItem>
+                            <MenuItem value=""><em>Todos</em></MenuItem>
                             <MenuItem value="DEPOSIT">DEPOSITO</MenuItem>
                             <MenuItem value="INCOME">INGRESO</MenuItem>
                             <MenuItem value="PAYMENT">PAGO</MenuItem>
@@ -99,7 +99,7 @@ const TransactionList = ({ accountData }) => {
                             onChange={(e) => setCurrency(e.target.value)}
                             label="Moneda"
                         >
-                            <MenuItem value=""><em>-----</em></MenuItem>
+                            <MenuItem value=""><em>Todos</em></MenuItem>
                             <MenuItem value="USD">USD</MenuItem>
                             <MenuItem value="ARS">ARS</MenuItem>
                         </Select>
