@@ -17,7 +17,7 @@ const Account = () => {
         <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}> 
         <AccountDetailsCard account={account}/>  
         <Grid item xs={12}>
-        <TransactionListDetails accountId={account.idAccount}/>  
+        <TransactionListDetails account={account}/>  
         </Grid>
        {/* <MySnackbar
             open={notification.open}
