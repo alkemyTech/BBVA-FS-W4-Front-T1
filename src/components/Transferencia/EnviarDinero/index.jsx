@@ -7,6 +7,7 @@ import {
   MenuItem,
   Typography,
   CircularProgress,
+  Divider,
 } from "@mui/material";
 import MySnackbar from "../../../UI/MySnackBar";
 import { useNavigate } from "react-router";
@@ -141,115 +142,173 @@ const EnviarDinero = () => {
   return (
     <Grid container>
       <Grid container className="container">
-        <ArrowBackComponent />
-        <Grid container direction="column" justifyContent="center">
-          <Grid item alignSelf="center">
-            <Typography variant="h4" component="h1">
-              Enviar Dinero
-            </Typography>
-          </Grid>
-          {loading ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              <CircularProgress sx={{ color: "#472183" }} />
-            </div>
-          ) : (
-            <Grid item>
-              <TextField
-                label="Monto"
-                value={amount}
-                onChange={onChangeAmount}
-                fullWidth
-                margin="normal"
-                error={parseFloat(amount.replace(",", ".")) <= 0}
-                helperText={
-                  parseFloat(amount.replace(",", ".")) <= 0
-                    ? "El monto debe ser mayor a cero"
-                    : ""
-                }
-                required
-                disabled={isLoading}
-              />
-              <TextField
-                select
-                label="Concepto"
-                value={concept}
-                onChange={(e) => setConcept(e.target.value)}
-                fullWidth
-                margin="normal"
-                required
-                disabled={isLoading}
-              >
-                {transactionConcepts.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                label="Descripción"
-                type="text"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                fullWidth
-                margin="normal"
-                disabled={isLoading}
-              />
-              <TextField
-                select
-                label="Cuenta"
-                value={accountOrigin}
-                onChange={(e) => setAccountOrigin(e.target.value)}
-                fullWidth
-                margin="normal"
-                required
-                disabled={isLoading}
-              >
-                {accountOriginArs.map((option) => (
-                  <MenuItem key={option.idAccount} value={option.idAccount}>
-                    {option.accountType === "CAJA_AHORRO"
-                      ? "Caja de Ahorro"
-                      : "Cuenta Corriente"}{" "}
-                    {option.currency}
-                    {" - Balance: "}
-                    {option.balance.toLocaleString("es-AR", {
-                      style: "currency",
-                      currency: "ARS",
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}{" "}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                sx={{
-                  mt: 2,
-                  backgroundColor: "#d1d8c5",
-                  "&:hover": { backgroundColor: "#c0c9b5" },
-                  color: "#000000",
-                }}
-                disabled={
-                  isLoading || parseFloat(amount.replace(",", ".")) <= 0
-                }
-                onClick={handleSubmit}
-              >
-                {isLoading ? "Cargando..." : "Transferir"}
-              </Button>
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            mt={5}
+            ml={4}
+            position="relative"
+          >
+            <Grid item position="absolute">
+              <ArrowBackComponent />
             </Grid>
-          )}
+          </Grid>
+          <Grid
+            container
+            justifyContent={"center"}
+            alignItems={"center"}
+            sx={{
+              margin: "0 auto",
+              backgroundColor: "#fff",
+              width: 480,
+              minHeight: "583px",
+              borderRadius: 5,
+              rowGap: 3,
+              boxShadow: 3,
+              p: 5,
+            }}
+          >
+            <Grid item xs alignSelf="flex-start">
+              <Typography variant="h4" component="h1">
+                Enviar dinero
+              </Typography>
+            </Grid>
+
+            {loading ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <CircularProgress sx={{ color: "#472183" }} />
+              </div>
+            ) : (
+              <Grid
+                container
+                sx={{
+                  rowGap: 3,
+                }}
+              >
+                <TextField
+                  label="Destinatario"
+                  type="text"
+                  value={
+                    selectedDestination.userFirstName +
+                    " " +
+                    selectedDestination.userLastName +
+                    " / " +
+                    selectedDestination.bank +
+                    " - " +
+                    selectedDestination.currency
+                  }
+                  onChange={(e) => setDescription(e.target.value)}
+                  fullWidth
+                  readOnly
+                  disabled={isLoading}
+                />
+                <TextField
+                  label="Monto"
+                  value={amount}
+                  onChange={onChangeAmount}
+                  fullWidth
+                  error={parseFloat(amount.replace(",", ".")) <= 0}
+                  helperText={
+                    parseFloat(amount.replace(",", ".")) <= 0
+                      ? "El monto debe ser mayor a cero"
+                      : ""
+                  }
+                  required
+                  disabled={isLoading}
+                />
+                <TextField
+                  select
+                  label="Concepto"
+                  value={concept}
+                  onChange={(e) => setConcept(e.target.value)}
+                  fullWidth
+                  required
+                  disabled={isLoading}
+                >
+                  {transactionConcepts.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <TextField
+                  label="Descripción"
+                  type="text"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  fullWidth
+                  disabled={isLoading}
+                />
+                <TextField
+                  select
+                  label="Cuenta"
+                  value={accountOrigin}
+                  onChange={(e) => setAccountOrigin(e.target.value)}
+                  fullWidth
+                  required
+                  disabled={isLoading}
+                >
+                  {accountOriginArs.map((option) => (
+                    <MenuItem key={option.idAccount} value={option.idAccount}>
+                      {option.accountType === "CAJA_AHORRO"
+                        ? "Caja de Ahorro"
+                        : "Cuenta Corriente"}{" "}
+                      {option.currency}
+                      {" - Balance: "}
+                      {option.balance.toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    disabled={isLoading}
+                    sx={{
+                      color: "black",
+                      backgroundColor: "#D1D8C5",
+                      "&:hover": { backgroundColor: "#c0c9b5" },
+                      marginRight: "2.5vw",
+                    }}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button variant="contained" disabled={isLoading}>
+                    {isLoading ? "Cargando..." : "Confirmar"}
+                  </Button>
+                </Grid>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  disabled={
+                    isLoading || parseFloat(amount.replace(",", ".")) <= 0
+                  }
+                  onClick={handleSubmit}
+                >
+                  {isLoading ? "Cargando..." : "Transferir"}
+                </Button>
+              </Grid>
+            )}
+          </Grid>
+
           <MySnackbar
             open={notification.open}
             handleClose={handleSnackbarClose}

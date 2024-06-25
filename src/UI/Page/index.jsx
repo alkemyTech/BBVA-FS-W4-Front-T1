@@ -8,7 +8,7 @@ export default function Page(props) {
       <main
         style={{
           paddingTop: "4rem",
-          paddingBottom: "2rem",
+          paddingBottom: "4rem",
           backgroundColor: "#F1F6F5",
         }}
       >
