@@ -1,26 +1,25 @@
-import { ThemeProvider } from "@emotion/react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  Avatar,
   Box,
-  Button,
-  Checkbox,
-  CssBaseline,
-  FormControlLabel,
   Grid,
-  TextField,
-  Typography,
-  createTheme,
 } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Login from "../Login";
-import { Copyright } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 
 const Inicio = () => {
+  const navigate = useNavigate();  
+  const token = useSelector((state) => state.user.token);
+  console.log("Token:", token);
+  useEffect(() => {
+    if (token) {   
+         navigate("/home");          
+    }
+  }, [token, navigate]);
 
   return (
-    <div>
+    <>
+      {!token && 
         <Grid container component="main" >
           <Grid
             item
@@ -44,12 +43,12 @@ const Inicio = () => {
                 alignItems: "center",
               }}
             >
-              <Login />
-             {/* <Copyright sx={{ mt: 5 }} />*/}
+              <Login />              
             </Box>
           </Grid>
         </Grid>
-    </div>
+      }
+    </>
   );
 };
 

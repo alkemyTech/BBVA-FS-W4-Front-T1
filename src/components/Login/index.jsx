@@ -10,9 +10,10 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
-import { postLogin } from "../../api/auth";
+import { postLogin } from "../../api/Auth";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,10 +24,17 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showAuthError, setShowAuthError] = useState(false);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleKeyEnter = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin(e);
+    }
   };
 
   const handleMouseDownPassword = (event) => {
@@ -65,7 +73,7 @@ const Login = () => {
       });
       setLoading(true);
       try {
-        const response = await postLogin(email, password);
+        const response = await dispatch(postLogin(email, password));
         if (response) {
           navigate("/home");
         }
@@ -89,12 +97,14 @@ const Login = () => {
       sx={{
         margin: "0 auto",
         bgcolor: "#fff",
-        width: 500,
+        width: 480,
         p: 5,
         borderRadius: 5,
         boxShadow: 3,
         display: "flex",
       }}
+      onSubmit={handleLogin}
+      onKeyDown={handleKeyEnter}
     >
       <Grid item xs={12}>
         <img 
@@ -140,6 +150,7 @@ const Login = () => {
                 <IconButton
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
+                  tabIndex={-1}
                 >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
