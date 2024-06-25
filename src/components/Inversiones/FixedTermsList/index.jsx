@@ -19,14 +19,14 @@ const FixedTermsList = ({
   totalPages,
   handlePageChange,
 }) => {
-    const [expanded, setExpanded] = useState({});
+  const [expanded, setExpanded] = useState({});
 
-    const toggleExpand = (index) => {
-        setExpanded((prevExpanded) => ({
-          ...prevExpanded,
-          [index]: !prevExpanded[index],
-        }));
-      };
+  const toggleExpand = (index) => {
+    setExpanded((prevExpanded) => ({
+      ...prevExpanded,
+      [index]: !prevExpanded[index],
+    }));
+  };
 
   const formatDate = (dateArray) => {
     const year = dateArray[0];
@@ -89,7 +89,10 @@ const FixedTermsList = ({
                       Monto: {formatCurrency(fixedTerm.amount, "ARS")}
                     </Typography>
                     <Typography>
-                    {isDateInTheFuture(fixedTerm.closingDate) ? "Total a recibir: " : "Total recibido: "}                      {formatCurrency(fixedTerm.amountTotalToReceive, "ARS")}
+                      {isDateInTheFuture(fixedTerm.closingDate)
+                        ? "Total a recibir: "
+                        : "Total recibido: "}{" "}
+                      {formatCurrency(fixedTerm.amountTotalToReceive, "ARS")}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -111,7 +114,7 @@ const FixedTermsList = ({
                             ? "success"
                             : "error"
                         }
-                        variant="outlined"
+                        variant="standard"
                       />
                     </Box>
                   </Grid>
@@ -125,12 +128,6 @@ const FixedTermsList = ({
                   <Typography variant="body2" color="textSecondary">
                     Interés: {fixedTerm.interest}%
                   </Typography>
-                  {isDateInTheFuture(fixedTerm.closingDate) && (
-                    <Typography variant="body2" color="textSecondary">
-                      Interés ganado por día:{" "}
-                      {formatCurrency(fixedTerm.interestTodayWin, "ARS")}
-                    </Typography>
-                  )}
                   <Typography variant="body2" color="textSecondary">
                     Interés total:{" "}
                     {formatCurrency(fixedTerm.interestTotal, "ARS")}
