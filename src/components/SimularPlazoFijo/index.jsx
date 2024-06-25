@@ -12,6 +12,7 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { simulateFixedTerm } from "../../api/FixedTerm";
+import { useNavigate } from "react-router";
 
 const SimularPlazoFijo = () => {
   const [amount, setAmount] = useState("");
@@ -23,6 +24,7 @@ const SimularPlazoFijo = () => {
 
   const today = new Date();
   const minDate = dayjs(new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000));
+  const navigate = useNavigate();
 
   const handleInputRestriction =
     (allowedCharacters = "") =>
@@ -36,6 +38,10 @@ const SimularPlazoFijo = () => {
       if (isAllowedCharacter && !isBackspace && !isTab) {
         e.preventDefault();
       }
+    };
+
+    const handleCreateFixedTerm = () => {
+      navigate("/plazo-fijo");
     };
 
   const handleDayClick = (day) => {
@@ -68,6 +74,13 @@ const SimularPlazoFijo = () => {
       newSelectedDays[day] = true;
       return newSelectedDays;
     });
+  };
+
+  const formatDate = (dateArray) => {
+    const year = dateArray[0];
+    const month = dateArray[1];
+    const day = dateArray[2];
+    return `${day}/${month}/${year}`;
   };
 
   const fetchData = async () => {
@@ -270,7 +283,7 @@ const SimularPlazoFijo = () => {
                 <Typography variant="caption">Tasa de interes</Typography>
               </Grid>
               <Grid item xs={4}>
-                <Typography>dd/mm/aaaa</Typography>
+                <Typography>{formatDate(responseData.closingDate)}</Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography>
@@ -311,6 +324,25 @@ const SimularPlazoFijo = () => {
             </Grid>
           )}
         </Grid>
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
+        <Grid item xs={12}>
+        <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            onClick={handleCreateFixedTerm}
+            sx={{
+              mt: 2,
+              backgroundColor: "#472183",
+              color: "#fff",
+            }}
+          >
+          Crear Plazo fijo
+          </Button>
+        </Grid>
+
       </Grid>
     </Container>
   );

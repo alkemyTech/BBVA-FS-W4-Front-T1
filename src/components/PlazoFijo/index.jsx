@@ -239,9 +239,8 @@ export default function PlazoFijo() {
             onClick={handleSubmit}
             sx={{
               mt: 2,
-              backgroundColor: "#d1d8c5",
-              "&:hover": { backgroundColor: "#c0c9b5" },
-              color: "#000000",
+              backgroundColor: "#472183",
+              color: "#fff",
             }}
           >
             {isLoading ? "Cargando..." : "Crear"}
