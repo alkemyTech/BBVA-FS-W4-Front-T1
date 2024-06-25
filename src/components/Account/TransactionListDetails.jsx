@@ -16,6 +16,7 @@ import {
   ListItemText,
   MenuItem,
   Pagination,
+  Skeleton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -153,7 +154,11 @@ const TransactionListDetails = ({ accountId }) => {
             height: "100%",
           }}
         >
-          <CircularProgress sx={{ color: "#472183" }} />
+          <Skeleton animation="wave"
+            variant="rectangular"
+            width="100%"
+            height={400}
+            sx={{ marginBottom: "16px", borderRadius: "8px" }} />
         </div>
       ) : (
         <Box sx={{ marginTop: "2vh" }}>

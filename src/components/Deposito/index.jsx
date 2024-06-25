@@ -95,12 +95,13 @@ const Deposito = () => {
         );
         navigate("/home");
       } catch (error) {
+        const errorMessage =
+          error.response?.data?.message || "Error del servidor";
+        let status = "error";
         dispatch(
           showNotification({
-            message: error.response
-              ? error.response.data
-              : "Error del servidor",
-            status: "error",
+            message: errorMessage,
+            status,
           })
         );
       } finally {
