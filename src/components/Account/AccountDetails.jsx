@@ -71,8 +71,8 @@ const AccountDetailsCard = ({ account }) => {
             sx={{
               marginBottom: "2vh",
               color: "#ffffff",
-              backgroundColor: "#4b56d2",
-              border: "1px solid #4b56d2",
+              backgroundColor: "#656ED4",
+              border: "1px solid #656ED4",
               padding: "1vh",
               maxWidth: "14vh",
               "&:hover": {
