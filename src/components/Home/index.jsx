@@ -27,10 +27,10 @@ const Home = () => {
         setAccountData(data);
         setLoading(false);
       } catch (error) {
-        if (error.message === "Usuario no autenticado") {
-          dispatch(clearUser());
-          navigate("/");
-        }
+        if (error.message == "Usuario no autenticado") {
+            dispatch(clearUser());
+            navigate("/")
+          }
         console.error("Error fetching data:", error);
         setLoading(false);
       }

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Container, CircularProgress, Grid, Skeleton, Box } from "@mui/material";
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getFixedTerms } from "../../api/FixedTerm";
 import FixedTermsList from "./FixedTermsList"; // Asegúrate de que la ruta sea correcta
 import FixedTermDetails from "./FixedTermDetails";
 import ArrowBackComponent from "../../UI/ArrowBack";
+import MySnackbar from "../../UI/MySnackBar";
+import { hideNotification } from "../../Redux/slice/snackBarSlice";
 
 const Inversiones = () => {
   const [loading, setLoading] = useState(true);
@@ -15,6 +17,8 @@ const Inversiones = () => {
   const [totalFixedTerms, setTotalFixedTerms] = useState(0);
   const token = useSelector((state) => state.user.token);
   const navigate = useNavigate();
+  const notification = useSelector((state) => state.notification);
+  const dispatch = useDispatch();
 
   const totalMoney = (fixedTerms) => {
     const today = new Date();
@@ -25,6 +29,10 @@ const Inversiones = () => {
         return closingDate >= today;
       })
       .reduce((total, term) => total + term.amount, 0);
+  };
+
+  const handleSnackbarClose = () => {
+    dispatch(hideNotification());
   };
 
   const fetchData = async (page) => {
@@ -74,6 +82,7 @@ const Inversiones = () => {
           />
         </Box>
       ) : (
+        <>
         <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}>
           <FixedTermDetails totalFixedTerms={totalFixedTerms} />
           <Grid item xs={12}>
@@ -84,7 +93,16 @@ const Inversiones = () => {
               handlePageChange={handlePageChange}
             />
           </Grid>
+
+
         </Grid>
+        <MySnackbar
+        open={notification.open}
+        handleClose={handleSnackbarClose}
+        message={notification.message}
+        status={notification.status}
+      />
+      </>
       )}
     </Container>
   );

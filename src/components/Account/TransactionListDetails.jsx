@@ -24,11 +24,15 @@ import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getFilteredTransactionsByIdAccount } from "../../api/Transaction";
-import { hideNotification, showNotification } from "../../Redux/slice/snackBarSlice";
+import {
+  hideNotification,
+  showNotification,
+} from "../../Redux/slice/snackBarSlice";
 import MySnackbar from "../../UI/MySnackBar";
 
-
-const TransactionListDetails = ({ accountId }) => {
+const TransactionListDetails = ({ account }) => {
+  console.log("Account", account);
+  const accountId = account.idAccount;
   const [loading, setLoading] = useState(true);
   const [haveTransactions, setHaveTransactions] = useState(false);
   const [transactions, setTransactions] = useState([]);
@@ -44,19 +48,20 @@ const TransactionListDetails = ({ accountId }) => {
   const [sendButton, setSendButton] = useState(false);
   const [documentNumberError, setDocumentNumberError] = useState("");
 
-
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.notification);
   const token = useSelector((state) => state.user.token);
 
   const formatDate = (dateArray) => {
     const [year, month, day, hour, minutes] = dateArray;
-    return `${day}/${month}/${year} ${hour}:${minutes < 10 ? "0" + minutes : minutes}`;
+    return `${day}/${month}/${year} ${hour}:${
+      minutes < 10 ? "0" + minutes : minutes
+    }`;
   };
 
   const fetchFilteredData = useCallback(async () => {
     setLoading(true);
-     try {
+    try {
       const response = await getFilteredTransactionsByIdAccount(
         accountId,
         token,
@@ -82,12 +87,19 @@ const TransactionListDetails = ({ accountId }) => {
       console.error("Error fetching filtered data:", error);
       setLoading(false);
     }
-  }, [accountId, token, currentPage, transactionsPerPage, type, concept, sendButton]);
+  }, [
+    accountId,
+    token,
+    currentPage,
+    transactionsPerPage,
+    type,
+    concept,
+    sendButton,
+  ]);
 
   useEffect(() => {
     fetchFilteredData();
   }, [currentPage, type, concept, sendButton]);
-
 
   const handleChangePage = (event, page) => {
     setCurrentPage(page - 1);
@@ -104,10 +116,10 @@ const TransactionListDetails = ({ accountId }) => {
         })
       );
     } else {
-        console.log("ENTRO ACA VIEJA"); 
-       console.log("MAX",max);
-       console.log("Min",min);
-       e.preventDefault();
+      console.log("ENTRO ACA VIEJA");
+      console.log("MAX", max);
+      console.log("Min", min);
+      e.preventDefault();
       setCurrentPage(0);
       setSendButton(!sendButton);
     }
@@ -123,7 +135,9 @@ const TransactionListDetails = ({ accountId }) => {
   const handleInputRestriction =
     (allowedCharacters = "") =>
     (e) => {
-      const isAllowedCharacter = new RegExp(`[^${allowedCharacters}]`).test(e.key);
+      const isAllowedCharacter = new RegExp(`[^${allowedCharacters}]`).test(
+        e.key
+      );
       const isBackspace = e.key === "Backspace";
       const isTab = e.key === "Tab";
 
@@ -172,14 +186,11 @@ const TransactionListDetails = ({ accountId }) => {
             }}
           >
             <CardContent>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ color: "#4B56D2" }}
-              >
+              <Typography variant="h5" component="div">
                 Últimos movimientos
               </Typography>
-              <Grid container
+              <Grid
+                container
                 sx={{
                   display: "flex",
                   gap: "16px",
@@ -190,93 +201,102 @@ const TransactionListDetails = ({ accountId }) => {
                 }}
               >
                 <Grid item>
-                <Typography
-                  variant="body1"
-                  component="div"
-                  sx={{ color: "#4B56D2", alignContent: "center" }}
-                >
-                  Filtrar por:
-                </Typography>
-                </Grid>
-                <Grid item>
-                <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-                  <TextField
-                    select
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                    label="Tipo"
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ alignContent: "center" }}
                   >
-                    <MenuItem value="">
-                      <em>Todos</em>
-                    </MenuItem>
-                    <MenuItem value="DEPOSIT">DEPOSITO</MenuItem>
-                    <MenuItem value="INCOME">INGRESO</MenuItem>
-                    <MenuItem value="PAYMENT">PAGO</MenuItem>
-                  </TextField>
-                </FormControl>
+                    Filtrar por:
+                  </Typography>
                 </Grid>
                 <Grid item>
-                <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-                  <TextField
-                    select
-                    value={concept}
-                    onChange={(e) => setConcept(e.target.value)}
-                    label="Concepto"
-                  >
-                    <MenuItem value="">
-                      <em>Todos</em>
-                    </MenuItem>
-                    <MenuItem value="VARIOS">VARIOS</MenuItem>
-                    <MenuItem value="ALQUILERES">ALQUILERES</MenuItem>
-                    <MenuItem value="CUOTAS">CUOTAS</MenuItem>
-                    <MenuItem value="EXPENSAS">EXPENSAS</MenuItem>
-                    <MenuItem value="HONORARIOS">HONORARIOS</MenuItem>
-                    <MenuItem value="FACTURAS">FACTURAS</MenuItem>
-                    <MenuItem value="HABERES">HABERES</MenuItem>
-                    <MenuItem value="PRESTAMOS">PRESTAMOS</MenuItem>
-                    <MenuItem value="SEGUROS">SEGUROS</MenuItem>
-                  </TextField>
-                </FormControl>
+                  <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+                    <TextField
+                      select
+                      value={type}
+                      onChange={(e) => setType(e.target.value)}
+                      label="Tipo"
+                    >
+                      <MenuItem value="">
+                        <em>Todos</em>
+                      </MenuItem>
+                      <MenuItem value="DEPOSIT">DEPOSITO</MenuItem>
+                      <MenuItem value="INCOME">INGRESO</MenuItem>
+                      <MenuItem value="PAYMENT">PAGO</MenuItem>
+                    </TextField>
+                  </FormControl>
                 </Grid>
                 <Grid item>
-                <FormControl variant="outlined" >
-                  <TextField
-                    label="Monto Minimo"
-                    name="min"
-                    value={min}
-                    autoComplete="min"
-                    onChange={(e) => setMin(e.target.value)}
-                    error={Boolean(documentNumberError)}
-                    helperText={documentNumberError}
-                    onKeyDown={handleInputRestriction("0-9")}
-                  />
-                </FormControl>
+                  <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+                    <TextField
+                      select
+                      value={concept}
+                      onChange={(e) => setConcept(e.target.value)}
+                      label="Concepto"
+                    >
+                      <MenuItem value="">
+                        <em>Todos</em>
+                      </MenuItem>
+                      <MenuItem value="VARIOS">VARIOS</MenuItem>
+                      <MenuItem value="ALQUILERES">ALQUILERES</MenuItem>
+                      <MenuItem value="CUOTAS">CUOTAS</MenuItem>
+                      <MenuItem value="EXPENSAS">EXPENSAS</MenuItem>
+                      <MenuItem value="HONORARIOS">HONORARIOS</MenuItem>
+                      <MenuItem value="FACTURAS">FACTURAS</MenuItem>
+                      <MenuItem value="HABERES">HABERES</MenuItem>
+                      <MenuItem value="PRESTAMOS">PRESTAMOS</MenuItem>
+                      <MenuItem value="SEGUROS">SEGUROS</MenuItem>
+                    </TextField>
+                  </FormControl>
                 </Grid>
                 <Grid item>
-                <FormControl variant="outlined" >
-                  <TextField
-                    label="Monto Máximo"
-                    name="max"
-                    value={max}
-                    autoComplete="max"
-                    onChange={(e) => setMax(e.target.value)}
-                    error={Boolean(documentNumberError)}
-                    helperText={documentNumberError}
-                    onKeyDown={handleInputRestriction("0-9")}
-
-                  />
-                </FormControl>
+                  <FormControl variant="outlined">
+                    <TextField
+                      label="Monto Minimo"
+                      name="min"
+                      value={min}
+                      autoComplete="min"
+                      onChange={(e) => setMin(e.target.value)}
+                      error={Boolean(documentNumberError)}
+                      helperText={documentNumberError}
+                      onKeyDown={handleInputRestriction("0-9")}
+                    />
+                  </FormControl>
                 </Grid>
                 <Grid item>
-                <FormControl variant="outlined" >
-                  <Button
-                    variant="contained"
-                    sx={{ height: "56px" }}
-                    onClick={handleFilterChange}
-                  >
-                    Filtrar
-                  </Button>
-                </FormControl>
+                  <FormControl variant="outlined">
+                    <TextField
+                      label="Monto Máximo"
+                      name="max"
+                      value={max}
+                      autoComplete="max"
+                      onChange={(e) => setMax(e.target.value)}
+                      error={Boolean(documentNumberError)}
+                      helperText={documentNumberError}
+                      onKeyDown={handleInputRestriction("0-9")}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item>
+                  <FormControl variant="outlined">
+                    <Button
+                      variant="contained"
+                      sx={{
+                        height: "56px",
+                        color: "#ffffff",
+                        backgroundColor: "#5B67E5",
+                        border: "1px solid #5B67E5",
+                        "&:hover": {
+                          backgroundColor: "#6B77FF", // Color oscuro al pasar el mouse
+                          borderColor: "#6B77FF",
+                          color: "#ffffff", // Borde oscuro al pasar el mouse
+                        },
+                      }}
+                      onClick={handleFilterChange}
+                    >
+                      Filtrar
+                    </Button>
+                  </FormControl>
                 </Grid>
               </Grid>
               {haveTransactions ? (
@@ -303,7 +323,14 @@ const TransactionListDetails = ({ accountId }) => {
                                     ? "Pago"
                                     : "Depósito"}
                                 </Typography>
-                                <Typography>{transaction.amount}</Typography>
+                                <Typography>
+                                  {transaction.amount.toLocaleString("es-AR", {
+                                    style: "currency",
+                                    currency: account.currency,
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
+                                </Typography>
                               </Box>
                             }
                             secondary={

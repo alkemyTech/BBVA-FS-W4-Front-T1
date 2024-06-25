@@ -23,7 +23,7 @@ const AccountCard = ({ accountData }) => {
 
   const today = new Date();
   const totalFixedTerms = accountData.fixedTerms
-    .filter(term => {
+    .filter((term) => {
       const [year, month, day] = term.closingDate;
       const closingDate = new Date(year, month - 1, day); // Los meses son 0-indexed en JavaScript
       return closingDate >= today;
@@ -36,7 +36,8 @@ const AccountCard = ({ accountData }) => {
         <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
           <Card
             sx={{
-              backgroundColor: "#4B56D2",
+              backgroundColor:
+                account.accountType === "CAJA_AHORRO" ? "#5361F8" : "#6b77ff",
               color: "#ffffff",
               padding: "16px",
               borderRadius: "8px",
@@ -44,22 +45,23 @@ const AccountCard = ({ accountData }) => {
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              cursor: "pointer"
+              cursor: "pointer",
+              boxShadow: 6
             }}
             onClick={() => handleCardClick(`/account`, account)}
           >
             <CardContent>
-              <Typography variant="h6" component="div">
+              <Typography variant="h6" component="div" sx={{textShadow: '0px 0px 1px #000'}}>
                 <strong>
                   {formatCurrency(account.balance, account.currency)}
                 </strong>
               </Typography>
-              <Typography variant="subtitle1" component="div">
+              <Typography variant="subtitle1" component="div" sx={{textShadow: '0px 0px 1px #000'}}>
                 {account.accountType === "CAJA_AHORRO"
                   ? "Caja de Ahorro"
                   : "Cuenta Corriente"}
               </Typography>
-              <Typography variant="body2" component="div">
+              <Typography variant="body2" component="div" sx={{textShadow: '0px 0px 1px #000'}}>
                 {account.currency}
               </Typography>
             </CardContent>
@@ -71,7 +73,7 @@ const AccountCard = ({ accountData }) => {
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Card
             sx={{
-              backgroundColor: "#82C3EC",
+              backgroundColor: "#609af6",
               color: "#ffffff",
               padding: "16px",
               borderRadius: "8px",
@@ -79,12 +81,13 @@ const AccountCard = ({ accountData }) => {
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              cursor: "pointer"
+              cursor: "pointer",
+              boxShadow: 6,
             }}
             onClick={() => handleCardClick(`/account`, accountData.accountUsd)}
           >
             <CardContent>
-              <Typography variant="h6" component="div">
+              <Typography variant="h6" component="div" sx={{textShadow: '0px 0px 1px #000'}}>
                 <strong>
                   {formatCurrency(
                     accountData.accountUsd.balance,
@@ -92,10 +95,10 @@ const AccountCard = ({ accountData }) => {
                   )}
                 </strong>
               </Typography>
-              <Typography variant="subtitle1" component="div">
+              <Typography variant="subtitle1" component="div"sx={{textShadow: '0px 0px 1px #000'}}>
                 Caja de Ahorro
               </Typography>
-              <Typography variant="body2" component="div">
+              <Typography variant="body2" component="div"sx={{textShadow: '0px 0px 1px #000'}}>
                 {accountData.accountUsd.currency}
               </Typography>
             </CardContent>
@@ -107,30 +110,33 @@ const AccountCard = ({ accountData }) => {
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Card
             sx={{
-              backgroundColor: "#D1D8C5",
-              color: "#ffffff",
+              backgroundColor: "#7DAFFF",
+              color: "#FFFFFF",
               padding: "16px",
               borderRadius: "8px",
               height: "100px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              cursor: "pointer"
+              cursor: "pointer",
+              boxShadow: 6,
             }}
-            onClick={() => handleCardClick(`/inversiones`, accountData.fixedTerms)}
-
+            onClick={() =>
+              handleCardClick(`/inversiones`, accountData.fixedTerms)
+            }
           >
             <CardContent>
-              <Typography variant="h6" component="div">
+              <Typography variant="h6" component="div" sx={{textShadow: '0px 0px 1px #000'}}>
                 <strong>{formatCurrency(totalFixedTerms, "ARS")}</strong>
               </Typography>
-              <Typography variant="subtitle1" component="div">
+              <Typography variant="subtitle1" component="div" sx={{textShadow: '0px 0px 1px #000'}}>
                 Total Invertido en Plazos Fijos
               </Typography>
             </CardContent>
           </Card>
         </Grid>
-      )}    </Grid>
+      )}
+    </Grid>
   );
 };
 
