@@ -1,15 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Grid,
-  Button,
-  Typography,
-  Card,
-  CardContent,
-  CircularProgress,
-} from "@mui/material";
+import { Grid, Button, Typography, CircularProgress } from "@mui/material";
 import MySnackbar from "../../UI/MySnackBar";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate } from "react-router";
 import {
   showNotification,
   hideNotification,
@@ -21,13 +14,7 @@ import { getThirdAccount } from "../../api/ThirdAccount";
 import { clearSelectedDestination } from "../../Redux/slice/transferSlice";
 
 const Transferencia = () => {
-  const accountTypes = {
-    USD: ["CAJA_AHORRO"],
-    ARS: ["CAJA_AHORRO", "CUENTA_CORRIENTE"],
-  };
-
   const [thirdAccounts, setThirdAccounts] = useState([]);
-
   const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
@@ -46,18 +33,22 @@ const Transferencia = () => {
       }
     };
 
-    dispatch(clearSelectedDestination());
     fetchData();
-  }, [isLoading]);
+    dispatch(clearSelectedDestination());
+  }, []);
 
   const handleNewDestiny = () => {
     navigate("/transferencia/nuevo-destino");
   };
 
-  const handleSelectAccount = async (e) => {
+  const handleSelectAccount = async (account) => {
+    setIsLoading(true);
+
     try {
-      setIsLoading(true);
-      await dispatch(selectAccount(e));
+      if (account) {
+        await dispatch(selectAccount(account));
+        console.log(account);
+      }
       navigate("/transferencia/enviar-dinero");
     } catch (error) {
       dispatch(
@@ -66,6 +57,7 @@ const Transferencia = () => {
           status: "error",
         })
       );
+    } finally {
       setIsLoading(false);
     }
   };
@@ -77,15 +69,40 @@ const Transferencia = () => {
   return (
     <Grid container>
       <Grid container className="container">
-        <ArrowBackComponent />
-        <Grid container justifyContent="center" alignItems="center" rowSpacing={2}>
-          <Grid item>
-            <Typography variant="h4" component="h1">
-              Transferir Dinero
-            </Typography>
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            mt={2}
+            ml={5}
+            position="relative"
+          >
+            <Grid item>
+              <ArrowBackComponent />
+            </Grid>
           </Grid>
-          <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="body1" component="h3" mb={1}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            sx={{
+              margin: "0 auto",
+              backgroundColor: "#fff",
+              width: "50vw",
+              borderRadius: 5,
+              p: 4,
+              boxShadow: 3,
+              mb:2
+            }}
+          >
+            <Grid item>
+              <Typography variant="h4" component="h1" mb={1}>
+                Transferir Dinero
+              </Typography>
+            </Grid>
+            <Typography variant="body1" component="h3" mb={2}>
               Seleccione el destino
             </Typography>
             <Grid item>
@@ -94,14 +111,27 @@ const Transferencia = () => {
                 variant="contained"
                 fullWidth
                 onClick={handleNewDestiny}
-                sx={{ backgroundColor: "#472183" }}
               >
                 Nuevo destino
               </Button>
             </Grid>
           </Grid>
 
-          <Grid item>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            sx={{
+              margin: "0 auto",
+              backgroundColor: "#fff",
+              width: "50vw",
+              minHeight: "88px",
+              borderRadius: 5,
+              p: 4,
+              boxShadow: 3,
+            }}
+          >
             {isLoading ? (
               <div
                 style={{
@@ -119,36 +149,41 @@ const Transferencia = () => {
               </div>
             ) : thirdAccounts.length > 0 ? (
               thirdAccounts.map((account, index) => (
-                <Grid key={index} item xs={4}>
-                  <Card
-                    sx={{
-                      backgroundColor: "#D1D8C5",
-                      color: "black",
-                      width: "30vw",
-                      padding: "0.4rem",
-                      borderRadius: "8px",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                    }}
-                    onClick={() =>
-                      handleSelectAccount(account.destinationAccountCbu)
-                    }
-                    raised={true}
-                  >
-                    <CardContent>
-                      <Typography variant="h6" component="div">
-                        {account.destinationUserFirstName + " " + account.destinationUserLastName}
-                      </Typography>
-                      <Typography variant="body1" component="div">
-                        {account.nickname}
-                      </Typography>
-                      <Typography variant="body1" component="div">
-                        {"CBU: " + account.destinationAccountCbu}
-                      </Typography>
-                    </CardContent>
-                  </Card>
+                <Grid
+                  item
+                  key={index}
+                  onClick={() =>
+                    handleSelectAccount(account.destinationAccountCbu)
+                  }
+                  sx={{
+                    cursor: "pointer",
+                    borderBottom: "1px solid #F1F6F5",
+                    minWidth: "40vw",
+                    p: 1,
+                    "&:hover": { backgroundColor: "#F1F6F5" },
+                  }}
+                >
+                  <Typography variant="body1" component="div">
+                    {account.destinationUserFirstName +
+                      " " +
+                      account.destinationUserLastName}
+                    <span
+                      style={{
+                        fontWeight: "300",
+                        fontSize: "0.9rem",
+                        color: "#4B4B4B",
+                      }}
+                    >
+                      {account.nickname
+                        ? " - (" + account.nickname + ")"
+                        : account.nickname}
+                    </span>
+                  </Typography>
+                  <Typography variant="body2" component="div">
+                    {account.destinationAccountBank +
+                      " - " +
+                      account.destinationAccountCurrency}
+                  </Typography>
                 </Grid>
               ))
             ) : (

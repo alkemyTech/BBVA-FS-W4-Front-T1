@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Container, Tooltip } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -19,12 +19,11 @@ const ArrowBackComponent = () => {
   };
 
   return (
-    <Box
-      onClick={handleClick}
-      style={{ cursor: "pointer", position: "absolute", margin: "2.5vh" }}
-    >
-      <ArrowBack />
-    </Box>
+    <>
+      <Tooltip title="Ir atrás">
+        <ArrowBack onClick={handleClick} style={{ cursor: "pointer"}} fontSize="large" />
+      </Tooltip>
+    </>
   );
 };
 

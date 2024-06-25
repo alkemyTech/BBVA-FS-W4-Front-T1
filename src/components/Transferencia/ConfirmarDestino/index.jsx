@@ -45,7 +45,7 @@ const ConfirmarDestino = () => {
           idDestinationAccount: selectedDestination.idAccount,
         };
         await addThirdAccount(newThirdAccount);
-        dispatch(setConfirmedDestination());
+        await dispatch(setConfirmedDestination());
         dispatch(
           showNotification({
             message: "Cuenta agregada con éxito",
@@ -72,7 +72,7 @@ const ConfirmarDestino = () => {
     e.preventDefault();
 
     try {
-      await dispatch(clearSelectedDestination());
+      dispatch(clearSelectedDestination());
       navigate("/transferencia");
     } catch (error) {
       dispatch(
@@ -91,23 +91,42 @@ const ConfirmarDestino = () => {
   return (
     <Grid container>
       <Grid container className="container">
-        <ArrowBackComponent />
         <Grid container justifyContent="center" alignItems="center">
-          <Grid item>
-            <Typography variant="h4" component="h1">
-              Confirmar nuevo destino
-            </Typography>
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            mt={5}
+            ml={4}
+            position="relative"
+          >
+            <Grid item position="absolute">
+              <ArrowBackComponent />
+            </Grid>
           </Grid>
           <Grid
             container
             direction="column"
             justifyContent="center"
-            alignItems="center"
-            spacing={2}
+            alignItems="flex-start"
+            sx={{
+              margin: "0 auto",
+              backgroundColor: "#fff",
+              width: 480,
+              borderRadius: 5,
+              rowGap: 2,
+              p: 5,
+              boxShadow: 3,
+            }}
           >
+            <Grid item mb={1}>
+              <Typography variant="h4" component="h1">
+                Confirmar destino
+              </Typography>
+            </Grid>
             <Grid item>
               <Typography variant="body1" component="h4">
-                Nombre y apellido:{" "}
+                <b>Nombre y apellido:</b>{" "}
                 {selectedDestination.userFirstName +
                   " " +
                   selectedDestination.userLastName}
@@ -115,17 +134,15 @@ const ConfirmarDestino = () => {
             </Grid>
             <Grid item>
               <Typography variant="body1" component="h4">
-                Tipo de documento: {selectedDestination.userDocumentType}
+                <b>Tipo y número de documento:</b>{" "}
+                {selectedDestination.userDocumentType +
+                  " " +
+                  selectedDestination.userDocumentNumber}
               </Typography>
             </Grid>
             <Grid item>
               <Typography variant="body1" component="h4">
-                Número de documento: {selectedDestination.userDocumentNumber}
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography variant="body1" component="h4">
-                CBU: {selectedDestination.cbu}
+                <b>CBU:</b> {selectedDestination.cbu}
               </Typography>
             </Grid>
             <Grid item>
@@ -135,23 +152,16 @@ const ConfirmarDestino = () => {
             </Grid>
             <Grid item>
               <Typography variant="body1" component="h4">
-                Banco: {selectedDestination.bank}
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography variant="body1" component="h4">
-                Tipo de Cuenta:{" "}
+                <b>Cuenta:</b>{" "}
                 {selectedDestination.accountType === "CAJA_AHORRO"
                   ? "Caja de Ahorro"
-                  : "Cuenta Corriente"}
+                  : "Cuenta Corriente"}{" "}
+                {selectedDestination.currency +
+                  " - " +
+                  selectedDestination.bank}
               </Typography>
             </Grid>
-            <Grid item>
-              <Typography variant="body1" component="h4">
-                Moneda: {selectedDestination.currency}
-              </Typography>
-            </Grid>
-            <Grid item>
+            <Grid item alignSelf="center">
               <FormControlLabel
                 control={
                   <Checkbox
@@ -161,11 +171,12 @@ const ConfirmarDestino = () => {
                   />
                 }
                 label="Agregar a la lista de contactos"
+                sx={{mr:0}}
               />
             </Grid>
             {addToContacts && (
-              <Grid item>
-                <Typography variant="body2" component="h6" mb={1}>
+              <Grid item alignSelf="center">
+                <Typography variant="body2" component="h6" mt={-2} mb={2}>
                   Agrega una referencia de contacto (Opcional)
                 </Typography>
                 <TextField
@@ -177,7 +188,7 @@ const ConfirmarDestino = () => {
                 />
               </Grid>
             )}
-            <Grid item>
+            <Grid item mb={1} alignSelf="center">
               <Button
                 variant="contained"
                 disabled={isLoading}
@@ -193,7 +204,6 @@ const ConfirmarDestino = () => {
               </Button>
               <Button
                 variant="contained"
-                sx={{ backgroundColor: "#472183" }}
                 disabled={isLoading}
                 onClick={handleConfirmation}
               >
