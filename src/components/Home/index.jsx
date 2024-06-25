@@ -26,9 +26,9 @@ const Home = () => {
         setLoading(false);
       } catch (error) {
         if (error.message == "Usuario no autenticado") {
-          dispatch(clearUser());
-          navigate("/");
-        }
+            dispatch(clearUser());
+            navigate("/")
+          }
         console.error("Error fetching data:", error);
         setLoading(false);
       }

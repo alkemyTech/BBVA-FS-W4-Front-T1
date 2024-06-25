@@ -116,6 +116,7 @@ const AccountCard = ({ accountData }) => {
               flexDirection: "column",
               justifyContent: "center",
               cursor: "pointer"
+
             }}
             onClick={() => handleCardClick(`/inversiones`, accountData.fixedTerms)}
 
