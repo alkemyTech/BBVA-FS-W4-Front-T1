@@ -37,66 +37,59 @@ const FixedTermCard = ({ totalFixedTerms }) => {
     <Grid item xs={12}>
       <Card
         sx={{
-          backgroundColor: "#f1f6f5",
+          backgroundColor: "#f5f5f5",
           color: "#000000",
           borderRadius: "2vh",
           padding: "1vh",
-          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+          boxShadow: 2,
         }}
       >
         <CardContent>
           <Grid container alignItems="center" justifyContent="space-between">
-            <Grid item xs={12} sm={9}>
+            <Grid item xs={6} sm={6}>
               <Typography
                 variant="h6"
                 component="div"
                 sx={{ marginBottom: "8px", color: "#472183" }}
               >
-                Total Invertido
+                Total Invertido en Plazos fijos
               </Typography>
               <Typography variant="h4" component="div" color="#000000">
                 {formatCurrency(totalFixedTerms, "ARS")}
               </Typography>
             </Grid>
 
-            <Grid item xs={12} sm={3} sx={{ textAlign: { xs: "left", sm: "right" } }}>
-              <Button
-                variant="contained"
-                sx={{
-                  marginBottom: "2vh",
-                  color: "#ffffff",
-                  backgroundColor: "#4b56d2",
-                  border: "1px solid #4b56d2",
-                  padding: "1vh",
-                  "&:hover": {
-                    backgroundColor: "#3c4370", 
-                    borderColor: "#3c4370", 
-                  },
-                }}
-                onClick={handleCreateFixedTerm}
-              >
-                <b>Crear Plazo Fijo</b>
-              </Button>
-            </Grid>
-            <Grid item xs={12} sm={12} sx={{ textAlign: { xs: "left", sm: "right" } }}>
-              <Button
-                variant="contained"
-                sx={{
-                  marginBottom: "2vh",
-                  color: "#ffffff",
-                  backgroundColor: "#4b56d2",
-                  border: "1px solid #4b56d2",
-                  padding: "1vh",
-                  "&:hover": {
-                    backgroundColor: "#3c4370", 
-                    borderColor: "#3c4370", 
-                  },
-                }}
-                onClick={handleSimulateFixedTerm}
-              >
-                <b>Simular Plazo Fijo</b>
-              </Button>
-            </Grid>
+            <Grid item xs={12} sm={6} sx={{ textAlign: "right" }}>
+              <Grid container justifyContent="flex-end" columnSpacing={2}>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      marginBottom: "2vh",
+                      color: "#fff",
+                      padding: "1vh",
+                    }}
+                    onClick={handleCreateFixedTerm}
+                  >
+                    <b>Crear Plazo Fijo</b>
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      marginBottom: "2vh",
+                      color: "#fff",
+                      padding: "1vh",
+                    }}
+                    onClick={handleSimulateFixedTerm}
+                  >
+                    <b>Simular Plazo Fijo</b>
+                  </Button>
+                </Grid>
+              </Grid>
+              </Grid>
+
           </Grid>
         </CardContent>
       </Card>

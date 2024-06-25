@@ -28,9 +28,30 @@ export default function PlazoFijo() {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [accountData, setAccountData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [amountError, setAmountError] = useState("");
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDays, setSelectedDays] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const notification = useSelector((state) => state.notification);
+  const simulatedFixedTerm = useSelector(
+    (state) => state.simulatedFixedTerm.data
+  );
+  const selectedDay = useSelector(
+    (state) => state.simulatedFixedTerm.selectedDay
+  );
+
+  useEffect(() => {
+    if (simulatedFixedTerm) {
+      console.log("SIMULADO", simulatedFixedTerm);
+      setAmount(simulatedFixedTerm.amount);
+      setClosingDate(simulatedFixedTerm.closingDate);
+    }
+
+    if (selectedDay) {
+      handleDayClick(selectedDay);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -75,13 +96,10 @@ export default function PlazoFijo() {
     const diferencia = (fechaDeCierre - fechaActual) / (1000 * 3600 * 24) + 1;
 
     if (!validateNumbers(parseFloat(amount)) || parseFloat(amount) <= 0) {
-      dispatch(
-        showNotification({
-          message: "El monto ingresado debe ser un numero mayor a cero",
-          status: "error",
-        })
-      );
+      setAmountError("El monto debe ser mayor a cero.");
       return;
+    } else {
+      setAmountError("");
     }
     if (parseFloat(amount) > accountData.balance) {
       dispatch(
@@ -140,6 +158,38 @@ export default function PlazoFijo() {
     }
   };
 
+  const handleDayClick = (day) => {
+    if (day === "Otro") {
+      setShowDatePicker(true);
+    } else {
+      setShowDatePicker(false);
+      const today = new Date();
+      let closingDate;
+      switch (day) {
+        case "30":
+          closingDate = dayjs(today.getTime() + 31 * 24 * 60 * 60 * 1000);
+          break;
+        case "60":
+          closingDate = dayjs(today.getTime() + 61 * 24 * 60 * 60 * 1000);
+          break;
+        case "90":
+          closingDate = dayjs(today.getTime() + 91 * 24 * 60 * 60 * 1000);
+          break;
+        default:
+          closingDate = null;
+      }
+      setClosingDate(closingDate);
+    }
+    setSelectedDays((prevSelectedDays) => {
+      const newSelectedDays = { ...prevSelectedDays };
+      Object.keys(newSelectedDays).forEach((key) => {
+        newSelectedDays[key] = false;
+      });
+      newSelectedDays[day] = true;
+      return newSelectedDays;
+    });
+  };
+
   const handleSnackbarClose = () => {
     dispatch(hideNotification());
   };
@@ -178,7 +228,7 @@ export default function PlazoFijo() {
           </Typography>
         </Grid>
         <Grid item xs={12} sx={{ marginBottom: 4 }}>
-          <Typography variant="h6" component="h7" gutterBottom>
+          <Typography variant="h6">
             Balance actual:{" "}
             {accountData
               ? formatCurrency(accountData.balance, accountData.currency) +
@@ -187,34 +237,153 @@ export default function PlazoFijo() {
               : "Cargando..."}
           </Typography>
         </Grid>
+        <Grid item xs={12} sx={{ marginBottom: 1 }}>
+          <Typography variant="h7">¿Cuanto queres invertir?</Typography>
+        </Grid>
         <Grid item xs={12} sx={{ marginBottom: 3 }}>
           <TextField
             label="Monto"
             value={amount}
             fullWidth
-            marg
+            disabled={simulatedFixedTerm}
+            error={Boolean(amountError)}
+            helperText={amountError}
             onChange={(e) => setAmount(e.target.value)}
             required
             onKeyDown={handleInputRestriction("0-9")}
           />
         </Grid>
 
-        <Grid item xs={12} sx={{ marginBottom: 3 }}>
-          <DatePicker
-            required
-            label="Fecha de Cierre"
-            value={closingDate}
-            minDate={minDate}
-            onChange={(e) => setClosingDate(e)}
-            slotProps={{
-              textField: {
-                required: true,
-                fullWidth: true,
+        <Grid item xs={12} sx={{ marginBottom: 1 }}>
+          <Typography variant="h7">¿A cuantos dias?</Typography>
+        </Grid>
+        <Grid item xs={3} sx={{ marginBottom: 2 }}>
+          <Button
+            onClick={() => handleDayClick("30")}
+            disabled={simulatedFixedTerm}
+            variant={selectedDays["30"] ? "contained" : "outlined"}
+            sx={{
+              color: "#472183",
+              borderColor: "#472183",
+              "&.MuiButton-contained": {
+                bgcolor: "#472183",
+                color: "#ffffff", // or any other color you want for the text
+              },
+              "&:hover": {
+                backgroundColor: "#472183",
+                borderColor: "#472183",
+                color: "#ffffff",
               },
             }}
-          />
+          >
+            30 dias
+          </Button>
         </Grid>
 
+        <Grid item xs={3} sx={{ marginBottom: 2 }}>
+          <Button
+            disabled={simulatedFixedTerm}
+            onClick={() => handleDayClick("60")}
+            variant={selectedDays["60"] ? "contained" : "outlined"}
+            sx={{
+              color: "#472183",
+              borderColor: "#472183",
+              "&.MuiButton-contained": {
+                bgcolor: "#472183",
+                color: "#ffffff", // or any other color you want for the text
+              },
+              "&:hover": {
+                backgroundColor: "#472183",
+                borderColor: "#472183",
+                color: "#ffffff",
+              },
+            }}
+          >
+            60 dias
+          </Button>
+        </Grid>
+
+        <Grid item xs={3} sx={{ marginBottom: 2 }}>
+          <Button
+            disabled={simulatedFixedTerm}
+            onClick={() => handleDayClick("90")}
+            variant={selectedDays["90"] ? "contained" : "outlined"}
+            sx={{
+              color: "#472183",
+              borderColor: "#472183",
+              "&.MuiButton-contained": {
+                bgcolor: "#472183",
+                color: "#ffffff", // or any other color you want for the text
+              },
+              "&:hover": {
+                backgroundColor: "#472183",
+                borderColor: "#472183",
+                color: "#ffffff",
+              },
+            }}
+          >
+            90 dias
+          </Button>
+        </Grid>
+        <Grid item xs={3} sx={{ marginBottom: 2 }}>
+          <Button
+            fullWidth
+            disabled={simulatedFixedTerm}
+            onClick={() => handleDayClick("Otro")}
+            variant={selectedDays["Otro"] ? "contained" : "outlined"}
+            sx={{
+              color: "#472183",
+              borderColor: "#472183",
+              "&.MuiButton-contained": {
+                bgcolor: "#472183",
+                color: "#ffffff", // or any other color you want for the text
+              },
+              "&:hover": {
+                backgroundColor: "#472183",
+                borderColor: "#472183",
+                color: "#ffffff",
+              },
+            }}
+          >
+            Otro
+          </Button>
+        </Grid>
+        <Grid item xs={12} sx={{ marginTop: 1 }}>
+          {showDatePicker && (
+            <DatePicker
+              sx={{ marginBottom: 1 }}
+              required
+              disabled={simulatedFixedTerm}
+
+              label="Fecha de Cierre"
+              value={closingDate}
+              onChange={(e) => setClosingDate(e)}
+              minDate={minDate}
+              slotProps={{
+                textField: {
+                  required: true,
+                  fullWidth: true,
+                },
+              }}
+            />
+          )}
+          {!showDatePicker && closingDate && (
+            <DatePicker
+              sx={{ marginBottom: 1 }}
+              disabled
+              label="Fecha de Cierre"
+              value={closingDate}
+              onChange={(e) => setClosingDate(e)}
+              minDate={minDate}
+              slotProps={{
+                textField: {
+                  required: true,
+                  fullWidth: true,
+                },
+              }}
+            />
+          )}
+        </Grid>
         <Grid item xs={12} sx={{ marginBottom: 3 }}>
           <FormControlLabel
             control={
@@ -239,8 +408,6 @@ export default function PlazoFijo() {
             onClick={handleSubmit}
             sx={{
               mt: 2,
-              backgroundColor: "#472183",
-              color: "#fff",
             }}
           >
             {isLoading ? "Cargando..." : "Crear"}

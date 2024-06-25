@@ -80,6 +80,7 @@ const Inversiones = () => {
         <CircularProgress sx={{ color: "#472183" }} />
       </div>
       ) : (
+        <>
         <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}>
           <FixedTermDetails totalFixedTerms={totalFixedTerms} />
           <Grid item xs={12}>
@@ -91,13 +92,15 @@ const Inversiones = () => {
             />
           </Grid>
 
-      <MySnackbar
+
+        </Grid>
+        <MySnackbar
         open={notification.open}
         handleClose={handleSnackbarClose}
         message={notification.message}
         status={notification.status}
       />
-        </Grid>
+      </>
       )}
     </Container>
   );

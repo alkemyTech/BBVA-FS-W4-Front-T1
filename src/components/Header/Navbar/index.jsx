@@ -39,6 +39,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
+    setAnchorElUser(null);
     dispatch(clearUser());
   };
 
@@ -104,7 +105,7 @@ export default function Navbar() {
               </Button>
               <Button
                 onClick={handleCloseNavMenu}
-                href="/plazo-fijo"
+                href="/inversiones"
                 sx={{
                   my: 1,
                   color: "black",
@@ -174,7 +175,7 @@ export default function Navbar() {
             </Button>
             <Button
               onClick={handleCloseNavMenu}
-              href="/plazo-fijo"
+              href="/inversiones"
               sx={{
                 my: 1,
                 color: "white",
@@ -264,7 +265,7 @@ export default function Navbar() {
                   paddingLeft: "15px",
                 }}
               >
-                Logout
+                Salir
               </Button>
             </Menu>
           </Box>
