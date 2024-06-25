@@ -13,6 +13,8 @@ import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { simulateFixedTerm } from "../../api/FixedTerm";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { setSelectedDay, setSimulatedFixedTerm } from "../../Redux/slice/fixedTermSlice";
 
 const SimularPlazoFijo = () => {
   const [amount, setAmount] = useState("");
@@ -25,6 +27,7 @@ const SimularPlazoFijo = () => {
   const today = new Date();
   const minDate = dayjs(new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000));
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleInputRestriction =
     (allowedCharacters = "") =>
@@ -41,6 +44,11 @@ const SimularPlazoFijo = () => {
     };
 
     const handleCreateFixedTerm = () => {
+      const simulatedFixedTerm = {
+        amount,
+        closingDate
+      }
+      dispatch(setSimulatedFixedTerm(simulatedFixedTerm));
       navigate("/plazo-fijo");
     };
 
@@ -53,19 +61,21 @@ const SimularPlazoFijo = () => {
       let closingDate;
       switch (day) {
         case "30":
-          closingDate = dayjs(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+          closingDate = dayjs(today.getTime() + 31 * 24 * 60 * 60 * 1000);
           break;
         case "60":
-          closingDate = dayjs(today.getTime() + 60 * 24 * 60 * 60 * 1000);
+          closingDate = dayjs(today.getTime() + 61 * 24 * 60 * 60 * 1000);
           break;
         case "90":
-          closingDate = dayjs(today.getTime() + 90 * 24 * 60 * 60 * 1000);
+          closingDate = dayjs(today.getTime() + 91 * 24 * 60 * 60 * 1000);
           break;
         default:
           closingDate = null;
       }
       setClosingDate(closingDate);
     }
+    dispatch(setSelectedDay(day));
+
     setSelectedDays((prevSelectedDays) => {
       const newSelectedDays = { ...prevSelectedDays };
       Object.keys(newSelectedDays).forEach((key) => {
@@ -144,7 +154,6 @@ const SimularPlazoFijo = () => {
             // margin="normal"
             error={Boolean(amountError)}
             helperText={amountError}
-            marg
             onChange={(e) => setAmount(e.target.value)}
             required
             onKeyDown={handleInputRestriction("0-9")}
@@ -330,12 +339,12 @@ const SimularPlazoFijo = () => {
         <Grid item xs={12}>
         <Button
             type="submit"
+            disabled={!responseData}
             variant="contained"
             fullWidth
             onClick={handleCreateFixedTerm}
             sx={{
               mt: 2,
-              backgroundColor: "#472183",
               color: "#fff",
             }}
           >

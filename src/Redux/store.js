@@ -5,6 +5,7 @@ import saldoReducer from './slice/saldoSlice';
 import userReducer from "./slice/userSlice";
 import notificationReducer from './slice/snackBarSlice';
 import transferReducer from './slice/transferSlice';
+import simulatedFixedTerm from './slice/fixedTermSlice';
 
 const persistUserConfig = {
   key: "user",
@@ -25,6 +26,8 @@ export const store = configureStore({
     user: persistedUserReducer,
     notification: notificationReducer,
     transfer: transferReducer,
+    simulatedFixedTerm: simulatedFixedTerm,
+
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
