@@ -4,7 +4,6 @@ import {
   Grid,
   Button,
   Typography,
-  CircularProgress,
   IconButton,
   Dialog,
   DialogActions,
@@ -14,7 +13,10 @@ import {
   TextField,
   ListItemButton,
   Skeleton,
+  Tooltip,
+  Avatar,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import MySnackbar from "../../UI/MySnackBar";
@@ -31,6 +33,7 @@ import {
   updateThirdAccount,
 } from "../../api/ThirdAccount";
 import { clearSelectedDestination } from "../../Redux/slice/transferSlice";
+import Zoom from "@mui/material/Zoom";
 
 const Transferencia = () => {
   const [thirdAccounts, setThirdAccounts] = useState([]);
@@ -254,6 +257,28 @@ const Transferencia = () => {
                           selectedAccountIndex !== null ? "none" : "auto",
                       }}
                     >
+                      <Tooltip
+                        TransitionComponent={Zoom}
+                        title={
+                          account.destinationUserFirstName +
+                          " " +
+                          account.destinationUserLastName
+                        }
+                        placement="bottom-end"
+                        disableInteractive
+                      >
+                        <IconButton size="small" sx={{ p: 0, m: 0, mr: 2 }}>
+                          <Avatar
+                            sx={{
+                              width: 42,
+                              height: 42,
+                              backgroundColor: "#E68D00",
+                            }}
+                            alt={account.destinationUserFirstName.charAt(0)}
+                            src="Imagen de usuario"
+                          />
+                        </IconButton>
+                      </Tooltip>
                       <Grid item mr={"auto"}>
                         <Typography
                           variant="body1"
@@ -265,9 +290,7 @@ const Transferencia = () => {
                             account.destinationUserLastName}
                           <span
                             style={{
-                              fontWeight: "300",
-                              fontSize: "0.9rem",
-                              color: "#639EC3",
+                              color: "#72C9FF",
                               marginLeft: "8px",
                             }}
                           >
@@ -286,18 +309,40 @@ const Transferencia = () => {
                             account.destinationAccountCurrency}
                         </Typography>
                       </Grid>
-                      <IconButton
-                        onMouseDown={(e) => handleEditClick(e, account)}
+                      <Tooltip
+                        TransitionComponent={Zoom}
+                        title="Editar referencia"
+                        placement="bottom-end"
+                        disableInteractive
                       >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        onMouseDown={(e) =>
-                          handleDeleteClick(e, account.idThirdAccount)
-                        }
+                        <IconButton
+                          onMouseDown={(e) => handleEditClick(e, account)}
+                          sx={{
+                            color: "#72C9FF",
+                            "&:hover": { color: "#88D1FF" },
+                          }}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
+                        TransitionComponent={Zoom}
+                        title="Eliminar contacto"
+                        placement="bottom-start"
+                        disableInteractive
                       >
-                        <DeleteIcon />
-                      </IconButton>
+                        <IconButton
+                          onMouseDown={(e) =>
+                            handleDeleteClick(e, account.idThirdAccount)
+                          }
+                          sx={{
+                            color: "#C62E2E",
+                            "&:hover": { color: "#BA3131" },
+                          }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
                     </ListItemButton>
                   ))}
                 </>
@@ -320,10 +365,23 @@ const Transferencia = () => {
             open={openDeleteDialog}
             onClose={() => setOpenDeleteDialog(false)}
             PaperProps={{
-              sx: { p: 3, borderRadius: 5},
+              sx: { p: 3, borderRadius: 6, mr: 6 },
             }}
           >
-            <DialogTitle>Confirmar Eliminación</DialogTitle>
+            <DialogTitle>
+              Confirmar Eliminación
+              <IconButton
+                onClick={() => setOpenDeleteDialog(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                  color: "grey",
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
             <DialogContent>
               <DialogContentText>
                 ¿Estás seguro de que quieres eliminar este contacto?
@@ -331,26 +389,16 @@ const Transferencia = () => {
             </DialogContent>
             <DialogActions>
               <Button
-                onClick={() => setOpenDeleteDialog(false)}
-                sx={{
-                  color: "#FFF",
-                  backgroundColor: "#696969",
-                  "&:hover": { backgroundColor: "#585858" },
-                  p: 1.2,
-                }}
-                disabled={loading}
-              >
-                Cancelar
-              </Button>
-              <Button
                 onClick={handleDeleteConfirm}
                 sx={{
                   color: "#FFF",
+                  backgroundColor: "#C62E2E",
+                  "&:hover": { backgroundColor: "#BA3131" },
                   p: 1.2,
                 }}
                 disabled={loading}
               >
-                Eliminar
+                Si, eliminar
               </Button>
             </DialogActions>
           </Dialog>
@@ -360,13 +408,26 @@ const Transferencia = () => {
             open={openEditDialog}
             onClose={() => setOpenEditDialog(false)}
             PaperProps={{
-              sx: { p: 3, borderRadius: 5},
+              sx: { p: 3, borderRadius: 5 },
             }}
           >
-            <DialogTitle>Editar referencia</DialogTitle>
+            <DialogTitle>
+              Editar referencia{" "}
+              <IconButton
+                onClick={() => setOpenEditDialog(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                  color: "grey",
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Ingresa la nueva referencia para el contacto:
+                Ingresa nueva referencia para el contacto:
               </DialogContentText>
               <TextField
                 autoFocus
@@ -382,22 +443,12 @@ const Transferencia = () => {
             </DialogContent>
             <DialogActions>
               <Button
-                onClick={() => setOpenEditDialog(false)}
-                sx={{
-                  color: "#FFF",
-                  backgroundColor: "#696969",
-                  "&:hover": { backgroundColor: "#585858" },
-                  p: 1.2,
-                }}
-                disabled={loading}
-              >
-                Cancelar
-              </Button>
-              <Button
                 onClick={handleEditConfirm}
                 sx={{
                   color: "#FFF",
-                  p: 1.2,
+                  backgroundColor: "#72C9FF",
+                  "&:hover": { backgroundColor: "#88D1FF" },
+                  p: 1,
                 }}
                 disabled={loading}
               >
