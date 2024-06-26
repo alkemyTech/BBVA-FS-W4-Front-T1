@@ -8,6 +8,7 @@ import {
   Typography,
   CircularProgress,
   Divider,
+  Skeleton,
 } from "@mui/material";
 import MySnackbar from "../../../UI/MySnackBar";
 import { useNavigate } from "react-router";
@@ -177,20 +178,21 @@ const EnviarDinero = () => {
             </Grid>
 
             {loading ? (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <CircularProgress sx={{ color: "#472183" }} />
-              </div>
+              <>
+                <Skeleton variant="rectangular" width="100%" height={56} />
+                <Skeleton variant="rectangular" width="100%" height={56} />
+                <Skeleton variant="rectangular" width="100%" height={56} />
+                <Skeleton variant="rectangular" width="100%" height={56} />
+                <Skeleton variant="rectangular" width="100%" height={56} />
+                <Grid container spacing={1}>
+                  <Grid item xs={4} sx={{ marginRight: "2.5vw" }}>
+                    <Skeleton variant="rectangular" width="100%" height={36} />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Skeleton variant="rectangular" width="100%" height={36} />
+                  </Grid>
+                </Grid>
+              </>
             ) : (
               <Grid
                 container
@@ -294,17 +296,6 @@ const EnviarDinero = () => {
                     {isLoading ? "Cargando..." : "Confirmar"}
                   </Button>
                 </Grid>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  disabled={
-                    isLoading || parseFloat(amount.replace(",", ".")) <= 0
-                  }
-                  onClick={handleSubmit}
-                >
-                  {isLoading ? "Cargando..." : "Transferir"}
-                </Button>
               </Grid>
             )}
           </Grid>

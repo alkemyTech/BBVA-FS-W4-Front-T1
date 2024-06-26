@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Button, Typography, CircularProgress } from "@mui/material";
+import {
+  Grid,
+  Button,
+  Typography,
+  CircularProgress,
+  Skeleton,
+} from "@mui/material";
 import MySnackbar from "../../UI/MySnackBar";
 import { useNavigate } from "react-router";
 import {
@@ -94,7 +100,7 @@ const Transferencia = () => {
               borderRadius: 5,
               p: 4,
               boxShadow: 3,
-              mb:2
+              mb: 2
             }}
           >
             <Grid item>
@@ -117,81 +123,82 @@ const Transferencia = () => {
             </Grid>
           </Grid>
 
-          <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              margin: "0 auto",
-              backgroundColor: "#fff",
-              width: "50vw",
-              minHeight: "88px",
-              borderRadius: 5,
-              p: 4,
-              boxShadow: 3,
-            }}
-          >
-            {isLoading ? (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <CircularProgress sx={{ color: "#472183" }} />
-              </div>
-            ) : thirdAccounts.length > 0 ? (
-              thirdAccounts.map((account, index) => (
-                <Grid
-                  item
-                  key={index}
-                  onClick={() =>
-                    handleSelectAccount(account.destinationAccountCbu)
-                  }
-                  sx={{
-                    cursor: "pointer",
-                    borderBottom: "1px solid #F1F6F5",
-                    minWidth: "40vw",
-                    p: 1,
-                    "&:hover": { backgroundColor: "#F1F6F5" },
-                  }}
-                >
-                  <Typography variant="body1" component="div">
-                    {account.destinationUserFirstName +
-                      " " +
-                      account.destinationUserLastName}
-                    <span
-                      style={{
-                        fontWeight: "300",
-                        fontSize: "0.9rem",
-                        color: "#4B4B4B",
-                      }}
-                    >
-                      {account.nickname
-                        ? " - (" + account.nickname + ")"
-                        : account.nickname}
-                    </span>
-                  </Typography>
-                  <Typography variant="body2" component="div">
-                    {account.destinationAccountBank +
-                      " - " +
-                      account.destinationAccountCurrency}
-                  </Typography>
-                </Grid>
-              ))
-            ) : (
-              <Typography variant="body1" component="div">
-                No se encontraron contactos
-              </Typography>
-            )}
-          </Grid>
+          {isLoading ? (
+            <Skeleton
+              animation="wave"
+              variant="rectangular"
+              sx={{
+                margin: "0 auto",
+                width: "50vw",
+                minHeight: "88px",
+                borderRadius: 5,
+                p: 4,
+                boxShadow: 3,
+              }}
+            />
+          ) : (
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              sx={{
+                margin: "0 auto",
+                backgroundColor: "#fff",
+                width: "50vw",
+                minHeight: "88px",
+                borderRadius: 5,
+                p: 4,
+                boxShadow: 3,
+              }}
+            >
+              {thirdAccounts.length > 0 ? (
+                thirdAccounts.map((account, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    onClick={() =>
+                      handleSelectAccount(account.destinationAccountCbu)
+                    }
+                    sx={{
+                      cursor: "pointer",
+                      borderBottom: "1px solid #F1F6F5",
+                      minWidth: "40vw",
+                      p: 1,
+                      "&:hover": { backgroundColor: "#F1F6F5" },
+                    }}
+                  >
+                    <Typography variant="body1" component="div">
+                      {account.destinationUserFirstName +
+                        " " +
+                        account.destinationUserLastName}
+                      <span
+                        style={{
+                          fontWeight: "300",
+                          fontSize: "0.9rem",
+                          color: "#4B4B4B",
+                        }}
+                      >
+                        {account.nickname
+                          ? " - (" + account.nickname + ")"
+                          : account.nickname}
+                      </span>
+                    </Typography>
+                    <Typography variant="body2" component="div">
+                      {account.destinationAccountBank +
+                        " - " +
+                        account.destinationAccountCurrency}
+                    </Typography>
+                  </Grid>
+                ))
+              ) : (
+                <Typography variant="body1" component="div">
+                  No se encontraron contactos
+                </Typography>
+              )}
+            </Grid>
+          )}
+
           <MySnackbar
             open={notification.open}
             handleClose={handleSnackbarClose}

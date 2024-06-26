@@ -3,7 +3,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const ArrowBackComponent = () => {
+const ArrowBackComponent = ({ disabled = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const selectedDestination = useSelector(
@@ -11,6 +11,7 @@ const ArrowBackComponent = () => {
   );
 
   const handleClick = () => {
+    if (disabled) return;
     if (location.pathname === "/transferencia" && !selectedDestination) {
       navigate(-2);
     } else {
@@ -21,7 +22,11 @@ const ArrowBackComponent = () => {
   return (
     <>
       <Tooltip title="Ir atrás">
-        <ArrowBack onClick={handleClick} style={{ cursor: "pointer"}} fontSize="large" />
+        <ArrowBack
+          onClick={handleClick}
+          style={{ cursor: disabled ? "default" : "pointer" }}
+          fontSize="large"
+        />
       </Tooltip>
     </>
   );
