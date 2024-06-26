@@ -55,11 +55,11 @@ const NuevoDestino = () => {
             container
             justifyContent="space-between"
             alignItems="center"
-            mt={5}
-            ml={4}
+            mt={2}
+            ml={5}
             position="relative"
           >
-            <Grid item position="absolute">
+            <Grid item>
               <ArrowBackComponent />
             </Grid>
           </Grid>
@@ -99,7 +99,7 @@ const NuevoDestino = () => {
             <Grid
               item
               style={{ maxWidth: "12vw", minWidth: "7rem", width: "100%" }}
-              mt={2}
+              mt={3}
             >
               <Button
                 type="submit"
