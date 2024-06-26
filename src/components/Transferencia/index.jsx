@@ -313,6 +313,9 @@ const Transferencia = () => {
           <Dialog
             open={openDeleteDialog}
             onClose={() => setOpenDeleteDialog(false)}
+            PaperProps={{
+              sx: { p: 3, borderRadius: 5},
+            }}
           >
             <DialogTitle>Confirmar Eliminación</DialogTitle>
             <DialogContent>
@@ -350,8 +353,11 @@ const Transferencia = () => {
           <Dialog
             open={openEditDialog}
             onClose={() => setOpenEditDialog(false)}
+            PaperProps={{
+              sx: { p: 3, borderRadius: 5},
+            }}
           >
-            <DialogTitle>Editar Nickname</DialogTitle>
+            <DialogTitle>Editar referencia</DialogTitle>
             <DialogContent>
               <DialogContentText>
                 Ingresa la nueva referencia para el contacto:

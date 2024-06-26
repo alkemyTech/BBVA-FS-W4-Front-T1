@@ -11,7 +11,7 @@ import {
   InputAdornment,
   MenuItem,
 } from "@mui/material";
-import { postRegister } from "../../api/auth";
+import { postRegister } from "../../api/Auth.js";
 import { useDispatch } from "react-redux";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router";

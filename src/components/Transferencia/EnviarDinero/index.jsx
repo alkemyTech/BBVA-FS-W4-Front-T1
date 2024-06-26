@@ -21,7 +21,7 @@ import {
 } from "../../../Redux/slice/snackBarSlice";
 import ArrowBackComponent from "../../../UI/ArrowBack";
 import { getAccountBalance } from "../../../api/Account";
-import { sendArs } from "../../../api/Transaction";
+import { sendArs, sendUsd } from "../../../api/Transaction";
 import { NumericFormat } from "react-number-format";
 
 const EnviarDinero = () => {
@@ -49,8 +49,7 @@ const EnviarDinero = () => {
 
   const [accountOrigin, setAccountOrigin] = useState("");
   const [accountOriginArs, setAccountOriginArs] = useState([]);
-  const [accountOriginUsd, setAccountOriginUsd] = useState([]);
-  const [selectedAccount, setSelectedAccount] = useState("");
+  const [accountOriginUsd, setAccountOriginUsd] = useState("");
   const [accountDestination, setAccountDestination] = useState("");
 
   const dispatch = useDispatch();
@@ -60,13 +59,38 @@ const EnviarDinero = () => {
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
 
   useEffect(() => {
+    if (selectedDestination) {
+      setAccountDestination(selectedDestination.idAccount);
+    }
+
     const fetchData = async () => {
       try {
         const data = await getAccountBalance();
-        setAccountOriginArs(data.accountArs);
-        setAccountOriginUsd(data.accountUsd);
-        if (data.accountArs.length > 0) {
-          setAccountOrigin(data.accountArs[0].idAccount);
+
+        if (!data) {
+          if (selectedDestination.currency === "ARS") {
+            setAccountOriginArs([]);
+            setAccountOrigin("No posees cuentas en pesos");
+          } else if (selectedDestination.currency === "USD") {
+            setAccountOriginUsd(null);
+            setAccountOrigin("No posees cuentas en dólares");
+          }
+        } else {
+          if (selectedDestination.currency === "ARS") {
+            setAccountOriginArs(data.accountArs || []);
+            setAccountOrigin(
+              data.accountArs
+                ? data.accountArs[0].idAccount
+                : "No posees cuentas en pesos"
+            );
+          } else if (selectedDestination.currency === "USD") {
+            setAccountOriginUsd(data.accountUsd || null);
+            setAccountOrigin(
+              data.accountUsd
+                ? data.accountUsd.idAccount
+                : "No posees cuentas en dólares"
+            );
+          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -78,12 +102,6 @@ const EnviarDinero = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (selectedDestination) {
-      setAccountDestination(selectedDestination.idAccount);
-    }
-  }, [selectedDestination]);
-
   const handleOpenConfirmationDialog = () => {
     setOpenConfirmationDialog(true);
   };
@@ -94,17 +112,46 @@ const EnviarDinero = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const amountNumber = parseFloat(amount.replace(",", "."));
 
-    if (amountNumber > 0) {
-      handleOpenConfirmationDialog();
-    } else {
+    if (!accountOrigin || isNaN(accountOrigin)) {
+      dispatch(
+        showNotification({
+          message: "No posees una cuenta",
+          status: "error",
+        })
+      );
+    } else if (amountNumber <= 0 || !amountNumber) {
       dispatch(
         showNotification({
           message: "El monto debe ser mayor que cero",
           status: "error",
         })
       );
+    } else if (
+      selectedDestination.currency === "USD" &&
+      accountOriginUsd.balance <= 0
+    ) {
+      dispatch(
+        showNotification({
+          message: "No tiene saldo disponible",
+          status: "error",
+        })
+      );
+    } else if (
+      selectedDestination.currency === "ARS" &&
+      accountOriginArs.find((acc) => acc.idAccount === accountOrigin).balance <=
+        0
+    ) {
+      dispatch(
+        showNotification({
+          message: "No tiene saldo disponible",
+          status: "error",
+        })
+      );
+    } else if (amountNumber > 0) {
+      handleOpenConfirmationDialog();
     }
   };
 
@@ -121,7 +168,11 @@ const EnviarDinero = () => {
 
     try {
       setIsLoading(true);
-      await sendArs(transferData);
+      if (selectedDestination.currency === "USD") {
+        await sendUsd(transferData);
+      } else {
+        await sendArs(transferData);
+      }
       dispatch(
         showNotification({
           message: "Transferencia realizada con éxito",
@@ -239,7 +290,9 @@ const EnviarDinero = () => {
                   thousandSeparator={"."}
                   decimalSeparator={","}
                   allowNegative={false}
-                  prefix={"$ "}
+                  prefix={
+                    selectedDestination.currency === "USD" ? "US$ " : "$ "
+                  }
                   decimalScale={2}
                   fixedDecimalScale={true}
                   fullWidth
@@ -284,21 +337,50 @@ const EnviarDinero = () => {
                   required
                   disabled={isLoading}
                 >
-                  {accountOriginArs.map((option) => (
-                    <MenuItem key={option.idAccount} value={option.idAccount}>
-                      {option.accountType === "CAJA_AHORRO"
-                        ? "Caja de Ahorro"
-                        : "Cuenta Corriente"}{" "}
-                      {option.currency}
-                      {" - Balance: "}
-                      {option.balance.toLocaleString("es-AR", {
-                        style: "currency",
-                        currency: "ARS",
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}{" "}
+                  {selectedDestination.currency === "USD" ? (
+                    accountOriginUsd ? (
+                      <MenuItem
+                        key={accountOriginUsd.idAccount}
+                        value={accountOriginUsd.idAccount}
+                      >
+                        {accountOriginUsd.accountType === "CAJA_AHORRO"
+                          ? "Caja de Ahorro"
+                          : "Cuenta Corriente"}{" "}
+                        {accountOriginUsd.currency}
+                        {" - Balance: "}
+                        {accountOriginUsd.balance.toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "USD",
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                      </MenuItem>
+                    ) : (
+                      <MenuItem value={"No posees cuentas en dólares"} disabled>
+                        No posees cuentas en dólares
+                      </MenuItem>
+                    )
+                  ) : accountOriginArs.length > 0 ? (
+                    accountOriginArs.map((option) => (
+                      <MenuItem key={option.idAccount} value={option.idAccount}>
+                        {option.accountType === "CAJA_AHORRO"
+                          ? "Caja de Ahorro"
+                          : "Cuenta Corriente"}{" "}
+                        {option.currency}
+                        {" - Balance: "}
+                        {option.balance.toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem value={"No posees cuentas en pesos"} disabled>
+                      No posees cuentas en pesos
                     </MenuItem>
-                  ))}
+                  )}
                 </TextField>
                 <Grid item alignSelf={"center"} mt={1}>
                   <Button
@@ -339,7 +421,9 @@ const EnviarDinero = () => {
             open={openConfirmationDialog}
             onClose={handleCloseConfirmationDialog}
             TransitionComponent={Slide}
-            sx={{ alignContent: "center" }}
+            PaperProps={{
+              sx: { p: 3, borderRadius: 5 },
+            }}
           >
             <DialogTitle>Confirmar Transferencia</DialogTitle>
             <DialogContent>
@@ -354,13 +438,61 @@ const EnviarDinero = () => {
                 <b>Monto:</b>{" "}
                 {parseFloat(amount.replace(",", ".")).toLocaleString("es-AR", {
                   style: "currency",
-                  currency: "ARS",
+                  currency:
+                    selectedDestination.currency === "USD" ? "USD" : "ARS",
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
               </Typography>
+              {accountOrigin &&
+                (selectedDestination.currency === "USD" ? (
+                  accountOriginUsd ? (
+                    <Typography variant="body1" sx={{ mt: 2 }}>
+                      <b>Cuenta origen:</b>{" "}
+                      {accountOriginUsd.accountType === "CAJA_AHORRO"
+                        ? "Caja de Ahorro"
+                        : "Cuenta Corriente"}{" "}
+                      {accountOriginUsd.currency} - Balance:{" "}
+                      {accountOriginUsd.balance.toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "USD",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </Typography>
+                  ) : (
+                    <Typography variant="body1" sx={{ mt: 2 }}>
+                      No posees cuentas en dólares
+                    </Typography>
+                  )
+                ) : accountOriginArs.length > 0 ? (
+                  <Typography variant="body1" sx={{ mt: 2 }}>
+                    <b>Cuenta origen:</b>{" "}
+                    {accountOriginArs.map(
+                      (option) =>
+                        option.idAccount === accountOrigin && (
+                          <span key={option.idAccount}>
+                            {option.accountType === "CAJA_AHORRO"
+                              ? "Caja de Ahorro"
+                              : "Cuenta Corriente"}{" "}
+                            {option.currency} - Balance:{" "}
+                            {option.balance.toLocaleString("es-AR", {
+                              style: "currency",
+                              currency: "ARS",
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                          </span>
+                        )
+                    )}
+                  </Typography>
+                ) : (
+                  <Typography variant="body1" sx={{ mt: 2 }}>
+                    No posees cuentas en pesos
+                  </Typography>
+                ))}
             </DialogContent>
-            <DialogActions>
+            <DialogActions sx={{ justifyContent: "center" }}>
               <Button
                 onClick={handleCloseConfirmationDialog}
                 sx={{
