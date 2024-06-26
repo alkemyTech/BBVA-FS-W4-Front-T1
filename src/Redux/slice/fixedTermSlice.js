@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   data: null,
   selectedDay: "",
-  totalInverted: "",
+  totalInverted: 0,
 };
 
 const FixedTermSlice = createSlice({
