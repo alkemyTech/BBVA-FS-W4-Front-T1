@@ -21,8 +21,14 @@ import { useNavigate } from "react-router";
 import ArrowBackComponent from "../../UI/ArrowBack";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import { NumericFormat } from "react-number-format";
+import {
+  clearSelectedDay,
+  clearSimulatedFixedTerm,
+  setTotalInverted,
+} from "../../Redux/slice/fixedTermSlice";
 
-export default function PlazoFijo() {
+export default function CrearPlazoFijo() {
   const [amount, setAmount] = useState("");
   const [closingDate, setClosingDate] = useState(null);
   const [acceptTerms, setAcceptTerms] = useState(false);
@@ -41,7 +47,13 @@ export default function PlazoFijo() {
     (state) => state.simulatedFixedTerm.selectedDay
   );
 
+  const totalInverted = useSelector(
+    (state) => state.simulatedFixedTerm.totalInverted
+  );
+
   useEffect(() => {
+    setIsLoading(true);
+    dispatch(hideNotification());
     if (simulatedFixedTerm) {
       console.log("SIMULADO", simulatedFixedTerm);
       setAmount(simulatedFixedTerm.amount);
@@ -71,20 +83,6 @@ export default function PlazoFijo() {
     fetchBalance();
   }, [isLoading]);
 
-  const handleInputRestriction =
-    (allowedCharacters = "") =>
-    (e) => {
-      const isAllowedCharacter = new RegExp(`[^${allowedCharacters}]`).test(
-        e.key
-      );
-      const isBackspace = e.key === "Backspace";
-      const isTab = e.key === "Tab"; // Check for Tab key
-
-      if (isAllowedCharacter && !isBackspace && !isTab) {
-        e.preventDefault();
-      }
-    };
-
   const today = new Date();
   const minDate = dayjs(new Date(today.getTime() + 31 * 24 * 60 * 60 * 1000));
 
@@ -96,6 +94,12 @@ export default function PlazoFijo() {
     const diferencia = (fechaDeCierre - fechaActual) / (1000 * 3600 * 24) + 1;
 
     if (!validateNumbers(parseFloat(amount)) || parseFloat(amount) <= 0) {
+      dispatch(
+        showNotification({
+          message: "El monto debe ser mayor a cero.",
+          status: "error",
+        })
+      );
       setAmountError("El monto debe ser mayor a cero.");
       return;
     } else {
@@ -144,8 +148,11 @@ export default function PlazoFijo() {
           status: "success",
         })
       );
+      dispatch(clearSimulatedFixedTerm());
+      dispatch(clearSelectedDay());
+      dispatch(setTotalInverted(totalInverted+fixedTermData.amount));
 
-      navigate("/inversiones");
+      navigate("/plazos-fijos");
     } catch (error) {
       dispatch(
         showNotification({
@@ -207,9 +214,8 @@ export default function PlazoFijo() {
   };
 
   return (
-    <Container sx={{ marginBottom: 3 }}>
+    <Container sx={{ marginBottom: 3, marginTop: 2 }}>
       <ArrowBackComponent />
-
       <Grid
         container
         sx={{
@@ -241,7 +247,30 @@ export default function PlazoFijo() {
           <Typography variant="h7">¿Cuanto queres invertir?</Typography>
         </Grid>
         <Grid item xs={12} sx={{ marginBottom: 3 }}>
-          <TextField
+          <NumericFormat
+            label="Monto"
+            value={amount}
+            onValueChange={({ floatValue }) =>
+              setAmount(floatValue !== undefined ? floatValue.toFixed(2) : "")
+            }
+            customInput={TextField}
+            thousandSeparator={"."}
+            decimalSeparator={","}
+            allowNegative={false}
+            prefix={"$ "}
+            decimalScale={2}
+            fixedDecimalScale={true}
+            fullWidth
+            required
+            error={parseFloat(amount.replace(",", ".")) <= 0}
+            helperText={
+              parseFloat(amount.replace(",", ".")) <= 0
+                ? "El monto debe ser mayor a cero"
+                : ""
+            }
+            disabled={simulatedFixedTerm}
+          />
+          {/* <TextField
             label="Monto"
             value={amount}
             fullWidth
@@ -251,7 +280,7 @@ export default function PlazoFijo() {
             onChange={(e) => setAmount(e.target.value)}
             required
             onKeyDown={handleInputRestriction("0-9")}
-          />
+          /> */}
         </Grid>
 
         <Grid item xs={12} sx={{ marginBottom: 1 }}>
@@ -370,7 +399,6 @@ export default function PlazoFijo() {
               sx={{ marginBottom: 1 }}
               required
               disabled={simulatedFixedTerm}
-
               label="Fecha de Cierre"
               value={closingDate}
               onChange={(e) => setClosingDate(e)}
