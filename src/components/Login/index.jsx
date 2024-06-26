@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { Alert, Divider, IconButton, InputAdornment } from "@mui/material";
-import { postLogin } from "../../api/Auth";
+import { postLogin } from "../../api/auth.js";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
