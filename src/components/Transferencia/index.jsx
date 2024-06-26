@@ -196,115 +196,119 @@ const Transferencia = () => {
             </Grid>
           </Grid>
 
-          <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              margin: "0 auto",
-              backgroundColor: "#fff",
-              width: "50vw",
-              minHeight: "88px",
-              borderRadius: 5,
-              p: 4,
-              boxShadow: 3,
-            }}
-          >
-            {isLoading ? (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <CircularProgress sx={{ color: "#472183" }} />
-              </div>
-            ) : thirdAccounts.length > 0 ? (
-              <>
-                <Grid item mb={2}>
-                  <Typography variant="h6" component="h4">
-                    Contactos
-                  </Typography>
-                </Grid>
-                {thirdAccounts.map((account, index) => (
-                  <ListItemButton
-                    key={index}
-                    onClick={() =>
-                      handleSelectAccount(account.destinationAccountCbu, index)
-                    }
-                    sx={{
-                      borderBottom: "1px solid #F1F6F5",
-                      minWidth: "40vw",
-                      p: 1,
-                      paddingTop: 1.2,
-                      "&:hover": { backgroundColor: "#F9F9F9" },
-                      ...(index === 0
-                        ? { borderTop: "1px solid #F9F9F9" }
-                        : {}),
-                      pointerEvents:
-                        selectedAccountIndex !== null ? "none" : "auto",
-                    }}
-                  >
-                    <Grid item mr={"auto"}>
-                      <Typography
-                        variant="body1"
-                        component="div"
-                        textAlign={"start"}
-                      >
-                        {account.destinationUserFirstName +
-                          " " +
-                          account.destinationUserLastName}
-                        <span
-                          style={{
-                            fontWeight: "300",
-                            fontSize: "0.9rem",
-                            color: "#639EC3",
-                            marginLeft: "8px",
-                          }}
-                        >
-                          {account.nickname
-                            ? "(" + account.nickname + ")"
-                            : account.nickname}
-                        </span>
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        component="div"
-                        textAlign={"start"}
-                      >
-                        {account.destinationAccountBank +
-                          " - " +
-                          account.destinationAccountCurrency}
-                      </Typography>
-                    </Grid>
-                    <IconButton
-                      onMouseDown={(e) => handleEditClick(e, account)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onMouseDown={(e) =>
-                        handleDeleteClick(e, account.idThirdAccount)
+          {isLoading ? (
+            <Skeleton
+              animation="wave"
+              variant="rectangular"
+              sx={{
+                margin: "0 auto",
+                width: "50vw",
+                minHeight: "88px",
+                borderRadius: 5,
+                p: 4,
+                boxShadow: 3,
+              }}
+            />
+          ) : (
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              sx={{
+                margin: "0 auto",
+                backgroundColor: "#fff",
+                width: "50vw",
+                minHeight: "88px",
+                borderRadius: 5,
+                p: 4,
+                boxShadow: 3,
+              }}
+            >
+              {thirdAccounts.length > 0 ? (
+                <>
+                  <Grid item mb={2}>
+                    <Typography variant="h6" component="h4">
+                      Contactos
+                    </Typography>
+                  </Grid>
+                  {thirdAccounts.map((account, index) => (
+                    <ListItemButton
+                      key={index}
+                      onClick={() =>
+                        handleSelectAccount(
+                          account.destinationAccountCbu,
+                          index
+                        )
                       }
+                      sx={{
+                        borderBottom: "1px solid #F1F6F5",
+                        minWidth: "40vw",
+                        p: 1,
+                        paddingTop: 1.2,
+                        "&:hover": { backgroundColor: "#F9F9F9" },
+                        ...(index === 0
+                          ? { borderTop: "1px solid #F9F9F9" }
+                          : {}),
+                        pointerEvents:
+                          selectedAccountIndex !== null ? "none" : "auto",
+                      }}
                     >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemButton>
-                ))}
-              </>
-            ) : (
-              <Typography variant="body1" component="div">
-                No se encontraron contactos
-              </Typography>
-            )}
-          </Grid>
+                      <Grid item mr={"auto"}>
+                        <Typography
+                          variant="body1"
+                          component="div"
+                          textAlign={"start"}
+                        >
+                          {account.destinationUserFirstName +
+                            " " +
+                            account.destinationUserLastName}
+                          <span
+                            style={{
+                              fontWeight: "300",
+                              fontSize: "0.9rem",
+                              color: "#639EC3",
+                              marginLeft: "8px",
+                            }}
+                          >
+                            {account.nickname
+                              ? "(" + account.nickname + ")"
+                              : account.nickname}
+                          </span>
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          component="div"
+                          textAlign={"start"}
+                        >
+                          {account.destinationAccountBank +
+                            " - " +
+                            account.destinationAccountCurrency}
+                        </Typography>
+                      </Grid>
+                      <IconButton
+                        onMouseDown={(e) => handleEditClick(e, account)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onMouseDown={(e) =>
+                          handleDeleteClick(e, account.idThirdAccount)
+                        }
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemButton>
+                  ))}
+                </>
+              ) : (
+                <Typography variant="body1" component="div">
+                  No se encontraron contactos
+                </Typography>
+              )}
+            </Grid>
+          )}
+
           <MySnackbar
             open={notification.open}
             handleClose={handleSnackbarClose}

@@ -6,7 +6,6 @@ import {
   Button,
   MenuItem,
   Typography,
-  CircularProgress,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -190,17 +189,52 @@ const EnviarDinero = () => {
 
             {loading ? (
               <>
-                <Skeleton variant="rectangular" width="100%" height={56} />
-                <Skeleton variant="rectangular" width="100%" height={56} />
-                <Skeleton variant="rectangular" width="100%" height={56} />
-                <Skeleton variant="rectangular" width="100%" height={56} />
-                <Skeleton variant="rectangular" width="100%" height={56} />
-                <Grid container spacing={1}>
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={56}
+                  sx={{ borderRadius: "4px" }}
+                />
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={56}
+                  sx={{ borderRadius: "4px" }}
+                />
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={56}
+                  sx={{ borderRadius: "4px" }}
+                />
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={56}
+                  sx={{ borderRadius: "4px" }}
+                />
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={56}
+                  sx={{ borderRadius: "4px" }}
+                />
+                <Grid container spacing={1} justifyContent="center">
                   <Grid item xs={4} sx={{ marginRight: "2.5vw" }}>
-                    <Skeleton variant="rectangular" width="100%" height={36} />
+                    <Skeleton
+                      variant="rectangular"
+                      width="100%"
+                      height={36}
+                      sx={{ borderRadius: "4px" }}
+                    />
                   </Grid>
                   <Grid item xs={4}>
-                    <Skeleton variant="rectangular" width="100%" height={36} />
+                    <Skeleton
+                      variant="rectangular"
+                      width="100%"
+                      height={36}
+                      sx={{ borderRadius: "4px" }}
+                    />
                   </Grid>
                 </Grid>
               </>
