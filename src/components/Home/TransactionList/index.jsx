@@ -104,7 +104,7 @@ const TransactionList = ({ accountData }) => {
       }}
     >
       <CardContent>
-        <Typography variant="h5" component="div" >
+        <Typography variant="h5" component="div">
           Últimos movimientos
         </Typography>
         <Grid
@@ -151,6 +151,7 @@ const TransactionList = ({ accountData }) => {
               <MenuItem value="PAYMENT">PAGO</MenuItem>
             </TextField>
           </FormControl>
+
           <FormControl variant="outlined" sx={{ minWidth: 120 }}>
             <TextField
               select
@@ -165,6 +166,7 @@ const TransactionList = ({ accountData }) => {
               <MenuItem value="ARS">ARS</MenuItem>
             </TextField>
           </FormControl>
+
           <FormControl variant="outlined" sx={{ minWidth: 120 }}>
             <TextField
               select
@@ -213,7 +215,12 @@ const TransactionList = ({ accountData }) => {
                             : "Depósito"}
                         </span>
                         <span>
-                          {currencySymbol} {transaction.amount}
+                          {transaction.amount.toLocaleString("es-AR", {
+                                    style: "currency",
+                                    currency: transaction.accountCurrency,
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
                         </span>
                       </Box>
                     }
