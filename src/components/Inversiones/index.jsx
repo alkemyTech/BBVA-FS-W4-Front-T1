@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, CircularProgress, Grid } from "@mui/material";
+import { Container, CircularProgress, Grid, Skeleton, Box } from "@mui/material";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getFixedTerms } from "../../api/FixedTerm";
@@ -65,20 +65,22 @@ const Inversiones = () => {
     <Container>
       <ArrowBackComponent />
       {loading ? (
-        <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <CircularProgress sx={{ color: "#472183" }} />
-      </div>
+        <Box sx={{ width: '100%', marginTop: '5vh' }}>
+          <Skeleton
+            animation="wave"
+            variant="rectangular"
+            width="100%"
+            height={150}
+            sx={{ marginBottom: "16px", borderRadius: "8px" }}
+          />
+          <Skeleton
+            animation="wave"
+            variant="rectangular"
+            width="100%"
+            height={400}
+            sx={{ marginBottom: "16px", borderRadius: "8px" }}
+          />
+        </Box>
       ) : (
         <>
         <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}>

@@ -6,12 +6,12 @@ import {
   Button,
   MenuItem,
   Typography,
-  CircularProgress,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Slide,
+  Skeleton,
 } from "@mui/material";
 import MySnackbar from "../../../UI/MySnackBar";
 import { useNavigate } from "react-router";
@@ -188,20 +188,56 @@ const EnviarDinero = () => {
             </Grid>
 
             {loading ? (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <CircularProgress sx={{ color: "#472183" }} />
-              </div>
+              <>
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={56}
+                  sx={{ borderRadius: "4px" }}
+                />
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={56}
+                  sx={{ borderRadius: "4px" }}
+                />
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={56}
+                  sx={{ borderRadius: "4px" }}
+                />
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={56}
+                  sx={{ borderRadius: "4px" }}
+                />
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={56}
+                  sx={{ borderRadius: "4px" }}
+                />
+                <Grid container spacing={1} justifyContent="center">
+                  <Grid item xs={4} sx={{ marginRight: "2.5vw" }}>
+                    <Skeleton
+                      variant="rectangular"
+                      width="100%"
+                      height={36}
+                      sx={{ borderRadius: "4px" }}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Skeleton
+                      variant="rectangular"
+                      width="100%"
+                      height={36}
+                      sx={{ borderRadius: "4px" }}
+                    />
+                  </Grid>
+                </Grid>
+              </>
             ) : (
               <Grid
                 container
