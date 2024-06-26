@@ -25,7 +25,7 @@ const FixedTermCard = ({ totalFixedTerms }) => {
   const navigate = useNavigate();
 
   const handleCreateFixedTerm = () => {
-    navigate("/plazo-fijo");
+    navigate("/crear-plazo-fijo");
   };
 
   const handleSimulateFixedTerm = () => {

@@ -1,6 +1,8 @@
 import { Grid, Card, CardContent, Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import { setTotalInverted } from "../../../Redux/slice/fixedTermSlice";
 
 const AccountCard = ({ accountData }) => {
   const formatDate = (dateArray) => {
@@ -15,6 +17,7 @@ const AccountCard = ({ accountData }) => {
     }).format(amount);
   };
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleCardClick = (path, account) => {
     console.log("Account", account);
@@ -30,6 +33,9 @@ const AccountCard = ({ accountData }) => {
     })
     .reduce((total, term) => total + term.amount, 0);
 
+    dispatch(setTotalInverted(totalFixedTerms));
+
+  
   return (
     <Grid container spacing={2} sx={{ marginTop: "5vh" }}>
       {accountData.accountArs.map((account, index) => (
@@ -122,7 +128,7 @@ const AccountCard = ({ accountData }) => {
               boxShadow: 6,
             }}
             onClick={() =>
-              handleCardClick(`/inversiones`, accountData.fixedTerms)
+              handleCardClick(`/plazos-fijos`, accountData.fixedTerms)
             }
           >
             <CardContent>

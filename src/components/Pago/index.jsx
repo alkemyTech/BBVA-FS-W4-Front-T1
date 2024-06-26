@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardContent,
+  Grid,
   MenuItem,
   TextField,
   Typography,
@@ -18,6 +19,7 @@ import ArrowBackComponent from "../../UI/ArrowBack";
 import MySnackbar from "../../UI/MySnackBar";
 import { getAccountBalance } from "../../api/Account";
 import { payment } from "../../api/Transaction";
+import { NumericFormat } from "react-number-format";
 
 const transactionConcepts = [
   "VARIOS",
@@ -186,8 +188,21 @@ const Pago = () => {
   };
 
   return (
-    <>
-      <ArrowBackComponent disabled={isSubmitted} />
+    <Grid container>
+      <Grid container className="container">
+    <Grid container justifyContent="center" alignItems="center">
+                <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            mt={2}
+            ml={5}
+            position="relative"
+          >
+            <Grid item>
+              <ArrowBackComponent />
+            </Grid>
+          </Grid>
       <Box>
         <Card
           sx={{
@@ -205,25 +220,35 @@ const Pago = () => {
               Cargar Pago
             </Typography>
             <form onSubmit={handleSubmit}>
-              <TextField
-                label="Monto"
-                value={amount}
-                onChange={onChangeAmount}
-                fullWidth
-                margin="normal"
-                error={
+              <NumericFormat
+                  label="Monto"
+                  value={amount}
+                  onValueChange={({ floatValue }) =>
+                    setAmount(
+                      floatValue !== undefined ? floatValue.toFixed(2) : ""
+                    )
+                  }
+                  customInput={TextField}
+                  thousandSeparator={"."}
+                  decimalSeparator={","}
+                  allowNegative={false}
+                  prefix={"$ "}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
+                  fullWidth
+                  required
+                  error={
                   parseFloat(amount.replace(",", ".")) <= 0 ||
                   parseFloat(amount.replace(",", ".")) > balance
-                }
-                helperText={
+                }                  helperText={
                   parseFloat(amount.replace(",", ".")) <= 0
                     ? "El monto debe ser mayor a cero"
                     : parseFloat(amount.replace(",", ".")) > balance
                     ? "Saldo insuficiente"
                     : ""
                 }
-                disabled={isSubmitted}
-              />
+                  disabled={isSubmitted}
+                  />
 
               <Typography
                 variant="body2"
@@ -394,9 +419,9 @@ const Pago = () => {
                 fullWidth
                 sx={{
                   mt: 2,
-                  backgroundColor: "#d1d8c5",
-                  "&:hover": { backgroundColor: "#c0c9b5" },
-                  color: "#000000",
+                //   backgroundColor: "#d1d8c5",
+                //   "&:hover": { backgroundColor: "#c0c9b5" },
+                //   color: "#000000",
                 }}
                 disabled={
                   isLoading ||
@@ -417,7 +442,9 @@ const Pago = () => {
           </CardContent>
         </Card>
       </Box>
-    </>
+</Grid>
+</Grid>
+</Grid>
   );
 };
 
