@@ -68,7 +68,7 @@ const AllAccounts = () => {
           <Grid container spacing={2} sx={{ marginTop: "1vh" }}>
             {accountData.accountArs &&
               accountData.accountArs.map((account, index) => (
-                <AccountDetailsCard key={index} account={account} />
+                <AccountDetailsCard account={account} />
               ))}
             {accountData.accountUsd && (
               <AccountDetailsCard account={accountData.accountUsd} />
@@ -76,12 +76,6 @@ const AllAccounts = () => {
           </Grid>
         </>
       )}
-      <MySnackbar
-        open={notification.open}
-        handleClose={handleSnackbarClose}
-        message={notification.message}
-        status={notification.status}
-      />
     </Container>
   );
 };
