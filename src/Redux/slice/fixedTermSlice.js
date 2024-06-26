@@ -3,10 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   data: null,
   selectedDay: "",
-  totalInverted: 0,
+  totalInverted: "",
 };
 
-const simulatedFixedTermSlice = createSlice({
+const FixedTermSlice = createSlice({
   name: "simulatedData",
   initialState,
   reducers: {
@@ -34,6 +34,6 @@ export const {
   setSelectedDay,
   clearSelectedDay,
   setTotalInverted,
-} = simulatedFixedTermSlice.actions;
+} = FixedTermSlice.actions;
 
-export default simulatedFixedTermSlice.reducer;
+export default FixedTermSlice.reducer;

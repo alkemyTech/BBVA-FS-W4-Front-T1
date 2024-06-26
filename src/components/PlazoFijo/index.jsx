@@ -41,14 +41,14 @@ export default function CrearPlazoFijo() {
   const navigate = useNavigate();
   const notification = useSelector((state) => state.notification);
   const simulatedFixedTerm = useSelector(
-    (state) => state.simulatedFixedTerm.data
+    (state) => state.fixedTerm.data
   );
   const selectedDay = useSelector(
-    (state) => state.simulatedFixedTerm.selectedDay
+    (state) => state.fixedTerm.selectedDay
   );
 
   const totalInverted = useSelector(
-    (state) => state.simulatedFixedTerm.totalInverted
+    (state) => state.fixedTerm.totalInverted
   );
 
   useEffect(() => {
@@ -93,7 +93,8 @@ export default function CrearPlazoFijo() {
     const fechaDeCierre = new Date(closingDate);
     const diferencia = (fechaDeCierre - fechaActual) / (1000 * 3600 * 24) + 1;
 
-    if (!validateNumbers(parseFloat(amount)) || parseFloat(amount) <= 0) {
+    if (parseFloat(amount) <= 0) {
+
       dispatch(
         showNotification({
           message: "El monto debe ser mayor a cero.",
@@ -206,11 +207,6 @@ export default function CrearPlazoFijo() {
       style: "currency",
       currency,
     }).format(amount);
-  };
-
-  const validateNumbers = (number) => {
-    const re = /^[0-9]+$/;
-    return re.test(String(number));
   };
 
   return (

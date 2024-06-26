@@ -36,7 +36,7 @@ const PlazosFijos = () => {
   };
 
   const totalInvertedFixedTerms = useSelector(
-    (state) => state.simulatedFixedTerm.totalInverted
+    (state) => state.fixedTerm.totalInverted
   );
   useEffect(() => {
     setTotalFixedTerms(totalInvertedFixedTerms);
