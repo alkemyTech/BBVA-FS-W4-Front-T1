@@ -1,13 +1,10 @@
+import { Box, Container, Grid, Skeleton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { getAccountBalance } from "../../api/Account";
-import { Box, CircularProgress, Container, Grid, Skeleton } from "@mui/material";
-import TransactionList from "../Home/TransactionList";
-import MySnackbar from "../../UI/MySnackBar";
-import AccountDetailsCard from "./AccountDetails";
-import { ArrowBack } from "@mui/icons-material";
 import ArrowBackComponent from "../../UI/ArrowBack";
+import { getAccountBalance } from "../../api/Account";
+import AccountDetailsCard from "./AccountDetails";
 
 const AllAccounts = () => {
   const [loading, setLoading] = useState(true);

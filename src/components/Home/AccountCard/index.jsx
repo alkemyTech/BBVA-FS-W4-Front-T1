@@ -52,7 +52,10 @@ const AccountCard = ({ accountData }) => {
               flexDirection: "column",
               justifyContent: "center",
               cursor: "pointer",
-              boxShadow: 6
+              boxShadow: 6,
+              transform:"scale(1)",
+              transition: "0.2s",
+              "&:hover":{transform:"scale(1.05)"},
             }}
             onClick={() => handleCardClick(`/account`, account)}
           >
@@ -89,6 +92,9 @@ const AccountCard = ({ accountData }) => {
               justifyContent: "center",
               cursor: "pointer",
               boxShadow: 6,
+              transform:"scale(1)",
+              transition: "0.2s",
+              "&:hover":{transform:"scale(1.05)"},
             }}
             onClick={() => handleCardClick(`/account`, accountData.accountUsd)}
           >
@@ -126,6 +132,9 @@ const AccountCard = ({ accountData }) => {
               justifyContent: "center",
               cursor: "pointer",
               boxShadow: 6,
+              transform:"scale(1)",
+              transition: "0.2s",
+              "&:hover":{transform:"scale(1.05)"},
             }}
             onClick={() =>
               handleCardClick(`/plazos-fijos`, accountData.fixedTerms)
