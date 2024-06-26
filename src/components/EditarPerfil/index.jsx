@@ -135,7 +135,7 @@ export default function EditarPerfil() {
         onKeyDown={handleKeyEnter}
     >
       <Grid item xs={12} sx={{ marginBottom: 3 }}>
-        <Typography component="h1" variant="h5" color="#472183">
+        <Typography component="h1" variant="h5">
           Actualizar datos
         </Typography>
       </Grid>
@@ -252,7 +252,7 @@ export default function EditarPerfil() {
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mt: 3, backgroundColor: "#472183" }}
+          sx={{ mt: 3 }}
           onClick={handleUpdate}
         >
           {loading ? "Cargando..." : "Actualizar"}

@@ -323,7 +323,7 @@ export default function Navbar() {
                   }}
                   underline="none"
                 >
-                  Logout
+                  Salir
                 </Link>
               </Menu>
             </Grid>

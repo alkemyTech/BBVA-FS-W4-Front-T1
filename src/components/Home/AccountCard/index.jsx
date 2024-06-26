@@ -122,7 +122,7 @@ const AccountCard = ({ accountData }) => {
               boxShadow: 6,
             }}
             onClick={() =>
-              handleCardClick(`/inversiones`, accountData.fixedTerms)
+              handleCardClick(`/plazos-fijos`, accountData.fixedTerms)
             }
           >
             <CardContent>

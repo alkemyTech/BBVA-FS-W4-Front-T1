@@ -9,7 +9,7 @@ import ArrowBackComponent from "../../UI/ArrowBack";
 import MySnackbar from "../../UI/MySnackBar";
 import { hideNotification } from "../../Redux/slice/snackBarSlice";
 
-const Inversiones = () => {
+const PlazosFijos = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0); // Página inicial
   const [fixedTerms, setFixedTerms] = useState([]);
@@ -106,4 +106,4 @@ const Inversiones = () => {
   );
 };
 
-export default Inversiones;
+export default PlazosFijos;

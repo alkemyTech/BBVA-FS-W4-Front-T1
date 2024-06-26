@@ -22,7 +22,10 @@ import ArrowBackComponent from "../../UI/ArrowBack";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { NumericFormat } from "react-number-format";
-import { clearSelectedDay, clearSimulatedFixedTerm } from "../../Redux/slice/fixedTermSlice";
+import {
+  clearSelectedDay,
+  clearSimulatedFixedTerm,
+} from "../../Redux/slice/fixedTermSlice";
 
 export default function CrearPlazoFijo() {
   const [amount, setAmount] = useState("");
@@ -44,7 +47,8 @@ export default function CrearPlazoFijo() {
   );
 
   useEffect(() => {
-    dispatch(hideNotification())
+    setIsLoading(true);
+    dispatch(hideNotification());
     if (simulatedFixedTerm) {
       console.log("SIMULADO", simulatedFixedTerm);
       setAmount(simulatedFixedTerm.amount);
@@ -85,6 +89,12 @@ export default function CrearPlazoFijo() {
     const diferencia = (fechaDeCierre - fechaActual) / (1000 * 3600 * 24) + 1;
 
     if (!validateNumbers(parseFloat(amount)) || parseFloat(amount) <= 0) {
+      dispatch(
+        showNotification({
+          message: "El monto debe ser mayor a cero.",
+          status: "error",
+        })
+      );
       setAmountError("El monto debe ser mayor a cero.");
       return;
     } else {
@@ -230,31 +240,29 @@ export default function CrearPlazoFijo() {
           <Typography variant="h7">¿Cuanto queres invertir?</Typography>
         </Grid>
         <Grid item xs={12} sx={{ marginBottom: 3 }}>
-        <NumericFormat
-                  label="Monto"
-                  value={amount}
-                  onValueChange={({ floatValue }) =>
-                    setAmount(
-                      floatValue !== undefined ? floatValue.toFixed(2) : ""
-                    )
-                  }
-                  customInput={TextField}
-                  thousandSeparator={"."}
-                  decimalSeparator={","}
-                  allowNegative={false}
-                  prefix={"$ "}
-                  decimalScale={2}
-                  fixedDecimalScale={true}
-                  fullWidth
-                  required
-                  error={parseFloat(amount.replace(",", ".")) <= 0}
-                  helperText={
-                    parseFloat(amount.replace(",", ".")) <= 0
-                      ? "El monto debe ser mayor a cero"
-                      : ""
-                  }
-                  disabled={simulatedFixedTerm}
-                />
+          <NumericFormat
+            label="Monto"
+            value={amount}
+            onValueChange={({ floatValue }) =>
+              setAmount(floatValue !== undefined ? floatValue.toFixed(2) : "")
+            }
+            customInput={TextField}
+            thousandSeparator={"."}
+            decimalSeparator={","}
+            allowNegative={false}
+            prefix={"$ "}
+            decimalScale={2}
+            fixedDecimalScale={true}
+            fullWidth
+            required
+            error={parseFloat(amount.replace(",", ".")) <= 0}
+            helperText={
+              parseFloat(amount.replace(",", ".")) <= 0
+                ? "El monto debe ser mayor a cero"
+                : ""
+            }
+            disabled={simulatedFixedTerm}
+          />
           {/* <TextField
             label="Monto"
             value={amount}
