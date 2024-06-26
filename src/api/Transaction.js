@@ -99,7 +99,6 @@ const sendArs = async (transferData) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-        console.log(error.response.data.message, "asd");
       throw new Error(error.response.data.message || error.response.data);
     } else {
       throw new Error("Ha ocurrido un error al enviar al dinero");
@@ -107,51 +106,63 @@ const sendArs = async (transferData) => {
   }
 };
 
-const getFilteredTransactionsByIdAccount = async (value, token, page = 0, size = 10, minAmount = null, maxAmount = null, type = null, concept = null) => {
-    const config = {
-        withCredentials: true, // Remove if not needed
-        params: {
-            page: page, // Dynamic page
-            size: size // Default size
-        },
-        headers: {
-            Authorization: `Bearer ${token}` // Assuming you store the token in localStorage
-        }
-    }
+const getFilteredTransactionsByIdAccount = async (
+  value,
+  token,
+  page = 0,
+  size = 10,
+  minAmount = null,
+  maxAmount = null,
+  type = null,
+  concept = null
+) => {
+  const config = {
+    withCredentials: true, // Remove if not needed
+    params: {
+      page: page, // Dynamic page
+      size: size, // Default size
+    },
+    headers: {
+      Authorization: `Bearer ${token}`, // Assuming you store the token in localStorage
+    },
+  };
 
-    // Adding optional query parameters if they are not null
-    if (minAmount !== null) {
-        config.params.minAmount = minAmount;
+  // Adding optional query parameters if they are not null
+  if (minAmount !== null) {
+    config.params.minAmount = minAmount;
+  }
+  if (maxAmount !== null) {
+    config.params.maxAmount = maxAmount;
+  }
+  if (type !== null && type) {
+    config.params.type = type;
+  }
+  if (concept !== null && concept) {
+    config.params.concept = concept;
+  }
+  console.log("LA CONFIG ES:  ", config);
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/userAccountId/${value}/filters`,
+      config
+    );
+    console.log("response:", response);
+    console.log("response data:", response.data);
+    return response;
+  } catch (error) {
+    // Enhanced error logging
+    console.error("An error occurred:", error);
+    if (error.response) {
+      console.error("Response data:", error.response.data);
+      console.error("Response status:", error.response.status);
+      console.error("Response headers:", error.response.headers);
+    } else if (error.request) {
+      console.error("Request data:", error.request);
+    } else {
+      console.error("Error message:", error.message);
     }
-    if (maxAmount !== null) {
-        config.params.maxAmount = maxAmount;
-    }
-    if (type !== null && type) {
-        config.params.type = type;
-    }
-    if (concept !== null && concept) {
-        config.params.concept = concept;
-    }
-    console.log("LA CONFIG ES:  ", config);
-    try {
-        const response = await axios.get(`${API_BASE_URL}/userAccountId/${value}/filters`, config);
-        console.log("response:", response);
-        console.log("response data:", response.data);
-        return response;
-    } catch (error) {
-        // Enhanced error logging
-        console.error("An error occurred:", error);
-        if (error.response) {
-            console.error("Response data:", error.response.data);
-            console.error("Response status:", error.response.status);
-            console.error("Response headers:", error.response.headers);
-        } else if (error.request) {
-            console.error("Request data:", error.request);
-        } else {
-            console.error("Error message:", error.message);
-        }
-        return "404";
-    }
+    return "404";
+  }
 };
 
 const sendUsd = async (transferData) => {
@@ -178,4 +189,11 @@ const sendUsd = async (transferData) => {
   }
 };
 
-export { deposit, payment, sendArs, sendUsd, getTransactionsByIdAccount, getFilteredTransactionsByIdAccount };
+export {
+  deposit,
+  payment,
+  sendArs,
+  sendUsd,
+  getTransactionsByIdAccount,
+  getFilteredTransactionsByIdAccount,
+};

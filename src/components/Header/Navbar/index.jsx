@@ -44,10 +44,14 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" sx={{ backgroundColor: "#472183" }}>
       <Grid container className="container">
-        <Container disableGutters>
-          <Toolbar disableGutters>
+        <Grid container p={1}>
+          <Grid
+            container
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
             {/*Logo y nombre*/}
             <Typography
               variant="h6"
@@ -69,15 +73,15 @@ export default function Navbar() {
               />
             </Typography>
             {/*Menu Hambur pantalla chica*/}
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <Grid
+              item
+              sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+            >
               {/*Menu Hambur icono*/}
               <IconButton
                 size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
                 onClick={handleOpenNavMenu}
-                color="inherit"
+                sx={{ color: "white" }}
               >
                 <MenuIcon />
               </IconButton>
@@ -92,44 +96,50 @@ export default function Navbar() {
                 onClose={handleCloseNavMenu}
                 sx={{ display: { xs: "block", md: "none" } }}
               >
-                <Button
+                <Link
                   onClick={handleCloseNavMenu}
                   href="/transferencia"
                   sx={{
                     my: 1,
                     color: "black",
                     display: "block",
-                    paddingLeft: "15px",
+                    pl: 1.5,
+                    pr: 1.5,
                   }}
+                  underline="none"
                 >
                   Transferencias{" "}
-                </Button>
-                <Button
+                </Link>
+                <Link
                   onClick={handleCloseNavMenu}
-                  href="/plazo-fijo"
+                  href="/inversiones"
                   sx={{
                     my: 1,
                     color: "black",
                     display: "block",
-                    paddingLeft: "15px",
+                    pl: 1.5,
+                    pr: 1.5,
                   }}
+                  underline="none"
                 >
                   Plazo fijo{" "}
-                </Button>
-                <Button
+                </Link>
+                <Link
                   onClick={handleCloseNavMenu}
                   href="/cargar-saldo"
                   sx={{
                     my: 1,
                     color: "black",
                     display: "block",
-                    paddingLeft: "15px",
+                    pl: 1.5,
+                    pr: 1.5,
                   }}
+                  underline="none"
                 >
                   Deposito{" "}
-                </Button>
+                </Link>
               </Menu>
-            </Box>
+            </Grid>
             {/*Logo y nombre pantalla chica*/}
             <Typography
               variant="h5"
@@ -152,13 +162,14 @@ export default function Navbar() {
               />
             </Typography>
             {/*Navbar opciones pantalla grande*/}
-            <Box
+            <Grid
+              item
               sx={{
                 flexGrow: 1,
                 display: { xs: "none", md: "flex" },
                 justifyContent: "flex-end",
                 paddingRight: "80px",
-                textTransform: "uppercase"
+                textTransform: "uppercase",
               }}
             >
               <Link
@@ -171,6 +182,8 @@ export default function Navbar() {
                   padding: "6px 30px",
                   fontWeight: 600,
                   fontSize: 18,
+                  borderRadius: 5,
+                  "&:hover": { backgroundColor: "#50298E" },
                 }}
                 underline="none"
               >
@@ -186,6 +199,8 @@ export default function Navbar() {
                   padding: "6px 30px",
                   fontWeight: 600,
                   fontSize: 18,
+                  borderRadius: 5,
+                  "&:hover": { backgroundColor: "#50298E" },
                 }}
                 underline="none"
               >
@@ -201,14 +216,16 @@ export default function Navbar() {
                   padding: "6px 30px",
                   fontWeight: 600,
                   fontSize: 18,
+                  borderRadius: 5,
+                  "&:hover": { backgroundColor: "#50298E" },
                 }}
                 underline="none"
               >
                 Deposito{" "}
               </Link>
-            </Box>
+            </Grid>
             {/*Perfil usuario pantalla grande*/}
-            <Box sx={{ flexGrow: 0 }}>
+            <Grid item sx={{ flexGrow: 0 }}>
               {/*Foto perfil pantalla grande*/}
               <Tooltip title="Mi perfil">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -270,15 +287,16 @@ export default function Navbar() {
                     color: "black",
                     display: "block",
                     paddingLeft: "15px",
+                    cursor: "pointer",
                   }}
                   underline="none"
                 >
                   Logout
                 </Link>
               </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
     </AppBar>
   );

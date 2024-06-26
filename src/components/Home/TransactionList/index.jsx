@@ -137,7 +137,6 @@ const TransactionList = ({ accountData }) => {
             onChange={(e) => setMaxAmount(e.target.value)}
           />
           <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-            <InputLabel>Tipo</InputLabel>
             <TextField
               select
               value={type}
@@ -153,7 +152,6 @@ const TransactionList = ({ accountData }) => {
             </TextField>
           </FormControl>
           <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-            <InputLabel>Moneda</InputLabel>
             <TextField
               select
               value={currency}
@@ -168,7 +166,6 @@ const TransactionList = ({ accountData }) => {
             </TextField>
           </FormControl>
           <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-            <InputLabel>Concepto</InputLabel>
             <TextField
               select
               value={concept}

@@ -16,13 +16,6 @@ const theme = createTheme({
     fontFamily: "Outfit, sans serif",
   },
   components: {
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          backgroundColor: "#472183",
-        },
-      },
-    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -37,9 +30,9 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          '--TextField-brandBorderColor': '#764EB7',
-          '--TextField-brandBorderHoverColor': '#472183',
-          '--TextField-brandBorderFocusedColor': '#472183',
+          '--TextField-brandBorderColor': '#5B67E5',
+          '--TextField-brandBorderHoverColor': '#6B77FF',
+          '--TextField-brandBorderFocusedColor': '#6B77FF',
           '& label.Mui-focused': {
             color: 'var(--TextField-brandBorderFocusedColor)',
           },
