@@ -12,6 +12,7 @@ import MySnackbar from "../../UI/MySnackBar";
 import { getAccountBalance } from "../../api/Account";
 import BankAccountCard from "./AccountCard";
 import TransactionList from "./TransactionList";
+import { setTotalInverted } from "../../Redux/slice/fixedTermSlice";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);

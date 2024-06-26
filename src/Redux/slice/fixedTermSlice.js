@@ -6,7 +6,7 @@ const initialState = {
   totalInverted: 0,
 };
 
-const simulatedFixedTermSlice = createSlice({
+const FixedTermSlice = createSlice({
   name: "simulatedData",
   initialState,
   reducers: {
@@ -34,6 +34,6 @@ export const {
   setSelectedDay,
   clearSelectedDay,
   setTotalInverted,
-} = simulatedFixedTermSlice.actions;
+} = FixedTermSlice.actions;
 
-export default simulatedFixedTermSlice.reducer;
+export default FixedTermSlice.reducer;
