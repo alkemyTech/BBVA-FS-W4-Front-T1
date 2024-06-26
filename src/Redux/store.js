@@ -5,7 +5,7 @@ import saldoReducer from './slice/saldoSlice';
 import userReducer from "./slice/userSlice";
 import notificationReducer from './slice/snackBarSlice';
 import transferReducer from './slice/transferSlice';
-import simulatedFixedTerm from './slice/fixedTermSlice';
+import fixedTermReducer from './slice/fixedTermSlice';
 
 const persistUserConfig = {
   key: "user",
@@ -17,8 +17,14 @@ const persistConfig = {
   storage,
 };
 
+const persistFixedTermConfig = {
+  key: 'fixedTerm',
+  storage,
+};
+
 const persistedUserReducer = persistReducer(persistUserConfig, userReducer);
 const persistedSaldoReducer = persistReducer(persistConfig, saldoReducer);
+const persistedFixedTermReducer = persistReducer(persistFixedTermConfig, fixedTermReducer);
 
 export const store = configureStore({
   reducer: {
@@ -26,7 +32,7 @@ export const store = configureStore({
     user: persistedUserReducer,
     notification: notificationReducer,
     transfer: transferReducer,
-    simulatedFixedTerm: simulatedFixedTerm,
+    fixedTerm: persistedFixedTermReducer,
 
   },
   middleware: (getDefaultMiddleware) =>

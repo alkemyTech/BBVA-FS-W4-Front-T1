@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, CircularProgress, Grid } from "@mui/material";
+import { Container, CircularProgress, Grid, Skeleton, Box } from "@mui/material";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getFixedTerms } from "../../api/FixedTerm";
@@ -9,7 +9,7 @@ import ArrowBackComponent from "../../UI/ArrowBack";
 import MySnackbar from "../../UI/MySnackBar";
 import { hideNotification } from "../../Redux/slice/snackBarSlice";
 
-const Inversiones = () => {
+const PlazosFijos = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0); // Página inicial
   const [fixedTerms, setFixedTerms] = useState([]);
@@ -35,14 +35,23 @@ const Inversiones = () => {
     dispatch(hideNotification());
   };
 
+  const totalInvertedFixedTerms = useSelector(
+    (state) => state.fixedTerm.totalInverted
+  );
+  useEffect(() => {
+    setTotalFixedTerms(totalInvertedFixedTerms);
+  }, [])
+  
+  
+
   const fetchData = async (page) => {
     setLoading(true);
     try {
       const data = await getFixedTerms(page);
       setFixedTerms(data.fixedTerms);
       setTotalPages(data.countPages); // Establecemos el total de páginas desde el backend
-      console.log(totalMoney(data.fixedTerms));
-      setTotalFixedTerms(totalMoney(data.fixedTerms));
+      // console.log(totalMoney(data.fixedTerms));
+      
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -62,48 +71,48 @@ const Inversiones = () => {
   };
 
   return (
-    <Container>
+    <Container sx={{ marginTop: 2 }}>
       <ArrowBackComponent />
       {loading ? (
-        <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <CircularProgress sx={{ color: "#472183" }} />
-      </div>
+        <Box sx={{ width: '100%', marginTop: '5vh' }}>
+          <Skeleton
+            animation="wave"
+            variant="rectangular"
+            width="100%"
+            height={150}
+            sx={{ marginBottom: "16px", borderRadius: "8px" }}
+          />
+          <Skeleton
+            animation="wave"
+            variant="rectangular"
+            width="100%"
+            height={400}
+            sx={{ marginBottom: "16px", borderRadius: "8px" }}
+          />
+        </Box>
       ) : (
         <>
-        <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}>
-          <FixedTermDetails totalFixedTerms={totalFixedTerms} />
-          <Grid item xs={12}>
-            <FixedTermsList
-              fixedTerms={fixedTerms}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              handlePageChange={handlePageChange}
-            />
+          <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}>
+            <FixedTermDetails totalFixedTerms={totalFixedTerms} />
+            <Grid item xs={12}>
+              <FixedTermsList
+                fixedTerms={fixedTerms}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                handlePageChange={handlePageChange}
+              />
+            </Grid>
           </Grid>
-
-
-        </Grid>
-        <MySnackbar
-        open={notification.open}
-        handleClose={handleSnackbarClose}
-        message={notification.message}
-        status={notification.status}
-      />
-      </>
+          <MySnackbar
+            open={notification.open}
+            handleClose={handleSnackbarClose}
+            message={notification.message}
+            status={notification.status}
+          />
+        </>
       )}
     </Container>
   );
 };
 
-export default Inversiones;
+export default PlazosFijos;

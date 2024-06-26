@@ -14,7 +14,11 @@ import dayjs from "dayjs";
 import { simulateFixedTerm } from "../../api/FixedTerm";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { setSelectedDay, setSimulatedFixedTerm } from "../../Redux/slice/fixedTermSlice";
+import {
+  setSelectedDay,
+  setSimulatedFixedTerm,
+} from "../../Redux/slice/fixedTermSlice";
+import { NumericFormat } from "react-number-format";
 
 const SimularPlazoFijo = () => {
   const [amount, setAmount] = useState("");
@@ -22,35 +26,20 @@ const SimularPlazoFijo = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [closingDate, setClosingDate] = useState(null);
   const [responseData, setResponseData] = useState(null);
-  const [amountError, setAmountError] = useState("");
 
   const today = new Date();
   const minDate = dayjs(new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000));
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleInputRestriction =
-    (allowedCharacters = "") =>
-    (e) => {
-      const isAllowedCharacter = new RegExp(`[^${allowedCharacters}]`).test(
-        e.key
-      );
-      const isBackspace = e.key === "Backspace";
-      const isTab = e.key === "Tab"; // Check for Tab key
-
-      if (isAllowedCharacter && !isBackspace && !isTab) {
-        e.preventDefault();
-      }
+  const handleCreateFixedTerm = () => {
+    const simulatedFixedTerm = {
+      amount,
+      closingDate,
     };
-
-    const handleCreateFixedTerm = () => {
-      const simulatedFixedTerm = {
-        amount,
-        closingDate
-      }
-      dispatch(setSimulatedFixedTerm(simulatedFixedTerm));
-      navigate("/plazo-fijo");
-    };
+    dispatch(setSimulatedFixedTerm(simulatedFixedTerm));
+    navigate("/crear-plazo-fijo");
+  };
 
   const handleDayClick = (day) => {
     if (day === "Otro") {
@@ -109,18 +98,13 @@ const SimularPlazoFijo = () => {
   };
 
   useEffect(() => {
-    if (amount <= 0 && amount != "") {
-      setAmountError("El monto debe ser mayor a cero.");
-    } else {
-      setAmountError("");
-    }
     if (amount && closingDate) {
       fetchData();
     }
   }, [amount, closingDate]);
 
   return (
-    <Container sx={{ marginBottom: 3 }}>
+    <Container sx={{ marginBottom: 3, marginTop: 2 }}>
       <ArrowBackComponent />
       <Grid
         container
@@ -147,7 +131,29 @@ const SimularPlazoFijo = () => {
         </Grid>
 
         <Grid item xs={12} sx={{ marginBottom: 2 }}>
-          <TextField
+          <NumericFormat
+            label="Monto"
+            value={amount}
+            onValueChange={({ floatValue }) =>
+              setAmount(floatValue !== undefined ? floatValue.toFixed(2) : "")
+            }
+            customInput={TextField}
+            thousandSeparator={"."}
+            decimalSeparator={","}
+            allowNegative={false}
+            prefix={"$ "}
+            decimalScale={2}
+            fixedDecimalScale={true}
+            fullWidth
+            required
+            error={parseFloat(amount.replace(",", ".")) <= 0}
+            helperText={
+              parseFloat(amount.replace(",", ".")) <= 0
+                ? "El monto debe ser mayor a cero"
+                : ""
+            }
+          />
+          {/* <TextField
             label="Monto"
             value={amount}
             fullWidth
@@ -157,7 +163,7 @@ const SimularPlazoFijo = () => {
             onChange={(e) => setAmount(e.target.value)}
             required
             onKeyDown={handleInputRestriction("0-9")}
-          />
+          /> */}
         </Grid>
 
         <Grid item xs={12} sx={{ marginBottom: 1 }}>
@@ -294,7 +300,11 @@ const SimularPlazoFijo = () => {
             <Grid container sx={{ marginTop: 1 }}>
               <Grid item xs={12} sx={{ marginTop: 1 }}>
                 <Typography variant="h5">
-                  ${responseData.amountTotalToReceive}
+                  $
+                  {responseData.amountTotalToReceive.toLocaleString("es-AR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
                 </Typography>
               </Grid>
 
@@ -312,7 +322,11 @@ const SimularPlazoFijo = () => {
               </Grid>
               <Grid item xs={4}>
                 <Typography>
-                  $ {responseData.interestTotal.toFixed(2)}
+                  ${" "}
+                  {responseData.interestTotal.toLocaleString("es-AR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
                 </Typography>
               </Grid>
 
@@ -353,7 +367,7 @@ const SimularPlazoFijo = () => {
           <Divider />
         </Grid>
         <Grid item xs={12}>
-        <Button
+          <Button
             type="submit"
             disabled={!responseData}
             variant="contained"
@@ -364,10 +378,9 @@ const SimularPlazoFijo = () => {
               color: "#fff",
             }}
           >
-          Crear Plazo fijo
+            Crear Plazo fijo
           </Button>
         </Grid>
-
       </Grid>
     </Container>
   );

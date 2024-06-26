@@ -1,21 +1,24 @@
-import { useState, useEffect } from "react";
-import { CircularProgress, Container } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Skeleton
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { hideNotification } from "../../Redux/slice/snackBarSlice";
+import { clearUser } from "../../Redux/slice/userSlice";
+import MySnackbar from "../../UI/MySnackBar";
+import { getAccountBalance } from "../../api/Account";
 import BankAccountCard from "./AccountCard";
 import TransactionList from "./TransactionList";
-import { getAccountBalance } from "../../api/Account";
-import MySnackbar from "../../UI/MySnackBar";
-import { useSelector, useDispatch } from "react-redux";
-import { hideNotification } from "../../Redux/slice/snackBarSlice";
-import { useNavigate } from "react-router";
-import { clearUser } from "../../Redux/slice/userSlice";
+import { setTotalInverted } from "../../Redux/slice/fixedTermSlice";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [accountData, setAccountData] = useState(null);
-
   const notification = useSelector((state) => state.notification);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,29 +38,47 @@ const Home = () => {
     };
 
     fetchData();
-  }, [loading]);
+  }, [dispatch, navigate]);
 
   const handleSnackbarClose = () => {
     dispatch(hideNotification());
   };
 
+  const expectedAccountCount = accountData
+    ? accountData.accountArs.length +
+      (accountData.accountUsd ? 1 : 0) +
+      (accountData.fixedTerms.length > 0 ? 1 : 0)
+    : 2;
+
   return (
     <Container sx={{ position: "relative", minHeight: "70vh" }}>
       {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          <CircularProgress sx={{ color: "#472183" }} />
-        </div>
+        <>
+          <Grid container spacing={2} sx={{ marginTop: "5vh" }}>
+            {[...Array(expectedAccountCount)].map((_, index) => (
+              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                <Skeleton
+                  animation="wave"
+                  variant="rectangular"
+                  width="100%"
+                  height={100}
+                  sx={{ borderRadius: "8px" }}
+                />
+              </Grid>
+            ))}
+          </Grid>
+          <Grid sx={{ borderRadius: '8px', marginTop: '16px', marginBottom: '10vh' }}>
+              <Grid>
+                <Skeleton
+                  animation="wave"
+                  variant="rectangular"
+                  width="100%"
+                  height={400}
+                  sx={{ borderRadius: "8px" }}
+                />
+              </Grid>
+          </Grid>
+        </>
       ) : (
         <>
           <BankAccountCard accountData={accountData} />
