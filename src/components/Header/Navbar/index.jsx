@@ -112,7 +112,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   onClick={handleCloseNavMenu}
-                  href="/inversiones"
+                  href="/plazos-fijos"
                   sx={{
                     my: 1,
                     color: "black",
@@ -137,6 +137,21 @@ export default function Navbar() {
                   underline="none"
                 >
                   Deposito{" "}
+                </Link>
+                <Link
+                  onClick={handleCloseNavMenu}
+                  href="/cargar-pago"
+                  sx={{
+                    my: 1,
+                    color: "black",
+                    display: "block",
+                    pl: 1.5,
+                    pr: 1.5,
+                  }}
+                  underline="none"
+
+                >
+                  Pago{" "}
                 </Link>
               </Menu>
             </Grid>
@@ -191,7 +206,7 @@ export default function Navbar() {
               </Link>
               <Link
                 onClick={handleCloseNavMenu}
-                href="/plazo-fijo"
+                href="/plazos-fijos"
                 sx={{
                   my: 1,
                   color: "white",
@@ -223,7 +238,24 @@ export default function Navbar() {
               >
                 Deposito{" "}
               </Link>
-            </Grid>
+              <Link
+                onClick={handleCloseNavMenu}
+                href="/cargar-pago"
+                sx={{
+                  my: 1,
+                  color: "white",
+                  display: "block",
+                  padding: "6px 30px",
+                  fontWeight: 600,
+                  fontSize: 18,
+                  borderRadius: 5,
+                  "&:hover": { backgroundColor: "#50298E" },
+                }}
+                underline="none"
+              >
+                Pago{" "}
+              </Link>
+              </Grid>
             {/*Perfil usuario pantalla grande*/}
             <Grid item sx={{ flexGrow: 0 }}>
               {/*Foto perfil pantalla grande*/}

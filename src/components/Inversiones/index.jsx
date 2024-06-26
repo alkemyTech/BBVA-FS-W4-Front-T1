@@ -62,7 +62,7 @@ const Inversiones = () => {
   };
 
   return (
-    <Container>
+    <Container sx={{ marginTop: 2 }}>
       <ArrowBackComponent />
       {loading ? (
         <Box sx={{ width: '100%', marginTop: '5vh' }}>
@@ -83,26 +83,24 @@ const Inversiones = () => {
         </Box>
       ) : (
         <>
-        <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}>
-          <FixedTermDetails totalFixedTerms={totalFixedTerms} />
-          <Grid item xs={12}>
-            <FixedTermsList
-              fixedTerms={fixedTerms}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              handlePageChange={handlePageChange}
-            />
+          <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}>
+            <FixedTermDetails totalFixedTerms={totalFixedTerms} />
+            <Grid item xs={12}>
+              <FixedTermsList
+                fixedTerms={fixedTerms}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                handlePageChange={handlePageChange}
+              />
+            </Grid>
           </Grid>
-
-
-        </Grid>
-        <MySnackbar
-        open={notification.open}
-        handleClose={handleSnackbarClose}
-        message={notification.message}
-        status={notification.status}
-      />
-      </>
+          <MySnackbar
+            open={notification.open}
+            handleClose={handleSnackbarClose}
+            message={notification.message}
+            status={notification.status}
+          />
+        </>
       )}
     </Container>
   );

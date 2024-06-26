@@ -1,12 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   data: null,
-  selectedDay: '',
+  selectedDay: "",
 };
 
 const simulatedFixedTermSlice = createSlice({
-  name: 'simulatedData',
+  name: "simulatedData",
   initialState,
   reducers: {
     setSimulatedFixedTerm: (state, action) => {
@@ -16,14 +16,19 @@ const simulatedFixedTermSlice = createSlice({
       state.data = null;
     },
     setSelectedDay: (state, action) => {
-        state.selectedDay = action.payload;
-      },
-      clearSelectedDay: (state) => {
-        state.selectedDay = '';
-      },
+      state.selectedDay = action.payload;
+    },
+    clearSelectedDay: (state) => {
+      state.selectedDay = "";
+    },
   },
 });
 
-export const { setSimulatedFixedTerm, clearSimulatedFixedTerm, setSelectedDay,  clearSelectedDay} = simulatedFixedTermSlice.actions;
+export const {
+  setSimulatedFixedTerm,
+  clearSimulatedFixedTerm,
+  setSelectedDay,
+  clearSelectedDay,
+} = simulatedFixedTermSlice.actions;
 
 export default simulatedFixedTermSlice.reducer;
