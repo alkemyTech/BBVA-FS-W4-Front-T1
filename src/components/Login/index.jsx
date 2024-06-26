@@ -4,13 +4,8 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import {
-  Alert,
-  Divider,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
-import { postLogin } from "../../api/Auth";
+import { Alert, Divider, IconButton, InputAdornment } from "@mui/material";
+import { postLogin } from "../../api/auth.js";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
@@ -23,6 +18,7 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showAuthError, setShowAuthError] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,7 +28,7 @@ const Login = () => {
   };
 
   const handleKeyEnter = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleLogin(e);
     }
   };
@@ -78,11 +74,10 @@ const Login = () => {
           navigate("/home");
         }
       } catch (error) {
-        if (error.message === "Email o contraseña inválidos") {
-          setShowAuthError(true);
-          setEmail('');
-          setPassword('');
-        }
+        setShowAuthError(true);
+        setEmail("");
+        setPassword("");
+        setLoginError(error.message);
         console.error("Error during login:", error);
       } finally {
         setLoading(false); // Finaliza la carga
@@ -107,10 +102,7 @@ const Login = () => {
       onKeyDown={handleKeyEnter}
     >
       <Grid item xs={12}>
-        <img 
-          src="https://i.ibb.co/qn2SwBB/LOGO-SIN-FONDO.png"
-          alt="Logo"  
-        />
+        <img src="https://i.ibb.co/qn2SwBB/LOGO-SIN-FONDO.png" alt="Logo" />
       </Grid>
       <Grid item xs={12}>
         <Typography component="h1" variant="h5">
@@ -121,7 +113,7 @@ const Login = () => {
         <TextField
           required
           fullWidth
-          label="Email"
+          label="Correo electrónico"
           name="email"
           autoComplete="email"
           autoFocus
@@ -129,14 +121,15 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
           error={Boolean(emailError)}
           helperText={emailError}
+          disabled={loading}
         />
       </Grid>
       <Grid item xs={12}>
         <TextField
           required
           fullWidth
-          name="password"
           label="Contraseña"
+          name="password"
           id="password"
           type={showPassword ? "text" : "password"}
           autoComplete="current-password"
@@ -157,11 +150,12 @@ const Login = () => {
               </InputAdornment>
             ),
           }}
+          disabled={loading}
         />
       </Grid>
       {showAuthError && (
         <Grid item xs={12}>
-          <Alert severity="error">Email o contraseña inválidos</Alert>
+          <Alert severity="error">{loginError}</Alert>
         </Grid>
       )}
       <Grid item xs={12}>
@@ -169,8 +163,9 @@ const Login = () => {
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mt: 3, mb: 2, backgroundColor: "#472183"}}
+          sx={{ mt: 3, mb: 2 }}
           onClick={handleLogin}
+          disabled={loading}
         >
           {loading ? "Cargando..." : "Iniciar Sesión"}
         </Button>
@@ -178,10 +173,20 @@ const Login = () => {
       <Grid item xs={12}>
         <Divider />
       </Grid>
-      <Grid item xs={12}>
-        <Link href="/register" variant="body2"> 
-          {"¿No tienes una cuenta? Registrate"} 
-        </Link>
+      <Grid item xs>
+        <Typography variant="body1" textAlign={"center"}>
+          ¿No tenés una cuenta?
+        </Typography>
+        <Typography variant="body1" textAlign={"center"}>
+          <Link
+            href="/register"
+            variant="button"
+            underline="none"
+            sx={{ color: "#5B67E5" }}
+          >
+            Registrate
+          </Link>
+        </Typography>
       </Grid>
     </Grid>
   );

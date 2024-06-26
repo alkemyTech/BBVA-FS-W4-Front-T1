@@ -7,8 +7,8 @@ export default function Page(props) {
       <Header />
       <main
         style={{
-          paddingTop: "4rem",
-          paddingBottom: "4rem",
+          paddingTop: "5rem",
+          paddingBottom: "5rem",
           backgroundColor: "#F1F6F5",
         }}
       >

@@ -8,10 +8,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  clearSelectedDestination,
-  setConfirmedDestination,
-} from "../../../Redux/slice/transferSlice";
+import { setConfirmedDestination } from "../../../Redux/slice/transferSlice";
 import { useNavigate } from "react-router";
 import {
   showNotification,
@@ -33,6 +30,12 @@ const ConfirmarDestino = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const notification = useSelector((state) => state.notification);
+
+  const handleKeyEnterConfirmation = (e) => {
+    if (e.key === "Enter") {
+      handleConfirmation(e);
+    }
+  };
 
   const handleConfirmation = async (e) => {
     e.preventDefault();
@@ -70,18 +73,7 @@ const ConfirmarDestino = () => {
 
   const handleCancelation = async (e) => {
     e.preventDefault();
-
-    try {
-      dispatch(clearSelectedDestination());
-      navigate("/transferencia");
-    } catch (error) {
-      dispatch(
-        showNotification({
-          message: error.message ? error.message : "Error del servidor",
-          status: "error",
-        })
-      );
-    }
+    navigate("/transferencia");
   };
 
   const handleSnackbarClose = () => {
@@ -96,11 +88,11 @@ const ConfirmarDestino = () => {
             container
             justifyContent="space-between"
             alignItems="center"
-            mt={5}
-            ml={4}
+            mt={2}
+            ml={5}
             position="relative"
           >
-            <Grid item position="absolute">
+            <Grid item>
               <ArrowBackComponent />
             </Grid>
           </Grid>
@@ -171,7 +163,7 @@ const ConfirmarDestino = () => {
                   />
                 }
                 label="Agregar a la lista de contactos"
-                sx={{mr:0}}
+                sx={{ mr: 0 }}
               />
             </Grid>
             {addToContacts && (
@@ -185,6 +177,7 @@ const ConfirmarDestino = () => {
                   onChange={(e) => setNickname(e.target.value)}
                   fullWidth
                   disabled={isLoading}
+                  onKeyDown={handleKeyEnterConfirmation}
                 />
               </Grid>
             )}
@@ -194,9 +187,9 @@ const ConfirmarDestino = () => {
                 disabled={isLoading}
                 onClick={handleCancelation}
                 sx={{
-                  color: "black",
-                  backgroundColor: "#D1D8C5",
-                  "&:hover": { backgroundColor: "#c0c9b5" },
+                  color: "#FFF",
+                  backgroundColor: "#696969",
+                  "&:hover": { backgroundColor: "#585858" },
                   marginRight: "2.5vw",
                 }}
               >

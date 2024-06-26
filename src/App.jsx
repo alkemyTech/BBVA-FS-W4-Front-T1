@@ -58,7 +58,7 @@ function App() {
             element={
               <ProtectedRoute
                 condition={selectedDestination}
-                redirectTo="/transferencia"
+                redirectTo="/"
               >
                 <ConfirmarDestino />
               </ProtectedRoute>
@@ -69,7 +69,7 @@ function App() {
             element={
               <ProtectedRoute
                 condition={confirmedDestination}
-                redirectTo="/transferencia"
+                redirectTo="/"
               >
                 <EnviarDinero />
               </ProtectedRoute>
