@@ -164,11 +164,12 @@ const TransactionListDetails = ({ account }) => {
         <Box sx={{ marginTop: "2vh" }}>
           <Card
             sx={{
-              backgroundColor: "#f5f5f5",
+              backgroundColor: "#ffffff",
               padding: "16px",
               borderRadius: "8px",
               marginTop: "16px",
               marginBottom: "10vh",
+              boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
             }}
           >
             <CardContent>

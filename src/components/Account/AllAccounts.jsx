@@ -68,10 +68,10 @@ const AllAccounts = () => {
           <Grid container spacing={2} sx={{ marginTop: "1vh" }}>
             {accountData.accountArs &&
               accountData.accountArs.map((account, index) => (
-                <AccountDetailsCard account={account} />
+                <AccountDetailsCard account={account} showVerMovimientos={true}/>
               ))}
             {accountData.accountUsd && (
-              <AccountDetailsCard account={accountData.accountUsd} />
+              <AccountDetailsCard account={accountData.accountUsd} showVerMovimientos={true}/>
             )}
           </Grid>
         </>
