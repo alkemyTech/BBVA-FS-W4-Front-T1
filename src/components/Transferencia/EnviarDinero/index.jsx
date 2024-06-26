@@ -12,6 +12,7 @@ import {
   DialogActions,
   Slide,
   Skeleton,
+  LinearProgress,
 } from "@mui/material";
 import MySnackbar from "../../../UI/MySnackBar";
 import { useNavigate } from "react-router";
@@ -38,16 +39,19 @@ const EnviarDinero = () => {
   ];
 
   const [amount, setAmount] = useState("");
+  const [amountError, setAmountError] = useState("");
   const [concept, setConcept] = useState(transactionConcepts[0]);
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadingBar, setLoadingBar] = useState(false);
 
   const selectedDestination = useSelector(
     (state) => state.transfer.selectedDestination
   );
 
   const [accountOrigin, setAccountOrigin] = useState("");
+  const [accountOriginError, setAccountOriginError] = useState("");
   const [accountOriginArs, setAccountOriginArs] = useState([]);
   const [accountOriginUsd, setAccountOriginUsd] = useState("");
   const [accountDestination, setAccountDestination] = useState("");
@@ -57,6 +61,23 @@ const EnviarDinero = () => {
   const notification = useSelector((state) => state.notification);
 
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
+
+  const [progress, setProgress] = useState(0);
+  let progressInterval;
+
+  const startProgress = (duration) => {
+    setProgress(0);
+    const increment = 100 / (duration / 100);
+    progressInterval = setInterval(() => {
+      setProgress((prev) => Math.min(prev + increment, 100));
+    }, 100);
+  };
+
+  const completeProgress = () => {
+    clearInterval(progressInterval);
+    setProgress(100);
+    setTimeout(() => setLoadingBar(false), 500); // Small delay for smooth completion
+  };
 
   useEffect(() => {
     if (selectedDestination) {
@@ -104,10 +125,12 @@ const EnviarDinero = () => {
 
   const handleOpenConfirmationDialog = () => {
     setOpenConfirmationDialog(true);
+    setIsLoading(true);
   };
 
   const handleCloseConfirmationDialog = () => {
     setOpenConfirmationDialog(false);
+    setIsLoading(false);
   };
 
   const handleSubmit = async (e) => {
@@ -116,41 +139,23 @@ const EnviarDinero = () => {
     const amountNumber = parseFloat(amount.replace(",", "."));
 
     if (!accountOrigin || isNaN(accountOrigin)) {
-      dispatch(
-        showNotification({
-          message: "No posees una cuenta",
-          status: "error",
-        })
-      );
+      setAccountOriginError("No posees una cuenta");
     } else if (amountNumber <= 0 || !amountNumber) {
-      dispatch(
-        showNotification({
-          message: "El monto debe ser mayor que cero",
-          status: "error",
-        })
-      );
+      setAmountError("El monto debe ser mayor que cero");
     } else if (
       selectedDestination.currency === "USD" &&
       accountOriginUsd.balance <= 0
     ) {
-      dispatch(
-        showNotification({
-          message: "No tiene saldo disponible",
-          status: "error",
-        })
-      );
+      setAccountOriginError("No tiene saldo disponible");
     } else if (
       selectedDestination.currency === "ARS" &&
       accountOriginArs.find((acc) => acc.idAccount === accountOrigin).balance <=
         0
     ) {
-      dispatch(
-        showNotification({
-          message: "No tiene saldo disponible",
-          status: "error",
-        })
-      );
-    } else if (amountNumber > 0) {
+      setAccountOriginError("No tiene saldo disponible");
+    } else {
+      setAmountError("");
+      setAccountOriginError("");
       handleOpenConfirmationDialog();
     }
   };
@@ -165,9 +170,11 @@ const EnviarDinero = () => {
       concept: concept,
       description: description,
     };
+    setIsLoading(true);
+    setLoadingBar(true);
+    startProgress(5500);
 
     try {
-      setIsLoading(true);
       if (selectedDestination.currency === "USD") {
         await sendUsd(transferData);
       } else {
@@ -179,16 +186,25 @@ const EnviarDinero = () => {
           status: "success",
         })
       );
+      completeProgress();
       navigate("/home");
     } catch (error) {
-      dispatch(
-        showNotification({
-          message: error.message ? error.message : "Error del servidor",
-          status: "error",
-        })
-      );
+      completeProgress();
+      if (error.message != "Balance insuficiente") {
+        dispatch(
+          showNotification({
+            message: error.message ? error.message : "Error del servidor",
+            status: "error",
+          })
+        );
+      } else {
+        setAmountError(true)
+        setAccountOriginError("Saldo insuficiente");
+      }
     } finally {
       setIsLoading(false);
+      setLoadingBar(false);
+      completeProgress();
     }
   };
 
@@ -333,12 +349,8 @@ const EnviarDinero = () => {
                   fixedDecimalScale={true}
                   fullWidth
                   required
-                  error={parseFloat(amount.replace(",", ".")) <= 0}
-                  helperText={
-                    parseFloat(amount.replace(",", ".")) <= 0
-                      ? "El monto debe ser mayor a cero"
-                      : ""
-                  }
+                  error={Boolean(amountError)}
+                  helperText={amountError}
                   disabled={isLoading}
                 />
                 <TextField
@@ -371,6 +383,8 @@ const EnviarDinero = () => {
                   onChange={(e) => setAccountOrigin(e.target.value)}
                   fullWidth
                   required
+                  error={Boolean(accountOriginError)}
+                  helperText={accountOriginError}
                   disabled={isLoading}
                 >
                   {selectedDestination.currency === "USD" ? (
@@ -418,31 +432,50 @@ const EnviarDinero = () => {
                     </MenuItem>
                   )}
                 </TextField>
-                <Grid item alignSelf={"center"} mt={1}>
-                  <Button
-                    variant="contained"
-                    disabled={isLoading}
-                    sx={{
-                      color: "#FFF",
-                      backgroundColor: "#696969",
-                      "&:hover": { backgroundColor: "#585858" },
-                      marginRight: "2.5vw",
-                    }}
-                    onClick={handleCancelation}
+
+                {loadingBar ? (
+                  <Grid
+                    item
+                    alignSelf={"center"}
+                    display={"grid"}
+                    alignItems={"center"}
+                    mt={1}
+                    sx={{ width: "75%", minHeight: "45px" }}
                   >
-                    Cancelar
-                  </Button>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    disabled={
-                      isLoading || parseFloat(amount.replace(",", ".")) <= 0
-                    }
-                    onClick={handleSubmit}
+                    <LinearProgress variant="determinate" value={progress} />
+                  </Grid>
+                ) : (
+                  <Grid
+                    item
+                    alignSelf={"center"}
+                    mt={1}
+                    sx={{ minHeight: "45px" }}
                   >
-                    {isLoading ? "Cargando..." : "Transferir"}
-                  </Button>
-                </Grid>
+                    <Button
+                      variant="contained"
+                      disabled={isLoading}
+                      sx={{
+                        color: "#FFF",
+                        backgroundColor: "#C62E2E",
+                        "&:hover": { backgroundColor: "#BA3131" },
+                        marginRight: "2rem",
+                      }}
+                      onClick={handleCancelation}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      disabled={
+                        isLoading || parseFloat(amount.replace(",", ".")) <= 0
+                      }
+                      onClick={handleSubmit}
+                    >
+                      Transferir
+                    </Button>
+                  </Grid>
+                )}
               </Grid>
             )}
           </Grid>
@@ -458,7 +491,7 @@ const EnviarDinero = () => {
             onClose={handleCloseConfirmationDialog}
             TransitionComponent={Slide}
             PaperProps={{
-              sx: { p: 3, borderRadius: 5 },
+              sx: { p: 3, borderRadius: 5, mr: 6 },
             }}
           >
             <DialogTitle>Confirmar Transferencia</DialogTitle>
@@ -533,8 +566,9 @@ const EnviarDinero = () => {
                 onClick={handleCloseConfirmationDialog}
                 sx={{
                   color: "#FFF",
-                  backgroundColor: "#696969",
-                  "&:hover": { backgroundColor: "#585858" },
+                  backgroundColor: "#C62E2E",
+                  "&:hover": { backgroundColor: "#BA3131" },
+                  marginRight: "2rem",
                   p: 1.2,
                 }}
               >
@@ -544,10 +578,12 @@ const EnviarDinero = () => {
                 onClick={handleConfirmTransfer}
                 sx={{
                   color: "#FFF",
+                  backgroundColor: "#8EB052",
+                  "&:hover": { backgroundColor: "#94B758" },
                   p: 1.2,
                 }}
               >
-                Confirmar Transferencia
+                Confirmar
               </Button>
             </DialogActions>
           </Dialog>

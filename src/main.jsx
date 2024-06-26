@@ -16,6 +16,16 @@ const theme = createTheme({
     fontFamily: "Outfit, sans serif",
   },
   components: {
+    MuiLinearProgress: {
+      styleOverrides: {
+        barColorPrimary: {
+          backgroundColor: '#472183', // Color de la barra de progreso
+        },
+        colorPrimary: {
+          backgroundColor: '#A280D8', // Color de fondo de la barra de progreso
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {

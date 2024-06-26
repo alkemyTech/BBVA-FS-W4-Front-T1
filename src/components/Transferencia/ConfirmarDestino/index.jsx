@@ -188,9 +188,9 @@ const ConfirmarDestino = () => {
                 onClick={handleCancelation}
                 sx={{
                   color: "#FFF",
-                  backgroundColor: "#696969",
-                  "&:hover": { backgroundColor: "#585858" },
-                  marginRight: "2.5vw",
+                  backgroundColor: "#C62E2E",
+                  "&:hover": { backgroundColor: "#BA3131" },
+                  marginRight: "2rem",
                 }}
               >
                 Cancelar
@@ -199,6 +199,11 @@ const ConfirmarDestino = () => {
                 variant="contained"
                 disabled={isLoading}
                 onClick={handleConfirmation}
+                sx={{
+                  color: "#FFF",
+                  backgroundColor: "#8EB052",
+                  "&:hover": { backgroundColor: "#94B758" },
+                }}
               >
                 {isLoading ? "Cargando..." : "Confirmar"}
               </Button>
