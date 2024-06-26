@@ -16,7 +16,6 @@ import { useDispatch } from "react-redux";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -215,6 +214,16 @@ const Register = () => {
     }
 
     if (valid) {
+      console.log({
+        firstName: firstName,
+        lastName: lastName,
+        birthDate: birthDate,
+        gender: gender,
+        documentType: documentType,
+        documentNumber: documentNumber,
+        email: email,
+        password: password,
+      });
       setLoading(true);
       try {
         const response = await dispatch(
@@ -237,7 +246,7 @@ const Register = () => {
         setEmail("");
         setPassword("");
         setConfirmPassword("");
-        setRegisterError(error.message);
+        setRegisterError(error.message)
         console.error("Error during register:", error);
       } finally {
         setLoading(false); // Finaliza la carga
@@ -289,7 +298,6 @@ const Register = () => {
           helperText={firstNameError}
           inputRef={firstNameRef}
           onKeyDown={handleInputRestriction("a-zA-ZáéíóúÁÉÍÓÚñÑ ")}
-          disabled={loading}
         />
       </Grid>
       <Grid item xs={12}>
@@ -305,14 +313,12 @@ const Register = () => {
           helperText={lastNameError}
           inputRef={lastNameRef}
           onKeyDown={handleInputRestriction("a-zA-ZáéíóúÁÉÍÓÚñÑ ")}
-          disabled={loading}
         />
       </Grid>
       <Grid item xs={12}>
         <DatePicker
           label="Fecha de nacimiento"
           value={birthDate}
-          maxDate={dayjs()}
           onChange={(e) => setBirthDate(e)}
           slotProps={{
             textField: {
@@ -323,7 +329,6 @@ const Register = () => {
               inputRef: birthDateRef,
             },
           }}
-          disabled={loading}
         />
       </Grid>
       <Grid item xs={12}>
@@ -339,7 +344,6 @@ const Register = () => {
           error={Boolean(genderError)}
           helperText={genderError}
           inputRef={genderRef}
-          disabled={loading}
         >
           <MenuItem value="FEMALE">Femenino</MenuItem>
           <MenuItem value="MALE">Masculino</MenuItem>
@@ -359,7 +363,6 @@ const Register = () => {
           error={Boolean(documentTypeError)}
           helperText={documentTypeError}
           inputRef={documentTypeRef}
-          disabled={loading}
         >
           <MenuItem value="DNI">DNI</MenuItem>
           <MenuItem value="CUIT">CUIT</MenuItem>
@@ -380,14 +383,13 @@ const Register = () => {
           helperText={documentNumberError}
           inputRef={documentNumberRef}
           onKeyDown={handleInputRestriction("0-9")}
-          disabled={loading}
         />
       </Grid>
       <Grid item xs={12}>
         <TextField
           required
           fullWidth
-          label="Correo electrónico"
+          label="Email"
           name="email"
           autoComplete="email"
           value={email}
@@ -396,7 +398,6 @@ const Register = () => {
           helperText={emailError}
           inputRef={emailRef}
           onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ.@_-")}
-          disabled={loading}
         />
       </Grid>
       <Grid item xs={12}>
@@ -427,7 +428,6 @@ const Register = () => {
               </InputAdornment>
             ),
           }}
-          disabled={loading}
         />
       </Grid>
       <Grid item xs={12}>
@@ -458,12 +458,13 @@ const Register = () => {
               </InputAdornment>
             ),
           }}
-          disabled={loading}
         />
       </Grid>
       {showAuthError && (
         <Grid item xs={12}>
-          <Alert severity="error">{registerError}</Alert>
+          <Alert severity="error">
+            {registerError}
+          </Alert>
         </Grid>
       )}
       <Grid item xs={12}>
@@ -471,9 +472,8 @@ const Register = () => {
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mt: 3, mb: 2 }}
+          sx={{ mt: 3, mb: 2, backgroundColor: "#472183" }}
           onClick={handleRegister}
-          disabled={loading}
         >
           {loading ? "Cargando..." : "Registrarse"}
         </Button>
@@ -481,20 +481,10 @@ const Register = () => {
       <Grid item xs={12}>
         <Divider />
       </Grid>
-      <Grid item xs>
-        <Typography variant="body1" textAlign={"center"}>
-          ¿Ya tenés una cuenta?
-        </Typography>
-        <Typography variant="body1" textAlign={"center"}>
-          <Link
-            href="/"
-            variant="button"
-            underline="none"
-            sx={{ color: "#5B67E5" }}
-          >
-            Iniciá sesión
-          </Link>
-        </Typography>
+      <Grid item xs={12}>
+        <Link href="/" variant="body2">
+          {"¿Ya tienes una cuenta? Inicia sesión"}
+        </Link>
       </Grid>
     </Grid>
   );

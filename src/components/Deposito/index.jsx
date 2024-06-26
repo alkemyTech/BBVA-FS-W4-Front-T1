@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardContent,
+  Grid,
   MenuItem,
   TextField,
   Typography,
@@ -125,9 +126,23 @@ const Deposito = () => {
   };
 
   return (
-    <>
-      <ArrowBackComponent disabled={isSubmitted} />
-      <Box>
+
+    <Grid container>
+      <Grid container className="container">
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            mt={2}
+            ml={5}
+            position="relative"
+          >
+            <Grid item>
+              <ArrowBackComponent disabled={isSubmitted} />
+            </Grid>
+          </Grid>
+          <Box>
         <Card
           sx={{
             margin: "0 auto",
@@ -278,7 +293,9 @@ const Deposito = () => {
           </CardContent>
         </Card>
       </Box>
-    </>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 
