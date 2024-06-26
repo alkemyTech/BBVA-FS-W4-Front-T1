@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { getAccountBalance } from "../../api/Account";
-import { CircularProgress, Container, Grid } from "@mui/material";
+import { Box, CircularProgress, Container, Grid, Skeleton } from "@mui/material";
 import TransactionList from "../Home/TransactionList";
 import MySnackbar from "../../UI/MySnackBar";
 import AccountDetailsCard from "./AccountDetails";
@@ -46,20 +46,22 @@ const AllAccounts = () => {
   return (
     <Container sx={{ position: "relative", minHeight: "70vh" }}>
       {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          <CircularProgress sx={{ color: "#472183" }} />
-        </div>
+        <Box sx={{ width: '100%', marginTop: '5vh' }}>
+          <Skeleton
+            animation="wave"
+            variant="rectangular"
+            width="100%"
+            height={200}
+            sx={{ marginBottom: "16px", borderRadius: "8px" }}
+          />
+          <Skeleton
+            animation="wave"
+            variant="rectangular"
+            width="100%"
+            height={200}
+            sx={{ marginBottom: "16px", borderRadius: "8px" }}
+          />
+        </Box>
       ) : (
         <>
           <ArrowBackComponent />

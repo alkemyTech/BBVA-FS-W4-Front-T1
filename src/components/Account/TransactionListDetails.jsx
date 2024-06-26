@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardContent,
-  CircularProgress,
   Collapse,
   Container,
   Divider,
@@ -16,6 +15,7 @@ import {
   ListItemText,
   MenuItem,
   Pagination,
+  Skeleton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -155,20 +155,11 @@ const TransactionListDetails = ({ account }) => {
       sx={{ position: "relative", minHeight: "70vh" }}
     >
       {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          <CircularProgress sx={{ color: "#472183" }} />
-        </div>
+          <Skeleton animation="wave"
+            variant="rectangular"
+            width="100%"
+            height={400}
+            sx={{ marginTop: "16px", marginBottom: "16px", borderRadius: "8px" }} />
       ) : (
         <Box sx={{ marginTop: "2vh" }}>
           <Card
