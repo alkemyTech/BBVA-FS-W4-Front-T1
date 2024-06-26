@@ -35,14 +35,23 @@ const PlazosFijos = () => {
     dispatch(hideNotification());
   };
 
+  const totalInvertedFixedTerms = useSelector(
+    (state) => state.simulatedFixedTerm.totalInverted
+  );
+  useEffect(() => {
+    setTotalFixedTerms(totalInvertedFixedTerms);
+  }, [])
+  
+  
+
   const fetchData = async (page) => {
     setLoading(true);
     try {
       const data = await getFixedTerms(page);
       setFixedTerms(data.fixedTerms);
       setTotalPages(data.countPages); // Establecemos el total de páginas desde el backend
-      console.log(totalMoney(data.fixedTerms));
-      setTotalFixedTerms(totalMoney(data.fixedTerms));
+      // console.log(totalMoney(data.fixedTerms));
+      
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);

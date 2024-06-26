@@ -25,6 +25,7 @@ import { NumericFormat } from "react-number-format";
 import {
   clearSelectedDay,
   clearSimulatedFixedTerm,
+  setTotalInverted,
 } from "../../Redux/slice/fixedTermSlice";
 
 export default function CrearPlazoFijo() {
@@ -44,6 +45,10 @@ export default function CrearPlazoFijo() {
   );
   const selectedDay = useSelector(
     (state) => state.simulatedFixedTerm.selectedDay
+  );
+
+  const totalInverted = useSelector(
+    (state) => state.simulatedFixedTerm.totalInverted
   );
 
   useEffect(() => {
@@ -145,6 +150,8 @@ export default function CrearPlazoFijo() {
       );
       dispatch(clearSimulatedFixedTerm());
       dispatch(clearSelectedDay());
+      dispatch(setTotalInverted(totalInverted+fixedTermData.amount));
+
       navigate("/plazos-fijos");
     } catch (error) {
       dispatch(
