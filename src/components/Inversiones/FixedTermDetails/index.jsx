@@ -1,17 +1,12 @@
-import React from "react";
 import {
+  Button,
   Card,
   CardContent,
   Grid,
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Box,
-  Button,
+  Typography
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PropTypes from "prop-types";
+import React from "react";
 import { useNavigate } from "react-router";
 
 const FixedTermCard = ({ totalFixedTerms }) => {
