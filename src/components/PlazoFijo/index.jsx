@@ -210,7 +210,7 @@ export default function CrearPlazoFijo() {
 
   return (
     <Container>
-      <ArrowBackComponent />
+      <ArrowBackComponent disabled={isLoading} />
       <Grid
         container
         sx={{
@@ -263,7 +263,7 @@ export default function CrearPlazoFijo() {
                 ? "El monto debe ser mayor a cero"
                 : ""
             }
-            disabled={simulatedFixedTerm}
+            disabled={isLoading}
           />
           {/* <TextField
             label="Monto"
@@ -284,7 +284,7 @@ export default function CrearPlazoFijo() {
         <Grid item xs={3} sx={{ marginBottom: 2 }}>
           <Button
             onClick={() => handleDayClick("30")}
-            disabled={simulatedFixedTerm}
+            disabled={isLoading}
             variant={selectedDays["30"] ? "contained" : "outlined"}
             sx={{
               color: "#5B67E5",
@@ -310,7 +310,7 @@ export default function CrearPlazoFijo() {
 
         <Grid item xs={3} sx={{ marginBottom: 2 }}>
           <Button
-            disabled={simulatedFixedTerm}
+            disabled={isLoading}
             onClick={() => handleDayClick("60")}
             variant={selectedDays["60"] ? "contained" : "outlined"}
             sx={{
@@ -337,7 +337,7 @@ export default function CrearPlazoFijo() {
 
         <Grid item xs={3} sx={{ marginBottom: 2 }}>
           <Button
-            disabled={simulatedFixedTerm}
+            disabled={isLoading}
             onClick={() => handleDayClick("90")}
             variant={selectedDays["90"] ? "contained" : "outlined"}
             sx={{
@@ -364,7 +364,7 @@ export default function CrearPlazoFijo() {
         <Grid item xs={3} sx={{ marginBottom: 2 }}>
           <Button
             fullWidth
-            disabled={simulatedFixedTerm}
+            disabled={isLoading}
             onClick={() => handleDayClick("Otro")}
             variant={selectedDays["Otro"] ? "contained" : "outlined"}
             sx={{
@@ -393,7 +393,7 @@ export default function CrearPlazoFijo() {
             <DatePicker
               sx={{ marginBottom: 1 }}
               required
-              disabled={simulatedFixedTerm}
+              disabled={isLoading}
               label="Fecha de Cierre"
               value={closingDate}
               onChange={(e) => setClosingDate(e)}

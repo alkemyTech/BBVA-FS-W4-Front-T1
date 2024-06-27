@@ -15,7 +15,10 @@ const ArrowBackComponent = ({ disabled = false }) => {
       <Tooltip title="Ir atrás">
         <ArrowBack
           onClick={handleClick}
-          style={{ cursor: disabled ? "default" : "pointer" }}
+          style={{
+            cursor: disabled ? "default" : "pointer",
+            opacity: disabled ? 0.5 : 1,
+          }}
           fontSize="large"
         />
       </Tooltip>
