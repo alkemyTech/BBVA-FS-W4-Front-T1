@@ -62,23 +62,6 @@ const EnviarDinero = () => {
 
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
 
-  const [progress, setProgress] = useState(0);
-  let progressInterval;
-
-  const startProgress = (duration) => {
-    setProgress(0);
-    const increment = 100 / (duration / 100);
-    progressInterval = setInterval(() => {
-      setProgress((prev) => Math.min(prev + increment, 100));
-    }, 100);
-  };
-
-  const completeProgress = () => {
-    clearInterval(progressInterval);
-    setProgress(100);
-    setTimeout(() => setLoadingBar(false), 500); // Small delay for smooth completion
-  };
-
   useEffect(() => {
     if (selectedDestination) {
       setAccountDestination(selectedDestination.idAccount);
@@ -172,7 +155,6 @@ const EnviarDinero = () => {
     };
     setIsLoading(true);
     setLoadingBar(true);
-    startProgress(5500);
 
     try {
       if (selectedDestination.currency === "USD") {
@@ -186,10 +168,8 @@ const EnviarDinero = () => {
           status: "success",
         })
       );
-      completeProgress();
       navigate("/home");
     } catch (error) {
-      completeProgress();
       if (error.message != "Saldo insuficiente") {
         dispatch(
           showNotification({
@@ -204,7 +184,6 @@ const EnviarDinero = () => {
     } finally {
       setIsLoading(false);
       setLoadingBar(false);
-      completeProgress();
     }
   };
 
@@ -441,7 +420,7 @@ const EnviarDinero = () => {
                     mt={1}
                     sx={{ width: "75%", minHeight: "45px" }}
                   >
-                    <LinearProgress variant="determinate" value={progress} />
+                    <LinearProgress />
                   </Grid>
                 ) : (
                   <Grid

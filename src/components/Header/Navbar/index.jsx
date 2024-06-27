@@ -1,18 +1,14 @@
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
+import { Grid, Link } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
 import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../../Redux/slice/userSlice";
-import { Grid, Link } from "@mui/material";
 
 const pages = ["Transferencias", "Plazo fijo", "Deposito"];
 const settings = ["Perfil", "Cuentas", "Logout"];
@@ -54,9 +50,8 @@ export default function Navbar() {
               alignItems={"center"}
             >
               {/*Logo y nombre*/}
-              <Typography
+              <Grid item
                 variant="h6"
-                noWrap
                 component="a"
                 href="/home"
                 sx={{
@@ -70,9 +65,9 @@ export default function Navbar() {
               >
                 <img
                   src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png"
-                  style={{ height: "60px" }}
+                  style={{ maxWidth: "15vw" }}
                 />
-              </Typography>
+              </Grid>
               {/*Menu Hambur pantalla chica*/}
               <Grid
                 item
@@ -156,9 +151,8 @@ export default function Navbar() {
                 </Menu>
               </Grid>
               {/*Logo y nombre pantalla chica*/}
-              <Typography
+              <Grid item
                 variant="h5"
-                noWrap
                 component="a"
                 href="/Home"
                 sx={{
@@ -173,9 +167,9 @@ export default function Navbar() {
               >
                 <img
                   src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png"
-                  style={{ height: "60px" }}
+                  style={{ maxWidth: "40vw" }}
                 />
-              </Typography>
+              </Grid>
               {/*Navbar opciones pantalla grande*/}
               <Grid
                 item
