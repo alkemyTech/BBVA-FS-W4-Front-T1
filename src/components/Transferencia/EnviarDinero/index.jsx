@@ -229,7 +229,7 @@ const EnviarDinero = () => {
             position="relative"
           >
             <Grid item>
-              <ArrowBackComponent />
+              <ArrowBackComponent disabled={loadingBar} />
             </Grid>
           </Grid>
           <Grid

@@ -199,7 +199,7 @@ const Pago = () => {
             position="relative"
           >
             <Grid item>
-              <ArrowBackComponent />
+              <ArrowBackComponent disabled={isSubmitted} />
             </Grid>
           </Grid>
           <Box>
@@ -249,83 +249,86 @@ const Pago = () => {
                     }
                     disabled={isSubmitted}
                   />
-                  <Typography
-                    variant="body2"
-                    component="div"
-                    color="textSecondary"
-                    sx={{ textAlign: "right" }}
-                  >
-                    Saldo actual:{" "}
-                    {isFetchingBalance ? (
-                      loadingDots
-                    ) : (
-                      <>
-                        {currency === "ARS" && (
+                      <Typography
+                        variant="body2"
+                        component="div"
+                        color="textSecondary"
+                        sx={{ textAlign: "right" }}
+                      >
+                        Saldo actual:{" "}
+                        {isFetchingBalance ? (
+                          loadingDots
+                        ) : (
                           <>
-                            $
-                            {balance.toLocaleString("es-AR", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                          </>
-                        )}
-                        {currency === "USD" &&
-                          accountType === "CAJA_AHORRO" && (
-                            <>
-                              US$
-                              {balance.toLocaleString("es-AR", {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })}
-                            </>
-                          )}
-                      </>
-                    )}
-                    <br />
-                    Saldo restante:{" "}
-                    {isFetchingBalance ? (
-                      loadingDots
-                    ) : (
-                      <>
-                        {currency === "ARS" && (
-                          <>
-                            $
-                            {typeof balance === "number" &&
-                            parseFloat(amount.replace(",", "."))
-                              ? (
-                                  balance - parseFloat(amount.replace(",", "."))
-                                ).toLocaleString("es-AR", {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })
-                              : balance.toLocaleString("es-AR", {
+                            {currency === "ARS" && (
+                              <>
+                                $
+                                {balance.toLocaleString("es-AR", {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
                                 })}
+                              </>
+                            )}
+                            {currency === "USD" &&
+                         
+                          accountType === "CAJA_AHORRO" && (
+                                  <>
+                                    US$
+                                    {balance.toLocaleString("es-AR", {
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    })}
+                                  </>
+                                )}
                           </>
                         )}
-                        {currency === "USD" &&
+                        <br />
+                        Saldo restante:{" "}
+                        {isFetchingBalance ? (
+                          loadingDots
+                        ) : (
+                          <>
+                            {currency === "ARS" && (
+                              <>
+                                $
+                                {typeof balance === "number" &&
+                                parseFloat(amount.replace(",", "."))
+                                  ? (
+                                      balance - parseFloat(amount.replace(",", "."))
+                                    ).toLocaleString("es-AR", {
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    })
+                                  : balance.toLocaleString("es-AR", {
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    })}
+                              </>
+                            )}
+                            {currency === "USD" &&
+                         
                           accountType === "CAJA_AHORRO" && (
-                            <>
-                              US$
-                              {typeof balance === "number" &&
-                              parseFloat(amount.replace(",", "."))
-                                ? (
-                                    balance -
+                                  <>
+                                    US$
+                                    {typeof balance === "number" &&
                                     parseFloat(amount.replace(",", "."))
-                                  ).toLocaleString("es-AR", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  })
-                                : balance.toLocaleString("es-AR", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  })}
-                            </>
-                          )}
-                      </>
-                    )}
-                  </Typography>
+                                      ? (
+                                          balance -
+                                   
+                                    parseFloat(amount.replace(",", "."))
+                                        ).toLocaleString("es-AR", {
+                                          minimumFractionDigits: 2,
+                                          maximumFractionDigits: 2,
+                                        })
+                                      : balance.toLocaleString("es-AR", {
+                                          minimumFractionDigits: 2,
+                                          maximumFractionDigits: 2,
+                                        })}
+                                  </>
+                                )}
+                          </>
+                        )}
+                      </Typography>
 
                   <TextField
                     select
