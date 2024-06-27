@@ -4,7 +4,6 @@ import {
   CardContent,
   Grid,
   Typography,
-  Box,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -22,11 +21,19 @@ import EditIcon from "@mui/icons-material/Edit";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router";
 import { editAccountAlias } from "../../api/Account";
-//import editAccountAlias from '../../api/Account.js';
+import MySnackbar from "../../UI/MySnackBar";
+
 const AccountDetailsCard = ({ account, showVerMovimientos }) => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [newAlias, setNewAlias] = useState(account.alias);
   const [loading, setLoading] = useState(false);
+  const [alias, setAlias] = useState(account.alias);
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+    status: "",
+  });
+  const [aliasError, setAliasError] = useState(false);
 
   const formatCurrency = (amount, currency) => {
     return new Intl.NumberFormat("es-AR", {
@@ -49,25 +56,53 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
 
   const handleEditClick = (event, account) => {
     event.stopPropagation();
+    setAliasError(false);
+    setNewAlias(account.alias); // Reset newAlias to the current alias
     setOpenEditDialog(true);
   };
 
   const handleEditConfirm = async () => {
-    // Aquí deberías hacer la conexión con el backend para actualizar el alias
     console.log("Nuevo alias:", newAlias);
     console.log("ID ACCOUNT:", account.idAccount);
 
+    setLoading(true);
+    setAliasError(false);
     try {
-      //await editAccountAlias
-      //(account.idAccount, newAlias); // Asegúrate de que los parámetros se pasen correctamente
-      await editAccountAlias(account.idAccount, newAlias);
-      setOpenEditDialog(false);
-      // Aquí puedes añadir la lógica para actualizar el alias en el estado si es necesario
+      if (alias !== newAlias) {
+        const response = await editAccountAlias(account.idAccount, newAlias);
+        console.log("RESPONSE", response);
+
+        if (response.status === 404) {
+          setAliasError(true);
+          setNotification({
+            open: true,
+            message: "Ya existe otra cuenta con ese alias",
+            status: "error",
+          });
+        } else {
+          setAlias(newAlias);
+          setOpenEditDialog(false);
+          setNotification({
+            open: true,
+            message: "Alias actualizado correctamente",
+            status: "success",
+          });
+        }
+      }
     } catch (error) {
       console.error("Error al actualizar el alias:", error.message);
+      setNotification({
+        open: true,
+        message: error.message || "Ha ocurrido un error",
+        status: "error",
+      });
     } finally {
-      console.log("LLEGO AL FINALLY");
+      setLoading(false);
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setNotification({ ...notification, open: false });
   };
 
   return (
@@ -78,7 +113,10 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
           color: "#000000",
           borderRadius: "2vh",
           padding: "1vh",
-          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          "&:hover": {
+            boxShadow: "0 16px 24px rgba(0, 0, 0, 0.2)",
+          },
         }}
       >
         <CardContent>
@@ -115,10 +153,6 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
                     backgroundColor: "#656ED4",
                     border: "1px solid #656ED4",
                     padding: "1vh",
-                    "&:hover": {
-                      backgroundColor: "#3c4370", // Color oscuro al pasar el mouse
-                      borderColor: "#3c4370", // Borde oscuro al pasar el mouse
-                    },
                   }}
                   onClick={() => handleCardClick("/transferencia", account)}
                 >
@@ -136,10 +170,6 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
                       backgroundColor: "#656ED4",
                       border: "1px solid #656ED4",
                       padding: "1vh",
-                      "&:hover": {
-                        backgroundColor: "#3c4370", // Color oscuro al pasar el mouse
-                        borderColor: "#3c4370", // Borde oscuro al pasar el mouse
-                      },
                     }}
                     onClick={() => handleCardClick2("/account", account)}
                   >
@@ -185,7 +215,7 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
                             component="div"
                             color="#000000"
                           >
-                            {account.alias}
+                            {alias}
                           </Typography>
                           <IconButton
                             size="small"
@@ -260,6 +290,8 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
             variant="standard"
             value={newAlias}
             onChange={(e) => setNewAlias(e.target.value)}
+            error={aliasError}
+            helperText={aliasError ? "Ya existe otra cuenta con ese alias" : ""}
             disabled={loading}
           />
         </DialogContent>
@@ -290,6 +322,13 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      {/* Snackbar */}
+      <MySnackbar
+        open={notification.open}
+        handleClose={handleSnackbarClose}
+        message={notification.message}
+        status={notification.status}
+      />
     </Grid>
   );
 };
@@ -301,9 +340,10 @@ AccountDetailsCard.propTypes = {
     balance: PropTypes.number.isRequired,
     cbu: PropTypes.string.isRequired,
     currency: PropTypes.string.isRequired,
+    idAccount: PropTypes.string.isRequired,
     transactionLimit: PropTypes.number.isRequired,
   }).isRequired,
-  showVerMovimientos: PropTypes.bool.isRequired,
+  showVerMovimientos: PropTypes.bool,
 };
 
 export default AccountDetailsCard;

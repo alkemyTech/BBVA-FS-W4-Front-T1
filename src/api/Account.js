@@ -65,15 +65,16 @@ const selectAccount = (value) => async (dispatch) => {
     }
   }
 };
-const editAccountAlias = (idAccount, alias) => async () => { 
-  console.log("ENTRO AL ACCOUNT JS ******************************************************************************")
-  console.log("ID ACCOUND", idAccount);
-  console.log("ALIAS", alias);
+const editAccountAlias = async (idAccount, alias) => {
+  //console.log("ENTRO AL ACCOUNT JS ******************************************************************************");
+  //console.log("ID ACCOUNT", idAccount);
+  //console.log("ALIAS", alias);
+  
   try {
-    const response = await apiClient.put(`/accounts/editAlias/${idAccount}`,  alias );
+    const response = await apiClient.put(`/accounts/editAlias/${idAccount}`, alias);
     // Aquí puedes despachar alguna acción si necesitas manejar el estado en Redux
-    console.log('Alias updated successfully');
-    return response.data;
+    //console.log('Alias updated successfully');
+    return response;
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.message || error.response.data);
