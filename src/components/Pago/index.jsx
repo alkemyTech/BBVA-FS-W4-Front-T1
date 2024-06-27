@@ -190,8 +190,8 @@ const Pago = () => {
   return (
     <Grid container>
       <Grid container className="container">
-    <Grid container justifyContent="center" alignItems="center">
-                <Grid
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid
             container
             justifyContent="space-between"
             alignItems="center"
@@ -202,248 +202,251 @@ const Pago = () => {
               <ArrowBackComponent />
             </Grid>
           </Grid>
-      <Box>
-        <Card
-          sx={{
-            margin: "0 auto",
-            bgcolor: "#fff",
-            width: 480,
-            p: 5,
-            borderRadius: 5,
-            boxShadow: 3,
-            "@media (max-width: 500px)": { maxWidth: "90%" },
-          }}
-        >
-          <CardContent>
-            <Typography variant="h4" component="h1" gutterBottom>
-              Cargar Pago
-            </Typography>
-            <form onSubmit={handleSubmit}>
-              <NumericFormat
-                  label="Monto"
-                  value={amount}
-                  onValueChange={({ floatValue }) =>
-                    setAmount(
-                      floatValue !== undefined ? floatValue.toFixed(2) : ""
-                    )
-                  }
-                  customInput={TextField}
-                  thousandSeparator={"."}
-                  decimalSeparator={","}
-                  allowNegative={false}
-                  prefix={"$ "}
-                  decimalScale={2}
-                  fixedDecimalScale={true}
-                  fullWidth
-                  required
-                  error={
-                  parseFloat(amount.replace(",", ".")) <= 0 ||
-                  parseFloat(amount.replace(",", ".")) > balance
-                }                  helperText={
-                  parseFloat(amount.replace(",", ".")) <= 0
-                    ? "El monto debe ser mayor a cero"
-                    : parseFloat(amount.replace(",", ".")) > balance
-                    ? "Saldo insuficiente"
-                    : ""
-                }
-                  disabled={isSubmitted}
+          <Box>
+            <Card
+              sx={{
+                margin: "0 auto",
+                bgcolor: "#fff",
+                width: 480,
+                p: 5,
+                borderRadius: 5,
+                boxShadow: 3,
+                "@media (max-width: 500px)": { maxWidth: "90%" },
+              }}
+            >
+              <CardContent>
+                <Typography variant="h4" component="h1" gutterBottom>
+                  Cargar Pago
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                  <NumericFormat
+                    label="Monto"
+                    value={amount}
+                    onValueChange={({ floatValue }) =>
+                      setAmount(
+                        floatValue !== undefined ? floatValue.toFixed(2) : ""
+                      )
+                    }
+                    customInput={TextField}
+                    thousandSeparator={"."}
+                    decimalSeparator={","}
+                    allowNegative={false}
+                    prefix={"$ "}
+                    decimalScale={2}
+                    fixedDecimalScale={true}
+                    fullWidth
+                    required
+                    error={
+                      parseFloat(amount.replace(",", ".")) <= 0 ||
+                      parseFloat(amount.replace(",", ".")) > balance
+                    }
+                    helperText={
+                      parseFloat(amount.replace(",", ".")) <= 0
+                        ? "El monto debe ser mayor a cero"
+                        : parseFloat(amount.replace(",", ".")) > balance
+                        ? "Saldo insuficiente"
+                        : ""
+                    }
+                    disabled={isSubmitted}
+                  />
+                  <Typography
+                    variant="body2"
+                    component="div"
+                    color="textSecondary"
+                    sx={{ textAlign: "right" }}
+                  >
+                    Saldo actual:{" "}
+                    {isFetchingBalance ? (
+                      loadingDots
+                    ) : (
+                      <>
+                        {currency === "ARS" && (
+                          <>
+                            $
+                            {balance.toLocaleString("es-AR", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                          </>
+                        )}
+                        {currency === "USD" &&
+                          accountType === "CAJA_AHORRO" && (
+                            <>
+                              US$
+                              {balance.toLocaleString("es-AR", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
+                            </>
+                          )}
+                      </>
+                    )}
+                    <br />
+                    Saldo restante:{" "}
+                    {isFetchingBalance ? (
+                      loadingDots
+                    ) : (
+                      <>
+                        {currency === "ARS" && (
+                          <>
+                            $
+                            {typeof balance === "number" &&
+                            parseFloat(amount.replace(",", "."))
+                              ? (
+                                  balance - parseFloat(amount.replace(",", "."))
+                                ).toLocaleString("es-AR", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : balance.toLocaleString("es-AR", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })}
+                          </>
+                        )}
+                        {currency === "USD" &&
+                          accountType === "CAJA_AHORRO" && (
+                            <>
+                              US$
+                              {typeof balance === "number" &&
+                              parseFloat(amount.replace(",", "."))
+                                ? (
+                                    balance -
+                                    parseFloat(amount.replace(",", "."))
+                                  ).toLocaleString("es-AR", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })
+                                : balance.toLocaleString("es-AR", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
+                            </>
+                          )}
+                      </>
+                    )}
+                  </Typography>
+
+                  <TextField
+                    select
+                    label="Concepto"
+                    value={concept}
+                    onChange={(e) => setConcept(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#4B56D2",
+                        },
+                      },
+                    }}
+                    required
+                    disabled={isSubmitted}
+                  >
+                    {transactionConcepts.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+
+                  <TextField
+                    label="Descripción"
+                    type="text"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#4B56D2",
+                        },
+                      },
+                    }}
+                    disabled={isSubmitted}
                   />
 
-              <Typography
-                variant="body2"
-                component="div"
-                color="textSecondary"
-                sx={{ textAlign: "right" }}
-              >
-                Saldo actual:{" "}
-                {isFetchingBalance ? (
-                  loadingDots
-                ) : (
-                  <>
-                    {currency === "ARS" && (
-                      <>
-                        $
-                        {balance.toLocaleString("es-AR", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </>
-                    )}
-                    {currency === "USD" && accountType === "CAJA_AHORRO" && (
-                      <>
-                        US$
-                        {balance.toLocaleString("es-AR", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </>
-                    )}
-                  </>
-                )}
-                <br />
-                Saldo restante:{" "}
-                {isFetchingBalance ? (
-                  loadingDots
-                ) : (
-                  <>
-                    {currency === "ARS" && (
-                      <>
-                        $
-                        {typeof balance === "number" &&
-                        parseFloat(amount.replace(",", "."))
-                          ? (
-                              balance - parseFloat(amount.replace(",", "."))
-                            ).toLocaleString("es-AR", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
-                          : balance.toLocaleString("es-AR", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                      </>
-                    )}
-                    {currency === "USD" && accountType === "CAJA_AHORRO" && (
-                      <>
-                        US$
-                        {typeof balance === "number" &&
-                        parseFloat(amount.replace(",", "."))
-                          ? (
-                              balance - parseFloat(amount.replace(",", "."))
-                            ).toLocaleString("es-AR", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
-                          : balance.toLocaleString("es-AR", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                      </>
-                    )}
-                  </>
-                )}
-              </Typography>
+                  <TextField
+                    select
+                    label="Tipo de cuenta"
+                    value={accountType}
+                    onChange={(e) => setAccountType(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#4B56D2",
+                        },
+                      },
+                    }}
+                    required
+                    disabled={isSubmitted}
+                  >
+                    {accountTypes[currency].map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option === "CAJA_AHORRO"
+                          ? "Caja de Ahorro"
+                          : "Cuenta Corriente"}
+                      </MenuItem>
+                    ))}
+                  </TextField>
 
-              <TextField
-                select
-                label="Concepto"
-                value={concept}
-                onChange={(e) => setConcept(e.target.value)}
-                fullWidth
-                margin="normal"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#4B56D2",
-                    },
-                  },
-                }}
-                required
-                disabled={isSubmitted}
-              >
-                {transactionConcepts.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
+                  <TextField
+                    select
+                    label="Moneda"
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#4B56D2",
+                        },
+                      },
+                    }}
+                    required
+                    disabled={isSubmitted}
+                  >
+                    <MenuItem value="USD">USD</MenuItem>
+                    <MenuItem value="ARS">ARS</MenuItem>
+                  </TextField>
 
-              <TextField
-                label="Descripción"
-                type="text"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                fullWidth
-                margin="normal"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#4B56D2",
-                    },
-                  },
-                }}
-                disabled={isSubmitted}
-              />
-
-              <TextField
-                select
-                label="Tipo de cuenta"
-                value={accountType}
-                onChange={(e) => setAccountType(e.target.value)}
-                fullWidth
-                margin="normal"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#4B56D2",
-                    },
-                  },
-                }}
-                required
-                disabled={isSubmitted}
-              >
-                {accountTypes[currency].map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option === "CAJA_AHORRO"
-                      ? "Caja de Ahorro"
-                      : "Cuenta Corriente"}
-                  </MenuItem>
-                ))}
-              </TextField>
-
-              <TextField
-                select
-                label="Moneda"
-                value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
-                fullWidth
-                margin="normal"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#4B56D2",
-                    },
-                  },
-                }}
-                required
-                disabled={isSubmitted}
-              >
-                <MenuItem value="USD">USD</MenuItem>
-                <MenuItem value="ARS">ARS</MenuItem>
-              </TextField>
-
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                sx={{
-                  mt: 2,
-                //   backgroundColor: "#d1d8c5",
-                //   "&:hover": { backgroundColor: "#c0c9b5" },
-                //   color: "#000000",
-                }}
-                disabled={
-                  isLoading ||
-                  parseFloat(amount.replace(",", ".")) > balance ||
-                  parseFloat(amount.replace(",", ".")) <= 0 ||
-                  isSubmitted
-                }
-              >
-                {isLoading ? "Pagando..." : "Pagar"}
-              </Button>
-            </form>
-            <MySnackbar
-              open={notification.open}
-              handleClose={handleSnackbarClose}
-              message={notification.message}
-              status={notification.status}
-            />
-          </CardContent>
-        </Card>
-      </Box>
-</Grid>
-</Grid>
-</Grid>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      mt: 2,
+                      //   backgroundColor: "#d1d8c5",
+                      //   "&:hover": { backgroundColor: "#c0c9b5" },
+                      //   color: "#000000",
+                    }}
+                    disabled={
+                      isLoading ||
+                      parseFloat(amount.replace(",", ".")) > balance ||
+                      parseFloat(amount.replace(",", ".")) <= 0 ||
+                      isSubmitted
+                    }
+                  >
+                    {isLoading ? "Pagando..." : "Pagar"}
+                  </Button>
+                </form>
+                <MySnackbar
+                  open={notification.open}
+                  handleClose={handleSnackbarClose}
+                  message={notification.message}
+                  status={notification.status}
+                />
+              </CardContent>
+            </Card>
+          </Box>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 
