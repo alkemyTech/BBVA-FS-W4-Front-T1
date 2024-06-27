@@ -1,32 +1,31 @@
 import {
-  Box,
-  TextField,
   Button,
-  FormControlLabel,
   Checkbox,
-  Typography,
   Container,
+  FormControlLabel,
   Grid,
+  TextField,
+  Typography
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  showNotification,
-  hideNotification,
-} from "../../Redux/slice/snackBarSlice";
-import MySnackbar from "../../UI/MySnackBar";
-import { fixedTerm } from "../../api/FixedTermDeposit";
-import { getAccountBalance } from "../../api/Account";
-import { useNavigate } from "react-router";
-import ArrowBackComponent from "../../UI/ArrowBack";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import {
   clearSelectedDay,
   clearSimulatedFixedTerm,
   setTotalInverted,
 } from "../../Redux/slice/fixedTermSlice";
+import {
+  hideNotification,
+  showNotification,
+} from "../../Redux/slice/snackBarSlice";
+import ArrowBackComponent from "../../UI/ArrowBack";
+import MySnackbar from "../../UI/MySnackBar";
+import { getAccountBalance } from "../../api/Account";
+import { fixedTerm } from "../../api/FixedTermDeposit";
 
 export default function CrearPlazoFijo() {
   const [amount, setAmount] = useState("");

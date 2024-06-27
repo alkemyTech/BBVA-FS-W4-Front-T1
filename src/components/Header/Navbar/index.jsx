@@ -1,21 +1,14 @@
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
+import { Grid, Link } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
 import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../../Redux/slice/userSlice";
-import { Grid, Link } from "@mui/material";
-
-const pages = ["Transferencias", "Plazo fijo", "Deposito"];
-const settings = ["Perfil", "Cuentas", "Logout"];
 
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);

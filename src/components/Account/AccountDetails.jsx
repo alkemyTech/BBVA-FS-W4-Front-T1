@@ -14,9 +14,10 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
-  TextField,
+  TextField,  
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router";
@@ -280,6 +281,17 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
         <DialogContent>
           <DialogContentText>
             Ingresa el nuevo alias para la cuenta:
+            <IconButton
+                onClick={() => setOpenEditDialog(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                  color: "grey",
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
           </DialogContentText>
           <TextField
             autoFocus
@@ -296,24 +308,13 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={() => setOpenEditDialog(false)}
-            sx={{
-              color: "#FFF",
-              backgroundColor: "#FF0000", // Color rojo
-              "&:hover": { backgroundColor: "#D00000" }, // Color rojo oscuro al pasar el mouse
-              p: 1.2,
-            }}
-            disabled={loading}
-          >
-            Cancelar
-          </Button>
+          
           <Button
             onClick={handleEditConfirm}
             sx={{
               color: "#FFF",
-              backgroundColor: "#008000", // Color verde
-              "&:hover": { backgroundColor: "#006400" }, // Color verde oscuro al pasar el mouse
+              backgroundColor: "#8EB052", 
+              "&:hover": { backgroundColor: "#94B758" }, 
               p: 1.2,
             }}
             disabled={loading}

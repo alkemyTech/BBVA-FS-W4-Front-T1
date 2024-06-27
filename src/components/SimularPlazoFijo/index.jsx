@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from "react";
-import ArrowBackComponent from "../../UI/ArrowBack";
 import {
   Button,
-  CircularProgress,
   Container,
   Divider,
   Grid,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { simulateFixedTerm } from "../../api/FixedTerm";
-import { useNavigate } from "react-router";
+import React, { useEffect, useState } from "react";
+import { NumericFormat } from "react-number-format";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 import {
   setSelectedDay,
   setSimulatedFixedTerm,
 } from "../../Redux/slice/fixedTermSlice";
-import { NumericFormat } from "react-number-format";
+import ArrowBackComponent from "../../UI/ArrowBack";
+import { simulateFixedTerm } from "../../api/FixedTerm";
 
 const SimularPlazoFijo = () => {
   const [amount, setAmount] = useState("");
