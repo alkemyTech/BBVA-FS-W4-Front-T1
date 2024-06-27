@@ -40,8 +40,8 @@ const getTransactionsByIdAccount = async (value, token, page = 0) => {
       `${API_BASE_URL}/userAccountId/${value}`,
       config
     );
-    console.log("response:", response);
-    console.log("response data:", response.data);
+    //console.log("response:", response);
+    //console.log("response data:", response.data);
     return response;
   } catch (error) {
     // Enhanced error logging
@@ -146,8 +146,8 @@ const getFilteredTransactionsByIdAccount = async (
       `${API_BASE_URL}/userAccountId/${value}/filters`,
       config
     );
-    console.log("response:", response);
-    console.log("response data:", response.data);
+    //console.log("response:", response);
+    //console.log("response data:", response.data);
     return response;
   } catch (error) {
     // Enhanced error logging

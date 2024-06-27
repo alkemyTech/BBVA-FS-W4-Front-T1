@@ -4,7 +4,6 @@ import { useLocation } from "react-router";
 import ArrowBackComponent from "../../UI/ArrowBack";
 import AccountDetailsCard from "./AccountDetails";
 import TransactionListDetails from "./TransactionListDetails";
-import { FlashOnRounded } from "@mui/icons-material";
 const Account = () => {
   const location = useLocation();
   const { account } = location.state || {};
