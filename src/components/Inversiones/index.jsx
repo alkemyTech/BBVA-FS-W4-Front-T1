@@ -71,10 +71,10 @@ const PlazosFijos = () => {
   };
 
   return (
-    <Container sx={{ marginTop: 2 }}>
+    <Container>
       <ArrowBackComponent />
       {loading ? (
-        <Box sx={{ width: '100%', marginTop: '5vh' }}>
+        <Box sx={{ width: '100%' }}>
           <Skeleton
             animation="wave"
             variant="rectangular"
@@ -87,12 +87,12 @@ const PlazosFijos = () => {
             variant="rectangular"
             width="100%"
             height={400}
-            sx={{ marginBottom: "16px", borderRadius: "8px" }}
+            sx={{ borderRadius: "8px" }}
           />
         </Box>
       ) : (
         <>
-          <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}>
+          <Grid container justifyContent="center">
             <FixedTermDetails totalFixedTerms={totalFixedTerms} />
             <Grid item xs={12}>
               <FixedTermsList
