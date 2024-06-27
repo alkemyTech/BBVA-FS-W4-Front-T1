@@ -98,7 +98,6 @@ const TransactionList = ({ accountData }) => {
         padding: "16px",
         borderRadius: "8px",
         marginTop: "16px",
-        marginBottom: "10vh",
       }}
     >
       <CardContent>

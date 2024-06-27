@@ -66,7 +66,7 @@ const Home = () => {
               </Grid>
             ))}
           </Grid>
-          <Grid sx={{ borderRadius: '8px', marginTop: '16px', marginBottom: '10vh' }}>
+          <Grid sx={{ borderRadius: '8px', marginTop: '16px', }}>
               <Grid>
                 <Skeleton
                   animation="wave"

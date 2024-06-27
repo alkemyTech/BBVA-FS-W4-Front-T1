@@ -14,7 +14,7 @@ const Account = () => {
     <Container>
       <ArrowBackComponent/>    
       {account ? (      
-        <Grid container justifyContent="center" sx={{ marginTop: "2vh" }}> 
+        <Grid container justifyContent="center" > 
         <AccountDetailsCard account={account} showVerMovimientos={false}/>  
         <Grid item xs={12}>
         <TransactionListDetails account={account}/>  

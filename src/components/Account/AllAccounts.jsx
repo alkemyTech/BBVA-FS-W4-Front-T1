@@ -41,9 +41,10 @@ const AllAccounts = () => {
   console.log("ACCOUN DATA:", accountData);
 
   return (
-    <Container sx={{ position: "relative", minHeight: "70vh" }}>
+    <Container sx={{ position: "relative" }}>
+      <ArrowBackComponent />
       {loading ? (
-        <Box sx={{ width: '100%', marginTop: '5vh' }}>
+        <Box sx={{ width: '100%' }}>
           <Skeleton
             animation="wave"
             variant="rectangular"
@@ -56,13 +57,12 @@ const AllAccounts = () => {
             variant="rectangular"
             width="100%"
             height={200}
-            sx={{ marginBottom: "16px", borderRadius: "8px" }}
+            sx={{ borderRadius: "8px" }}
           />
         </Box>
       ) : (
         <>
-          <ArrowBackComponent />
-          <Grid container spacing={2} sx={{ marginTop: "1vh" }}>
+          <Grid container spacing={2} >
             {accountData.accountArs &&
               accountData.accountArs.map((account, index) => (
                 <AccountDetailsCard account={account} showVerMovimientos={true}/>

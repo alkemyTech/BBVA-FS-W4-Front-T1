@@ -209,7 +209,7 @@ export default function CrearPlazoFijo() {
   };
 
   return (
-    <Container sx={{ marginBottom: 3, marginTop: 2 }}>
+    <Container>
       <ArrowBackComponent />
       <Grid
         container
