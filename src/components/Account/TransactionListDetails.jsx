@@ -158,8 +158,8 @@ const TransactionListDetails = ({ account }) => {
           <Skeleton animation="wave"
             variant="rectangular"
             width="100%"
-            height={400}
-            sx={{ marginTop: "16px", marginBottom: "16px", borderRadius: "8px" }} />
+            height="70vh"
+            sx={{ marginTop: "16px", borderRadius: "8px" }} />
       ) : (
         <Box sx={{ marginTop: "2vh" }}>
           <Card
@@ -168,7 +168,6 @@ const TransactionListDetails = ({ account }) => {
               padding: "16px",
               borderRadius: "8px",
               marginTop: "16px",
-              marginBottom: "10vh",
               boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
             }}
           >
@@ -181,7 +180,6 @@ const TransactionListDetails = ({ account }) => {
                 sx={{
                   display: "flex",
                   gap: "16px",
-                  marginBottom: "16px",
                   marginTop: "24px",
                   flexWrap: "wrap",
                   alignItems: "center",

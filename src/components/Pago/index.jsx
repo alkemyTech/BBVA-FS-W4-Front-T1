@@ -195,7 +195,6 @@ const Pago = () => {
             container
             justifyContent="space-between"
             alignItems="center"
-            mt={2}
             ml={5}
             position="relative"
           >

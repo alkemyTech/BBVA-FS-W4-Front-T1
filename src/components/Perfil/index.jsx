@@ -25,7 +25,6 @@ const Perfil = () => {
             container
             justifyContent="space-between"
             alignItems="center"
-            mt={2}
             ml={5}
             position="relative"
           >
@@ -41,7 +40,6 @@ const Perfil = () => {
               boxShadow: 3,
               maxWidth: 600,
               margin: 'auto',
-              mt: 4
             }}
           >
             <Typography 
