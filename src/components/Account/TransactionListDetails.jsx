@@ -21,16 +21,16 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getFilteredTransactionsByIdAccount } from "../../api/Transaction";
+import { useDispatch, useSelector } from "react-redux";
 import {
   hideNotification,
   showNotification,
 } from "../../Redux/slice/snackBarSlice";
 import MySnackbar from "../../UI/MySnackBar";
+import { getFilteredTransactionsByIdAccount } from "../../api/Transaction";
 
 const TransactionListDetails = ({ account }) => {
-  console.log("Account", account);
+  //console.log("Account", account);
   const accountId = account.idAccount;
   const [loading, setLoading] = useState(true);
   const [haveTransactions, setHaveTransactions] = useState(false);
@@ -115,9 +115,9 @@ const TransactionListDetails = ({ account }) => {
         })
       );
     } else {
-      console.log("ENTRO ACA VIEJA");
-      console.log("MAX", max);
-      console.log("Min", min);
+      //console.log("ENTRO ACA VIEJA");
+      //console.log("MAX", max);
+      //console.log("Min", min);
       e.preventDefault();
       setCurrentPage(0);
       setSendButton(!sendButton);
@@ -158,8 +158,8 @@ const TransactionListDetails = ({ account }) => {
           <Skeleton animation="wave"
             variant="rectangular"
             width="100%"
-            height={400}
-            sx={{ marginTop: "16px", marginBottom: "16px", borderRadius: "8px" }} />
+            height="70vh"
+            sx={{ marginTop: "16px", borderRadius: "8px" }} />
       ) : (
         <Box sx={{ marginTop: "2vh" }}>
           <Card
@@ -168,7 +168,6 @@ const TransactionListDetails = ({ account }) => {
               padding: "16px",
               borderRadius: "8px",
               marginTop: "16px",
-              marginBottom: "10vh",
               boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
             }}
           >
@@ -181,7 +180,6 @@ const TransactionListDetails = ({ account }) => {
                 sx={{
                   display: "flex",
                   gap: "16px",
-                  marginBottom: "16px",
                   marginTop: "24px",
                   flexWrap: "wrap",
                   alignItems: "center",

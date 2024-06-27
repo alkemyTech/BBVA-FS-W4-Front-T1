@@ -1,13 +1,10 @@
+import { Box, Container, Grid, Skeleton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { getAccountBalance } from "../../api/Account";
-import { Box, CircularProgress, Container, Grid, Skeleton } from "@mui/material";
-import TransactionList from "../Home/TransactionList";
-import MySnackbar from "../../UI/MySnackBar";
-import AccountDetailsCard from "./AccountDetails";
-import { ArrowBack } from "@mui/icons-material";
 import ArrowBackComponent from "../../UI/ArrowBack";
+import { getAccountBalance } from "../../api/Account";
+import AccountDetailsCard from "./AccountDetails";
 
 const AllAccounts = () => {
   const [loading, setLoading] = useState(true);
@@ -44,9 +41,10 @@ const AllAccounts = () => {
   console.log("ACCOUN DATA:", accountData);
 
   return (
-    <Container sx={{ position: "relative", minHeight: "70vh" }}>
+    <Container sx={{ position: "relative" }}>
+      <ArrowBackComponent />
       {loading ? (
-        <Box sx={{ width: '100%', marginTop: '5vh' }}>
+        <Box sx={{ width: '100%' }}>
           <Skeleton
             animation="wave"
             variant="rectangular"
@@ -59,13 +57,12 @@ const AllAccounts = () => {
             variant="rectangular"
             width="100%"
             height={200}
-            sx={{ marginBottom: "16px", borderRadius: "8px" }}
+            sx={{ borderRadius: "8px" }}
           />
         </Box>
       ) : (
         <>
-          <ArrowBackComponent />
-          <Grid container spacing={2} sx={{ marginTop: "1vh" }}>
+          <Grid container spacing={2} >
             {accountData.accountArs &&
               accountData.accountArs.map((account, index) => (
                 <AccountDetailsCard account={account} showVerMovimientos={true}/>
