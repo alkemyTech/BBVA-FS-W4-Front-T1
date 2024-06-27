@@ -37,8 +37,19 @@ export default function Navbar() {
   };
 
   return (
-    <Grid sx={{ marginBottom: "5rem" }}>
-      <AppBar position="fixed" sx={{ backgroundColor: "#472183" }}>
+    <Grid
+      item
+      sx={{ marginBottom: "10vh" }}
+    >
+      <AppBar
+        position="fixed"
+        sx={{
+          backgroundColor: "#472183",
+          height: "10vh",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <Grid container className="container">
           <Grid container p={1}>
             <Grid
@@ -46,8 +57,9 @@ export default function Navbar() {
               justifyContent={"space-between"}
               alignItems={"center"}
             >
-              {/*Logo y nombre*/}
-              <Grid item
+              {/*Logo*/}
+              <Grid
+                item
                 variant="h6"
                 component="a"
                 href="/home"
@@ -148,7 +160,8 @@ export default function Navbar() {
                 </Menu>
               </Grid>
               {/*Logo y nombre pantalla chica*/}
-              <Grid item
+              <Grid
+                item
                 variant="h5"
                 component="a"
                 href="/Home"
@@ -164,7 +177,7 @@ export default function Navbar() {
               >
                 <img
                   src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png"
-                  style={{ maxWidth: "40vw" }}
+                  style={{ maxWidth: "220px", width: "50vw" }}
                 />
               </Grid>
               {/*Navbar opciones pantalla grande*/}

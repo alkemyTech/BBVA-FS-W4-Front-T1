@@ -218,7 +218,8 @@ const Transferencia = () => {
               variant="rectangular"
               sx={{
                 margin: "0 auto",
-                width: "50vw",
+                width: "100%",
+                maxWidth: "800px",
                 minHeight: "88px",
                 borderRadius: 5,
                 p: 4,
