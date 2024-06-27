@@ -21,16 +21,16 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getFilteredTransactionsByIdAccount } from "../../api/Transaction";
+import { useDispatch, useSelector } from "react-redux";
 import {
   hideNotification,
   showNotification,
 } from "../../Redux/slice/snackBarSlice";
 import MySnackbar from "../../UI/MySnackBar";
+import { getFilteredTransactionsByIdAccount } from "../../api/Transaction";
 
 const TransactionListDetails = ({ account }) => {
-  console.log("Account", account);
+  //console.log("Account", account);
   const accountId = account.idAccount;
   const [loading, setLoading] = useState(true);
   const [haveTransactions, setHaveTransactions] = useState(false);
@@ -115,9 +115,9 @@ const TransactionListDetails = ({ account }) => {
         })
       );
     } else {
-      console.log("ENTRO ACA VIEJA");
-      console.log("MAX", max);
-      console.log("Min", min);
+      //console.log("ENTRO ACA VIEJA");
+      //console.log("MAX", max);
+      //console.log("Min", min);
       e.preventDefault();
       setCurrentPage(0);
       setSendButton(!sendButton);

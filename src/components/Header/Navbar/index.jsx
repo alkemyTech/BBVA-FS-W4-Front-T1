@@ -10,9 +10,6 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../../Redux/slice/userSlice";
 
-const pages = ["Transferencias", "Plazo fijo", "Deposito"];
-const settings = ["Perfil", "Cuentas", "Logout"];
-
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);

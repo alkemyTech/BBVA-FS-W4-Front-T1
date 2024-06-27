@@ -138,7 +138,7 @@ export default function EditarPerfil() {
             position="relative"
           >
             <Grid item>
-              <ArrowBackComponent />
+              <ArrowBackComponent disabled={loading} />
             </Grid>
           </Grid>
           <Grid
@@ -172,6 +172,7 @@ export default function EditarPerfil() {
                 error={Boolean(firstNameError)}
                 helperText={firstNameError}
                 onKeyDown={handleInputRestriction("a-zA-ZáéíóúÁÉÍÓÚñÑ ")}
+                disabled={loading}
               />
             </Grid>
             <Grid item xs={12} sx={{ marginBottom: 3 }}>
@@ -187,6 +188,7 @@ export default function EditarPerfil() {
                 error={Boolean(lastNameError)}
                 helperText={lastNameError}
                 onKeyDown={handleInputRestriction("a-zA-ZáéíóúÁÉÍÓÚñÑ ")}
+                disabled={loading}
               />
             </Grid>
             <Grid item xs={12} sx={{ marginBottom: 3 }}>
@@ -201,6 +203,7 @@ export default function EditarPerfil() {
                     variant: "standard",
                   },
                 }}
+                disabled={loading}
               />
             </Grid>
             <Grid item xs={12} sx={{ marginBottom: 3 }}>
@@ -214,6 +217,7 @@ export default function EditarPerfil() {
                 variant="standard"
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
+                disabled={loading}
               >
                 <MenuItem value="FEMALE">Femenino</MenuItem>
                 <MenuItem value="MALE">Masculino</MenuItem>
@@ -246,6 +250,7 @@ export default function EditarPerfil() {
                 error={Boolean(documentNumberError)}
                 helperText={documentNumberError}
                 onKeyDown={handleInputRestriction("0-9")}
+                disabled={loading}
               />
             </Grid>
             <Grid item xs={12}>
