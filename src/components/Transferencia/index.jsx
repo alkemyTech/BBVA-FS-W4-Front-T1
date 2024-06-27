@@ -480,8 +480,8 @@ const Transferencia = () => {
                 onClick={handleEditConfirm}
                 sx={{
                   color: "#FFF",
-                  backgroundColor: "#72C9FF",
-                  "&:hover": { backgroundColor: "#88D1FF" },
+                  backgroundColor: "#8EB052", 
+                  "&:hover": { backgroundColor: "#94B758" }, 
                   p: 1,
                 }}
                 disabled={loading}
