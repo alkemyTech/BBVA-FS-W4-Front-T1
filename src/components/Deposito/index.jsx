@@ -18,6 +18,7 @@ import {
 import ArrowBackComponent from "../../UI/ArrowBack";
 import MySnackbar from "../../UI/MySnackBar";
 import { deposit } from "../../api/Transaction";
+import { NumericFormat } from "react-number-format";
 
 const transactionConcepts = [
   "VARIOS",
@@ -126,7 +127,6 @@ const Deposito = () => {
   };
 
   return (
-
     <Grid container>
       <Grid container className="container">
         <Grid container justifyContent="center" alignItems="center">
@@ -142,156 +142,161 @@ const Deposito = () => {
             </Grid>
           </Grid>
           <Box>
-        <Card
-          sx={{
-            margin: "0 auto",
-            bgcolor: "#fff",
-            width: 480,
-            p: 5,
-            borderRadius: 5,
-            boxShadow: 3,
-            "@media (max-width: 500px)": { maxWidth: "90%" },
-          }}
-        >
-          <CardContent>
-            <Typography variant="h4" component="h1" gutterBottom>
-              Cargar Saldo
-            </Typography>
-            <form onSubmit={handleSubmit}>
-              <TextField
-                label="Monto"
-                value={amount}
-                onChange={onChangeAmount}
-                fullWidth
-                margin="normal"
-                error={parseFloat(amount.replace(",", ".")) <= 0}
-                helperText={
-                  parseFloat(amount.replace(",", ".")) <= 0
-                    ? "El monto debe ser mayor a cero"
-                    : ""
-                }
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#4B56D2",
-                    },
-                  },
-                }}
-                required
-                disabled={isSubmitted}
-              />
+            <Card
+              sx={{
+                margin: "0 auto",
+                bgcolor: "#fff",
+                width: 480,
+                p: 5,
+                borderRadius: 5,
+                boxShadow: 3,
+                "@media (max-width: 500px)": { maxWidth: "90%" },
+              }}
+            >
+              <CardContent>
+                <Typography variant="h4" component="h1" gutterBottom>
+                  Cargar Saldo
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                  <NumericFormat
+                    label="Monto"
+                    value={amount}
+                    onValueChange={({ floatValue }) =>
+                      setAmount(
+                        floatValue !== undefined ? floatValue.toFixed(2) : ""
+                      )
+                    }
+                    customInput={TextField}
+                    thousandSeparator={"."}
+                    decimalSeparator={","}
+                    allowNegative={false}
+                    prefix={"$ "}
+                    decimalScale={2}
+                    fixedDecimalScale={true}
+                    fullWidth
+                    required
+                    error={
+                      parseFloat(amount.replace(",", ".")) <= 0
+                    }
+                    helperText={
+                      parseFloat(amount.replace(",", ".")) <= 0
+                        ? "El monto debe ser mayor a cero"
+                        : ""
+                    }
+                    disabled={isSubmitted}
+                  />
 
-              <TextField
-                select
-                label="Concepto"
-                value={concept}
-                onChange={(e) => setConcept(e.target.value)}
-                fullWidth
-                margin="normal"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#4B56D2",
-                    },
-                  },
-                }}
-                required
-                disabled={isSubmitted}
-              >
-                {transactionConcepts.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
+                  <TextField
+                    select
+                    label="Concepto"
+                    value={concept}
+                    onChange={(e) => setConcept(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#4B56D2",
+                        },
+                      },
+                    }}
+                    required
+                    disabled={isSubmitted}
+                  >
+                    {transactionConcepts.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </TextField>
 
-              <TextField
-                label="Descripción"
-                type="text"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                fullWidth
-                margin="normal"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#4B56D2",
-                    },
-                  },
-                }}
-                disabled={isSubmitted}
-              />
+                  <TextField
+                    label="Descripción"
+                    type="text"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#4B56D2",
+                        },
+                      },
+                    }}
+                    disabled={isSubmitted}
+                  />
 
-              <TextField
-                select
-                label="Tipo de cuenta"
-                value={accountType}
-                onChange={(e) => setAccountType(e.target.value)}
-                fullWidth
-                margin="normal"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#4B56D2",
-                    },
-                  },
-                }}
-                required
-                disabled={isSubmitted}
-              >
-                {accountTypes[currency].map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option === "CAJA_AHORRO"
-                      ? "Caja de Ahorro"
-                      : "Cuenta Corriente"}
-                  </MenuItem>
-                ))}
-              </TextField>
+                  <TextField
+                    select
+                    label="Tipo de cuenta"
+                    value={accountType}
+                    onChange={(e) => setAccountType(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#4B56D2",
+                        },
+                      },
+                    }}
+                    required
+                    disabled={isSubmitted}
+                  >
+                    {accountTypes[currency].map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option === "CAJA_AHORRO"
+                          ? "Caja de Ahorro"
+                          : "Cuenta Corriente"}
+                      </MenuItem>
+                    ))}
+                  </TextField>
 
-              <TextField
-                select
-                label="Moneda"
-                value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
-                fullWidth
-                margin="normal"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&:hover fieldset": {
-                      borderColor: "#4B56D2",
-                    },
-                  },
-                }}
-                required
-                disabled={isSubmitted}
-              >
-                <MenuItem value="USD">USD</MenuItem>
-                <MenuItem value="ARS">ARS</MenuItem>
-              </TextField>
+                  <TextField
+                    select
+                    label="Moneda"
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": {
+                          borderColor: "#4B56D2",
+                        },
+                      },
+                    }}
+                    required
+                    disabled={isSubmitted}
+                  >
+                    <MenuItem value="USD">USD</MenuItem>
+                    <MenuItem value="ARS">ARS</MenuItem>
+                  </TextField>
 
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                sx={{
-                  mt: 2,
-                }}
-                disabled={
-                  isSubmitted || parseFloat(amount.replace(",", ".")) <= 0
-                }
-              >
-                {isSubmitted ? "Cargando..." : "Cargar"}
-              </Button>
-            </form>
-            <MySnackbar
-              open={notification.open}
-              handleClose={handleSnackbarClose}
-              message={notification.message}
-              status={notification.status}
-            />
-          </CardContent>
-        </Card>
-      </Box>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      mt: 2,
+                    }}
+                    disabled={
+                      isSubmitted || parseFloat(amount.replace(",", ".")) <= 0
+                    }
+                  >
+                    {isSubmitted ? "Cargando..." : "Cargar"}
+                  </Button>
+                </form>
+                <MySnackbar
+                  open={notification.open}
+                  handleClose={handleSnackbarClose}
+                  message={notification.message}
+                  status={notification.status}
+                />
+              </CardContent>
+            </Card>
+          </Box>
         </Grid>
       </Grid>
     </Grid>
