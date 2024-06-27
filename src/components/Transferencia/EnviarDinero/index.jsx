@@ -190,7 +190,7 @@ const EnviarDinero = () => {
       navigate("/home");
     } catch (error) {
       completeProgress();
-      if (error.message != "Balance insuficiente") {
+      if (error.message != "Saldo insuficiente") {
         dispatch(
           showNotification({
             message: error.message ? error.message : "Error del servidor",
@@ -397,7 +397,7 @@ const EnviarDinero = () => {
                           ? "Caja de Ahorro"
                           : "Cuenta Corriente"}{" "}
                         {accountOriginUsd.currency}
-                        {" - Balance: "}
+                        {" - Saldo: "}
                         {accountOriginUsd.balance.toLocaleString("es-AR", {
                           style: "currency",
                           currency: "USD",
@@ -417,7 +417,7 @@ const EnviarDinero = () => {
                           ? "Caja de Ahorro"
                           : "Cuenta Corriente"}{" "}
                         {option.currency}
-                        {" - Balance: "}
+                        {" - Saldo: "}
                         {option.balance.toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
@@ -521,7 +521,7 @@ const EnviarDinero = () => {
                       {accountOriginUsd.accountType === "CAJA_AHORRO"
                         ? "Caja de Ahorro"
                         : "Cuenta Corriente"}{" "}
-                      {accountOriginUsd.currency} - Balance:{" "}
+                      {accountOriginUsd.currency} - Saldo:{" "}
                       {accountOriginUsd.balance.toLocaleString("es-AR", {
                         style: "currency",
                         currency: "USD",
@@ -544,7 +544,7 @@ const EnviarDinero = () => {
                             {option.accountType === "CAJA_AHORRO"
                               ? "Caja de Ahorro"
                               : "Cuenta Corriente"}{" "}
-                            {option.currency} - Balance:{" "}
+                            {option.currency} - Saldo:{" "}
                             {option.balance.toLocaleString("es-AR", {
                               style: "currency",
                               currency: "ARS",

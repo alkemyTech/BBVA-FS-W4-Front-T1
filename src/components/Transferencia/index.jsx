@@ -16,6 +16,7 @@ import {
   Tooltip,
   Avatar,
 } from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -41,6 +42,7 @@ const Transferencia = () => {
   const [selectedAccountIndex, setSelectedAccountIndex] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openDetailDialog, setOpenDetailDialog] = useState(false);
   const [currentAccount, setCurrentAccount] = useState(null);
   const [newNickname, setNewNickname] = useState("");
   const [loading, setLoading] = useState(false);
@@ -99,6 +101,18 @@ const Transferencia = () => {
     setOpenEditDialog(true);
   };
 
+  const handleDetailClick = (event, account) => {
+    event.stopPropagation();
+    setCurrentAccount(account);
+    setOpenDetailDialog(true);
+  };
+
+  const handleKeyEnterConfirmationEdit = (e) => {
+    if (e.key === "Enter") {
+      handleEditConfirm();
+    }
+  };
+
   const handleDeleteConfirm = async () => {
     try {
       setLoading(true);
@@ -152,16 +166,15 @@ const Transferencia = () => {
   return (
     <Grid container>
       <Grid container className="container">
-        <Grid container justifyContent="center" alignItems="center">
+        <Grid container direction="column" justifyContent="center" alignItems="center">
           <Grid
             container
             justifyContent="space-between"
             alignItems="center"
             mt={2}
-            ml={5}
             position="relative"
           >
-            <Grid item>
+            <Grid item ml={5}>
               <ArrowBackComponent />
             </Grid>
           </Grid>
@@ -172,7 +185,7 @@ const Transferencia = () => {
             alignItems="center"
             sx={{
               backgroundColor: "#fff",
-              width: "50vw",
+              maxWidth: "800px",
               borderRadius: 5,
               p: 4,
               boxShadow: 3,
@@ -221,7 +234,7 @@ const Transferencia = () => {
               sx={{
                 margin: "0 auto",
                 backgroundColor: "#fff",
-                width: "50vw",
+                maxWidth: "800px",
                 minHeight: "88px",
                 borderRadius: 5,
                 p: 4,
@@ -246,7 +259,7 @@ const Transferencia = () => {
                       }
                       sx={{
                         borderBottom: "1px solid #F1F6F5",
-                        minWidth: "40vw",
+                        minWidth: "100%",
                         p: 1,
                         paddingTop: 1.2,
                         "&:hover": { backgroundColor: "#F9F9F9" },
@@ -256,6 +269,7 @@ const Transferencia = () => {
                         pointerEvents:
                           selectedAccountIndex !== null ? "none" : "auto",
                       }}
+                      fullWidth
                     >
                       <Tooltip
                         TransitionComponent={Zoom}
@@ -272,7 +286,10 @@ const Transferencia = () => {
                             sx={{
                               width: 42,
                               height: 42,
-                              backgroundColor: "#E68D00",
+                              backgroundColor:
+                                account.destinationAccountCurrency === "ARS"
+                                  ? "#35B1FF" // Use theme colors for "ARS"
+                                  : "#8EB052", // Use theme colors for other currencies
                             }}
                             alt={account.destinationUserFirstName.charAt(0)}
                             src="Imagen de usuario"
@@ -328,7 +345,7 @@ const Transferencia = () => {
                       <Tooltip
                         TransitionComponent={Zoom}
                         title="Eliminar contacto"
-                        placement="bottom-start"
+                        placement="bottom"
                         disableInteractive
                       >
                         <IconButton
@@ -341,6 +358,22 @@ const Transferencia = () => {
                           }}
                         >
                           <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
+                        TransitionComponent={Zoom}
+                        title="Detalle de contacto"
+                        placement="bottom-start"
+                        disableInteractive
+                      >
+                        <IconButton
+                          onMouseDown={(e) => handleDetailClick(e, account)}
+                          sx={{
+                            color: "#E68D00",
+                            "&:hover": { color: "#ED9406" },
+                          }}
+                        >
+                          <PersonIcon />
                         </IconButton>
                       </Tooltip>
                     </ListItemButton>
@@ -439,6 +472,7 @@ const Transferencia = () => {
                 value={newNickname}
                 onChange={(e) => setNewNickname(e.target.value)}
                 disabled={loading}
+                onKeyDown={handleKeyEnterConfirmationEdit}
               />
             </DialogContent>
             <DialogActions>
@@ -455,6 +489,66 @@ const Transferencia = () => {
                 Guardar
               </Button>
             </DialogActions>
+          </Dialog>
+          {/* Detail Account */}
+          <Dialog
+            open={openDetailDialog}
+            onClose={() => setOpenDetailDialog(false)}
+            PaperProps={{
+              sx: { p: 3, borderRadius: 5 },
+            }}
+          >
+            <DialogTitle>
+              Detalle de contacto{" "}
+              <IconButton
+                onClick={() => setOpenDetailDialog(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                  color: "grey",
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
+            {currentAccount && (
+              <DialogContent>
+                <Typography variant="body1" sx={{ mb: 1 }}>
+                  <b>Nombre y apellido:</b>{" "}
+                  {`${currentAccount.destinationUserFirstName} ${currentAccount.destinationUserLastName}`}
+                </Typography>
+                {currentAccount.nickname && (
+                  <Typography variant="body1" sx={{ mb: 1 }}>
+                    <b>Referencia:</b> {currentAccount.nickname}
+                  </Typography>
+                )}
+                <Typography variant="body1" sx={{ mb: 1 }}>
+                  <b>Tipo y número de documento:</b>{" "}
+                  {currentAccount.destinationUserDocumentType +
+                    " " +
+                    currentAccount.destinationUserDocumentNumber}
+                </Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>
+                  <b>CBU:</b> {currentAccount.destinationAccountCbu}
+                </Typography>
+                <Typography variant="body1" sx={{ mb: 1 }}>
+                  <b>Alias:</b> {currentAccount.destinationAccountAlias}
+                </Typography>
+                <Typography variant="body1">
+                  <b>Cuenta:</b>{" "}
+                  {currentAccount.destinationAccountAccountType ===
+                  "CAJA_AHORRO"
+                    ? "Caja de Ahorro"
+                    : "Cuenta Corriente"}{" "}
+                  {currentAccount.destinationAccountCurrency === "ARS"
+                    ? "$"
+                    : "US$"}{" "}
+                  {" / " + currentAccount.destinationAccountBank + " - "}
+                  {currentAccount.destinationAccountCurrency}
+                </Typography>
+              </DialogContent>
+            )}
           </Dialog>
         </Grid>
       </Grid>
