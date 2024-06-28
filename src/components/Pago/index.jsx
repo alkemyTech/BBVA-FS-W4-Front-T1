@@ -235,7 +235,6 @@ const Pago = () => {
                     decimalScale={2}
                     fixedDecimalScale={true}
                     fullWidth
-                    required
                     error={
                       parseFloat(amount.replace(",", ".")) <= 0 ||
                       parseFloat(amount.replace(",", ".")) > balance
