@@ -189,6 +189,37 @@ const sendUsd = async (transferData) => {
   }
 };
 
+
+const getTransactionsSummaryByIdAccount = async (value, token) => {
+  const config = {
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${token}`, // Assuming you store the token in localStorage
+    },
+  };
+
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/${value}/summaryPerMoth` ,config);
+    console.log("response:", response);
+    //console.log("response data:", response.data);
+    return response;
+  } catch (error) {
+    // Enhanced error logging
+    console.error("An error occurred:", error);
+    return "404";
+    if (error.response) {
+      console.error("Response data:", error.response.data);
+      console.error("Response status:", error.response.status);
+      console.error("Response headers:", error.response.headers);
+    } else if (error.request) {
+      console.error("Request data:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
+    throw error;
+  }
+};
 export {
   deposit,
   payment,
@@ -196,4 +227,5 @@ export {
   sendUsd,
   getTransactionsByIdAccount,
   getFilteredTransactionsByIdAccount,
+  getTransactionsSummaryByIdAccount,
 };
