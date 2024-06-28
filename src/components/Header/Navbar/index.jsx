@@ -202,7 +202,7 @@ export default function Navbar() {
                     fontWeight: 600,
                     fontSize: 18,
                     borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E" },
+                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
                   }}
                   underline="none"
                 >
@@ -219,7 +219,7 @@ export default function Navbar() {
                     fontWeight: 600,
                     fontSize: 18,
                     borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E" },
+                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
                   }}
                   underline="none"
                 >
@@ -236,7 +236,7 @@ export default function Navbar() {
                     fontWeight: 600,
                     fontSize: 18,
                     borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E" },
+                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
                   }}
                   underline="none"
                 >
@@ -253,7 +253,7 @@ export default function Navbar() {
                     fontWeight: 600,
                     fontSize: 18,
                     borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E" },
+                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
                   }}
                   underline="none"
                 >
@@ -265,7 +265,7 @@ export default function Navbar() {
                 {/*Foto perfil pantalla grande*/}
                 <Tooltip title="Mi perfil">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Imagen de usuario" src="Imagen de usuario" />
+                    <Avatar sx={{ "&:hover": { backgroundColor: "rgb(130,130,130)", transition: "0.5s" } }} src="Imagen de usuario">{user.firstName[0]}</Avatar>
                   </IconButton>
                 </Tooltip>
                 {/*Menu usuario*/}

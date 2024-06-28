@@ -192,9 +192,8 @@ const Register = () => {
       setPasswordError("La contraseña es obligatoria.");
       if (!firstInvalidRef) firstInvalidRef = passwordRef;
       valid = false;
-    } else if (password.length < 4) {
-      //TODO: En el back tenemos como seeder user0, user1, ...
-      setPasswordError("La contraseña debe tener al menos 4 caracteres.");
+    } else if (!/^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*\d).{8,}$/.test(password) || password.length < 8) {
+      setPasswordError("La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un símbolo.");
       if (!firstInvalidRef) firstInvalidRef = passwordRef;
       valid = false;
     } else {
@@ -414,7 +413,7 @@ const Register = () => {
           error={Boolean(passwordError)}
           helperText={passwordError}
           inputRef={passwordRef}
-          onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ._-")}
+          onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ._-@#$%^&+=")}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -444,7 +443,7 @@ const Register = () => {
           error={Boolean(confirmPasswordError)}
           helperText={confirmPasswordError}
           inputRef={confirmPasswordRef}
-          onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ._-")}
+          onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ._-@#$%^&+=")}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -472,7 +471,7 @@ const Register = () => {
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mt: 3, mb: 2, backgroundColor: "#472183" }}
+          sx={{ mt: 3, mb: 2 }}
           onClick={handleRegister}
         >
           {loading ? "Cargando..." : "Registrarse"}

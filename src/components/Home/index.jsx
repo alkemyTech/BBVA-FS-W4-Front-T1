@@ -1,8 +1,4 @@
-import {
-  Container,
-  Grid,
-  Skeleton
-} from "@mui/material";
+import { Container, Grid, Skeleton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -28,9 +24,9 @@ const Home = () => {
         setLoading(false);
       } catch (error) {
         if (error.message == "Usuario no autenticado") {
-            dispatch(clearUser());
-            navigate("/")
-          }
+          dispatch(clearUser());
+          navigate("/");
+        }
         console.error("Error fetching data:", error);
         setLoading(false);
       }
@@ -66,16 +62,16 @@ const Home = () => {
               </Grid>
             ))}
           </Grid>
-          <Grid sx={{ borderRadius: '8px', marginTop: '16px', }}>
-              <Grid>
-                <Skeleton
-                  animation="wave"
-                  variant="rectangular"
-                  width="100%"
-                  height={400}
-                  sx={{ borderRadius: "8px" }}
-                />
-              </Grid>
+          <Grid sx={{ borderRadius: "8px", marginTop: "16px" }}>
+            <Grid>
+              <Skeleton
+                animation="wave"
+                variant="rectangular"
+                width="100%"
+                height={400}
+                sx={{ borderRadius: "8px" }}
+              />
+            </Grid>
           </Grid>
         </>
       ) : (
