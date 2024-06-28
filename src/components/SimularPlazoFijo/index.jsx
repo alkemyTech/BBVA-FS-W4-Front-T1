@@ -37,6 +37,7 @@ const SimularPlazoFijo = () => {
       closingDate,
     };
     dispatch(setSimulatedFixedTerm(simulatedFixedTerm));
+    dispatch(setSelectedDay(Object.keys(selectedDays)[0]))
     navigate("/crear-plazo-fijo");
   };
 
@@ -62,8 +63,6 @@ const SimularPlazoFijo = () => {
       }
       setClosingDate(closingDate);
     }
-    dispatch(setSelectedDay(day));
-
     setSelectedDays((prevSelectedDays) => {
       const newSelectedDays = { ...prevSelectedDays };
       Object.keys(newSelectedDays).forEach((key) => {
@@ -96,6 +95,10 @@ const SimularPlazoFijo = () => {
     }
   };
 
+  useEffect(() => {
+    handleDayClick("30")
+  }, [])
+  
   useEffect(() => {
     if (amount && closingDate) {
       fetchData();
@@ -152,17 +155,6 @@ const SimularPlazoFijo = () => {
                 : ""
             }
           />
-          {/* <TextField
-            label="Monto"
-            value={amount}
-            fullWidth
-            // margin="normal"
-            error={Boolean(amountError)}
-            helperText={amountError}
-            onChange={(e) => setAmount(e.target.value)}
-            required
-            onKeyDown={handleInputRestriction("0-9")}
-          /> */}
         </Grid>
 
         <Grid item xs={12} sx={{ marginBottom: 1 }}>
@@ -178,11 +170,11 @@ const SimularPlazoFijo = () => {
               borderColor: "#5B67E5",
               "&.MuiButton-contained": {
                 bgcolor: "#5B67E5",
-                color: "#ffffff", // or any other color you want for the text
+                color: "#ffffff", 
               },
               "&.MuiButton-outlined": {
                 bgcolor: "#ffffff",
-                color: "#5B67E5", // or any other color you want for the text
+                color: "#5B67E5", 
               },
               "&:hover": {
                 backgroundColor: "#5B67E5",
@@ -276,6 +268,22 @@ const SimularPlazoFijo = () => {
           {showDatePicker && (
             <DatePicker
               required
+              label="Fecha de Cierre"
+              value={closingDate}
+              onChange={(e) => setClosingDate(e)}
+              minDate={minDate}
+              slotProps={{
+                textField: {
+                  required: true,
+                  fullWidth: true,
+                },
+              }}
+            />
+          )}
+          {!showDatePicker && closingDate && (
+            <DatePicker
+              sx={{ marginBottom: 1 }}
+              disabled
               label="Fecha de Cierre"
               value={closingDate}
               onChange={(e) => setClosingDate(e)}
