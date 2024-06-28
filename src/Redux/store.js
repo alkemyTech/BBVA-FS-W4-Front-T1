@@ -6,7 +6,7 @@ import userReducer from "./slice/userSlice";
 import notificationReducer from './slice/snackBarSlice';
 import transferReducer from './slice/transferSlice';
 import fixedTermReducer from './slice/fixedTermSlice';
-import showAmountReducer from './slice/showAmountSlice'; // Importa el nuevo slice
+import showAmountReducer from './slice/showAmountSlice';
 
 const persistShowAmountConfig = {
   key: 'showAmount',
@@ -40,7 +40,7 @@ export const store = configureStore({
     notification: notificationReducer,
     transfer: transferReducer,
     fixedTerm: persistedFixedTermReducer,
-    showAmount: persistedShowAmountReducer, // Agrega el reducer persistido
+    showAmount: persistedShowAmountReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
