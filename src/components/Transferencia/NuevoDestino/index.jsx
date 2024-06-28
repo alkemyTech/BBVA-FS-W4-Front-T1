@@ -51,15 +51,14 @@ const NuevoDestino = () => {
     <Grid container>
       <Grid container className="container">
         <Grid container justifyContent="center" alignItems="center">
-          <Grid
+        <Grid
             container
             justifyContent="space-between"
             alignItems="center"
             mt={2}
-            ml={5}
             position="relative"
           >
-            <Grid item>
+            <Grid item ml={5}>
               <ArrowBackComponent />
             </Grid>
           </Grid>

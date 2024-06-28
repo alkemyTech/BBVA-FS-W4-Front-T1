@@ -37,8 +37,19 @@ export default function Navbar() {
   };
 
   return (
-    <Grid sx={{ marginBottom: "5rem" }}>
-      <AppBar position="fixed" sx={{ backgroundColor: "#472183" }}>
+    <Grid
+      item
+      sx={{ marginBottom: "10vh" }}
+    >
+      <AppBar
+        position="fixed"
+        sx={{
+          backgroundColor: "#472183",
+          height: "10vh",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <Grid container className="container">
           <Grid container p={1}>
             <Grid
@@ -46,10 +57,10 @@ export default function Navbar() {
               justifyContent={"space-between"}
               alignItems={"center"}
             >
-              {/*Logo y nombre*/}
-              <Typography
+              {/*Logo*/}
+              <Grid
+                item
                 variant="h6"
-                noWrap
                 component="a"
                 href="/home"
                 sx={{
@@ -63,9 +74,9 @@ export default function Navbar() {
               >
                 <img
                   src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png"
-                  style={{ height: "60px" }}
+                  style={{ maxWidth: "15vw" }}
                 />
-              </Typography>
+              </Grid>
               {/*Menu Hambur pantalla chica*/}
               <Grid
                 item
@@ -149,9 +160,9 @@ export default function Navbar() {
                 </Menu>
               </Grid>
               {/*Logo y nombre pantalla chica*/}
-              <Typography
+              <Grid
+                item
                 variant="h5"
-                noWrap
                 component="a"
                 href="/Home"
                 sx={{
@@ -166,9 +177,9 @@ export default function Navbar() {
               >
                 <img
                   src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png"
-                  style={{ height: "60px" }}
+                  style={{ maxWidth: "220px", width: "50vw" }}
                 />
-              </Typography>
+              </Grid>
               {/*Navbar opciones pantalla grande*/}
               <Grid
                 item

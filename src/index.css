@@ -24,10 +24,9 @@
   margin: 0 auto;
 }
 
-#root {
+/* #root {
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #F1F6F5;
-}
+} */
