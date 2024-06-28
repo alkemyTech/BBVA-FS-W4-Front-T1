@@ -10,7 +10,8 @@ export default function Page(props) {
       <main
         style={{
           backgroundColor: "#F1F6F5",
-          paddingBottom: token ? "5rem" : "0"
+          paddingBottom: token ? "5rem" : "0",
+          minHeight: "69.8vh",
         }}
       >
         {props.children}

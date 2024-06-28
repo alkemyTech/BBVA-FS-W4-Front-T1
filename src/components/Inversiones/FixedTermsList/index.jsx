@@ -52,10 +52,11 @@ const FixedTermsList = ({
     <Box sx={{ marginTop: "2vh" }}>
       <Card
         sx={{
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "#ffffff",
           padding: "16px",
           borderRadius: "8px",
           marginTop: "16px",
+          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
         }}
       >
         <CardContent>
@@ -66,7 +67,7 @@ const FixedTermsList = ({
           >
             Plazos fijos
           </Typography>
-          {fixedTerms.map((fixedTerm, index) => (
+          {fixedTerms.length > 0 ? (fixedTerms.map((fixedTerm, index) => (
             <Accordion
               sx={{
                 boxShadow: "none",
@@ -134,7 +135,7 @@ const FixedTermsList = ({
                 </Box>
               </AccordionDetails>
             </Accordion>
-          ))}
+          ))) : <p>No posee plazos fijos</p>}
           {totalPages > 0 && (
             <Box
               sx={{

@@ -1,10 +1,4 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  Grid,
-  Typography
-} from "@mui/material";
+import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
 import { useNavigate } from "react-router";
@@ -27,16 +21,15 @@ const FixedTermCard = ({ totalFixedTerms }) => {
     navigate("/simular-plazo-fijo");
   };
 
-
   return (
     <Grid item xs={12}>
       <Card
         sx={{
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "#ffffff",
           color: "#000000",
           borderRadius: "2vh",
           padding: "1vh",
-          boxShadow: 2,
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
         }}
       >
         <CardContent>
@@ -83,8 +76,7 @@ const FixedTermCard = ({ totalFixedTerms }) => {
                   </Button>
                 </Grid>
               </Grid>
-              </Grid>
-
+            </Grid>
           </Grid>
         </CardContent>
       </Card>

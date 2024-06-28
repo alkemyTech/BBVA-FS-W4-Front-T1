@@ -37,8 +37,19 @@ export default function Navbar() {
   };
 
   return (
-    <Grid sx={{ marginBottom: "5rem" }}>
-      <AppBar position="fixed" sx={{ backgroundColor: "#472183" }}>
+    <Grid
+      item
+      sx={{ marginBottom: "10vh" }}
+    >
+      <AppBar
+        position="fixed"
+        sx={{
+          backgroundColor: "#472183",
+          height: "10vh",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <Grid container className="container">
           <Grid container p={1}>
             <Grid
@@ -46,10 +57,10 @@ export default function Navbar() {
               justifyContent={"space-between"}
               alignItems={"center"}
             >
-              {/*Logo y nombre*/}
-              <Typography
+              {/*Logo*/}
+              <Grid
+                item
                 variant="h6"
-                noWrap
                 component="a"
                 href="/home"
                 sx={{
@@ -63,9 +74,9 @@ export default function Navbar() {
               >
                 <img
                   src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png"
-                  style={{ height: "60px" }}
+                  style={{ maxWidth: "15vw" }}
                 />
-              </Typography>
+              </Grid>
               {/*Menu Hambur pantalla chica*/}
               <Grid
                 item
@@ -149,9 +160,9 @@ export default function Navbar() {
                 </Menu>
               </Grid>
               {/*Logo y nombre pantalla chica*/}
-              <Typography
+              <Grid
+                item
                 variant="h5"
-                noWrap
                 component="a"
                 href="/Home"
                 sx={{
@@ -166,9 +177,9 @@ export default function Navbar() {
               >
                 <img
                   src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png"
-                  style={{ height: "60px" }}
+                  style={{ maxWidth: "220px", width: "50vw" }}
                 />
-              </Typography>
+              </Grid>
               {/*Navbar opciones pantalla grande*/}
               <Grid
                 item
@@ -191,7 +202,7 @@ export default function Navbar() {
                     fontWeight: 600,
                     fontSize: 18,
                     borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E" },
+                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
                   }}
                   underline="none"
                 >
@@ -208,7 +219,7 @@ export default function Navbar() {
                     fontWeight: 600,
                     fontSize: 18,
                     borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E" },
+                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
                   }}
                   underline="none"
                 >
@@ -225,7 +236,7 @@ export default function Navbar() {
                     fontWeight: 600,
                     fontSize: 18,
                     borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E" },
+                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
                   }}
                   underline="none"
                 >
@@ -242,7 +253,7 @@ export default function Navbar() {
                     fontWeight: 600,
                     fontSize: 18,
                     borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E" },
+                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
                   }}
                   underline="none"
                 >
@@ -254,7 +265,7 @@ export default function Navbar() {
                 {/*Foto perfil pantalla grande*/}
                 <Tooltip title="Mi perfil">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Imagen de usuario" src="Imagen de usuario" />
+                    <Avatar sx={{ "&:hover": { backgroundColor: "rgb(130,130,130)", transition: "0.5s" } }} src="Imagen de usuario">{user.firstName[0]}</Avatar>
                   </IconButton>
                 </Tooltip>
                 {/*Menu usuario*/}
