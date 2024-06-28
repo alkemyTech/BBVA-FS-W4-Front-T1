@@ -61,7 +61,11 @@ export default function CrearPlazoFijo() {
 
     if (selectedDay) {
       handleDayClick(selectedDay);
+    } else {
+      handleDayClick("30");
     }
+
+
   }, []);
 
   useEffect(() => {
@@ -265,17 +269,6 @@ export default function CrearPlazoFijo() {
             }
             disabled={isLoading}
           />
-          {/* <TextField
-            label="Monto"
-            value={amount}
-            fullWidth
-            disabled={simulatedFixedTerm}
-            error={Boolean(amountError)}
-            helperText={amountError}
-            onChange={(e) => setAmount(e.target.value)}
-            required
-            onKeyDown={handleInputRestriction("0-9")}
-          /> */}
         </Grid>
 
         <Grid item xs={12} sx={{ marginBottom: 1 }}>
@@ -291,11 +284,11 @@ export default function CrearPlazoFijo() {
               borderColor: "#5B67E5",
               "&.MuiButton-contained": {
                 bgcolor: "#5B67E5",
-                color: "#ffffff", // or any other color you want for the text
+                color: "#ffffff", 
               },
               "&.MuiButton-outlined": {
                 bgcolor: "#ffffff",
-                color: "#5B67E5", // or any other color you want for the text
+                color: "#5B67E5",
               },
               "&:hover": {
                 backgroundColor: "#5B67E5",
