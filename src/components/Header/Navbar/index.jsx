@@ -37,10 +37,7 @@ export default function Navbar() {
   };
 
   return (
-    <Grid
-      item
-      sx={{ marginBottom: "10vh" }}
-    >
+    <Grid item sx={{ marginBottom: "10vh" }}>
       <AppBar
         position="fixed"
         sx={{
@@ -189,20 +186,22 @@ export default function Navbar() {
                   justifyContent: "flex-end",
                   paddingRight: "80px",
                   textTransform: "uppercase",
+                  alignItems: "center",
                 }}
               >
                 <Link
                   onClick={handleCloseNavMenu}
                   href="/transferencia"
                   sx={{
-                    my: 1,
                     color: "white",
                     display: "block",
                     padding: "6px 30px",
                     fontWeight: 600,
                     fontSize: 18,
-                    borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
+                    "&:hover": {
+                      backgroundColor: "#50298E",
+                      transition: "0.5s",
+                    },
                   }}
                   underline="none"
                 >
@@ -219,7 +218,10 @@ export default function Navbar() {
                     fontWeight: 600,
                     fontSize: 18,
                     borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
+                    "&:hover": {
+                      backgroundColor: "#50298E",
+                      transition: "0.5s",
+                    },
                   }}
                   underline="none"
                 >
@@ -236,7 +238,10 @@ export default function Navbar() {
                     fontWeight: 600,
                     fontSize: 18,
                     borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
+                    "&:hover": {
+                      backgroundColor: "#50298E",
+                      transition: "0.5s",
+                    },
                   }}
                   underline="none"
                 >
@@ -253,7 +258,10 @@ export default function Navbar() {
                     fontWeight: 600,
                     fontSize: 18,
                     borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
+                    "&:hover": {
+                      backgroundColor: "#50298E",
+                      transition: "0.5s",
+                    },
                   }}
                   underline="none"
                 >
@@ -265,7 +273,17 @@ export default function Navbar() {
                 {/*Foto perfil pantalla grande*/}
                 <Tooltip title="Mi perfil">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar sx={{ "&:hover": { backgroundColor: "rgb(130,130,130)", transition: "0.5s" } }} src="Imagen de usuario">{user.firstName[0]}</Avatar>
+                    <Avatar
+                      sx={{
+                        "&:hover": {
+                          backgroundColor: "rgb(130,130,130)",
+                          transition: "0.5s",
+                        },
+                      }}
+                      src="Imagen de usuario"
+                    >
+                      {user.firstName[0]}
+                    </Avatar>
                   </IconButton>
                 </Tooltip>
                 {/*Menu usuario*/}
