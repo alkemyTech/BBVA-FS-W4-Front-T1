@@ -1,17 +1,17 @@
 import { Grid, IconButton, Card, CardContent, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { setTotalInverted } from "../../../Redux/slice/fixedTermSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useState } from "react";
+import { toggleShowAmount } from "../../../Redux/slice/showAmountSlice";
 
 const AccountCard = ({ accountData }) => {
-  const [showAmount, setShowAmount] = useState(false);
-
+  const showAmount = useSelector((state) => state.showAmount.showAmount);
+  const dispatch = useDispatch();
 
   const handleClickShowAmount = () => {
-    setShowAmount(!showAmount);
+    dispatch(toggleShowAmount());
   };
 
   const handleMouseDownAmount = (event) => {
@@ -24,8 +24,8 @@ const AccountCard = ({ accountData }) => {
       currency,
     }).format(amount);
   };
+
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleCardClick = (path, account) => {
     console.log("Account", account);
