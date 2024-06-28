@@ -13,7 +13,9 @@ import {
   Slide,
   Skeleton,
   LinearProgress,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import MySnackbar from "../../../UI/MySnackBar";
 import { useNavigate } from "react-router";
 import {
@@ -178,18 +180,13 @@ const EnviarDinero = () => {
           })
         );
       } else {
-        setAmountError(true)
+        setAmountError(true);
         setAccountOriginError("Saldo insuficiente");
       }
     } finally {
       setIsLoading(false);
       setLoadingBar(false);
     }
-  };
-
-  const handleCancelation = async (e) => {
-    e.preventDefault();
-    navigate("/transferencia");
   };
 
   const handleSnackbarClose = () => {
@@ -204,11 +201,11 @@ const EnviarDinero = () => {
             container
             justifyContent="space-between"
             alignItems="center"
-            ml={5}
+            mt={2}
             position="relative"
           >
-            <Grid item>
-              <ArrowBackComponent disabled={loadingBar} />
+            <Grid item ml={5}>
+              <ArrowBackComponent />
             </Grid>
           </Grid>
           <Grid
@@ -264,24 +261,12 @@ const EnviarDinero = () => {
                   height={56}
                   sx={{ borderRadius: "4px" }}
                 />
-                <Grid container spacing={1} justifyContent="center">
-                  <Grid item xs={4} sx={{ marginRight: "2.5vw" }}>
-                    <Skeleton
-                      variant="rectangular"
-                      width="100%"
-                      height={36}
-                      sx={{ borderRadius: "4px" }}
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Skeleton
-                      variant="rectangular"
-                      width="100%"
-                      height={36}
-                      sx={{ borderRadius: "4px" }}
-                    />
-                  </Grid>
-                </Grid>
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={45}
+                  sx={{ borderRadius: "4px" }}
+                />
               </>
             ) : (
               <Grid
@@ -427,21 +412,8 @@ const EnviarDinero = () => {
                     item
                     alignSelf={"center"}
                     mt={1}
-                    sx={{ minHeight: "45px" }}
+                    sx={{ minHeight: "45px", width: "100%" }}
                   >
-                    <Button
-                      variant="contained"
-                      disabled={isLoading}
-                      sx={{
-                        color: "#FFF",
-                        backgroundColor: "#C62E2E",
-                        "&:hover": { backgroundColor: "#BA3131" },
-                        marginRight: "2rem",
-                      }}
-                      onClick={handleCancelation}
-                    >
-                      Cancelar
-                    </Button>
                     <Button
                       type="submit"
                       variant="contained"
@@ -449,6 +421,7 @@ const EnviarDinero = () => {
                         isLoading || parseFloat(amount.replace(",", ".")) <= 0
                       }
                       onClick={handleSubmit}
+                      sx={{ width: "100%" }}
                     >
                       Transferir
                     </Button>
@@ -472,7 +445,20 @@ const EnviarDinero = () => {
               sx: { p: 3, borderRadius: 5, mr: 6 },
             }}
           >
-            <DialogTitle>Confirmar Transferencia</DialogTitle>
+            <DialogTitle>
+              Confirmar Transferencia
+              <IconButton
+                onClick={handleCloseConfirmationDialog}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                  color: "grey",
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
             <DialogContent>
               <Typography variant="subtitle1">
                 ¿Está seguro de que desea transferir el siguiente monto?
@@ -539,16 +525,19 @@ const EnviarDinero = () => {
                   </Typography>
                 ))}
             </DialogContent>
-            <DialogActions sx={{ justifyContent: "center" }}>
+            <DialogActions>
               <Button
+                variant="text"
                 onClick={handleCloseConfirmationDialog}
                 sx={{
-                  color: "#FFF",
-                  backgroundColor: "#C62E2E",
-                  "&:hover": { backgroundColor: "#BA3131" },
+                  fontWeight: "600",
+                  color: "grey",
+                  backgroundColor: "#FFF",
+                  "&:hover": { backgroundColor: "#FFF" },
                   marginRight: "2rem",
                   p: 1.2,
                 }}
+                disableRipple
               >
                 Cancelar
               </Button>

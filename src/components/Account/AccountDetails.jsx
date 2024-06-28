@@ -14,7 +14,7 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
-  TextField,  
+  TextField,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
@@ -282,16 +282,16 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
           <DialogContentText>
             Ingresa el nuevo alias para la cuenta:
             <IconButton
-                onClick={() => setOpenEditDialog(false)}
-                sx={{
-                  position: "absolute",
-                  right: 8,
-                  top: 8,
-                  color: "grey",
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
+              onClick={() => setOpenEditDialog(false)}
+              sx={{
+                position: "absolute",
+                right: 8,
+                top: 8,
+                color: "grey",
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
           </DialogContentText>
           <TextField
             autoFocus
@@ -308,13 +308,29 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
           />
         </DialogContent>
         <DialogActions>
-          
+          <Button
+            variant="text"
+            onClick={() => setOpenEditDialog(false)}
+            sx={{
+              fontWeight: "600",
+              color: "grey",
+              backgroundColor: "#FFF",
+              "&:hover": { backgroundColor: "#FFF" },
+              marginRight: "2rem",
+              p: 1.2,
+            }}
+            disableRipple
+            disabled={loading}
+          >
+            Cancelar
+          </Button>
+
           <Button
             onClick={handleEditConfirm}
             sx={{
               color: "#FFF",
-              backgroundColor: "#8EB052", 
-              "&:hover": { backgroundColor: "#94B758" }, 
+              backgroundColor: "#8EB052",
+              "&:hover": { backgroundColor: "#94B758" },
               p: 1.2,
             }}
             disabled={loading}

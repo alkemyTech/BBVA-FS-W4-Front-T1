@@ -166,7 +166,12 @@ const Transferencia = () => {
   return (
     <Grid container>
       <Grid container className="container">
-        <Grid container direction="column" justifyContent="center" alignItems="center">
+        <Grid
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+        >
           <Grid
             container
             justifyContent="space-between"
@@ -270,7 +275,6 @@ const Transferencia = () => {
                         pointerEvents:
                           selectedAccountIndex !== null ? "none" : "auto",
                       }}
-                      fullWidth
                     >
                       <Tooltip
                         TransitionComponent={Zoom}
@@ -423,6 +427,22 @@ const Transferencia = () => {
             </DialogContent>
             <DialogActions>
               <Button
+                variant="text"
+                onClick={() => setOpenDeleteDialog(false)}
+                sx={{
+                  fontWeight: "600",
+                  color: "grey",
+                  backgroundColor: "#FFF",
+                  "&:hover": { backgroundColor: "#FFF" },
+                  marginRight: "2rem",
+                  p: 1.2,
+                }}
+                disableRipple
+                disabled={loading}
+              >
+                Cancelar
+              </Button>
+              <Button
                 onClick={handleDeleteConfirm}
                 sx={{
                   color: "#FFF",
@@ -478,11 +498,27 @@ const Transferencia = () => {
             </DialogContent>
             <DialogActions>
               <Button
+                variant="text"
+                onClick={() => setOpenEditDialog(false)}
+                sx={{
+                  fontWeight: "600",
+                  color: "grey",
+                  backgroundColor: "#FFF",
+                  "&:hover": { backgroundColor: "#FFF" },
+                  marginRight: "2rem",
+                  p: 1.2,
+                }}
+                disableRipple
+                disabled={loading}
+              >
+                Cancelar
+              </Button>
+              <Button
                 onClick={handleEditConfirm}
                 sx={{
                   color: "#FFF",
-                  backgroundColor: "#8EB052", 
-                  "&:hover": { backgroundColor: "#94B758" }, 
+                  backgroundColor: "#8EB052",
+                  "&:hover": { backgroundColor: "#94B758" },
                   p: 1,
                 }}
                 disabled={loading}
