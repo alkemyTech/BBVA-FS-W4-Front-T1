@@ -10,6 +10,7 @@ import {
   Chip,
   Grid,
   Pagination,
+  Divider,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -68,6 +69,8 @@ const FixedTermsList = ({
             Plazos fijos
           </Typography>
           {fixedTerms.length > 0 ? (fixedTerms.map((fixedTerm, index) => (
+            <Box key={index}>
+            {index > 0 && <Divider />}
             <Accordion
               sx={{
                 boxShadow: "none",
@@ -135,6 +138,7 @@ const FixedTermsList = ({
                 </Box>
               </AccordionDetails>
             </Accordion>
+            </Box>
           ))) : <p>No posee plazos fijos</p>}
           {totalPages > 0 && (
             <Box

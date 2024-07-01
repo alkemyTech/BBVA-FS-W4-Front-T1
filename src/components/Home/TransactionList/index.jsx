@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import TransactionIcon from "../../../UI/TransactionIcon";
 
 const TransactionList = ({ accountData }) => {
   const isWideScreen = useMediaQuery("(min-width:600px)");
@@ -98,6 +99,7 @@ const TransactionList = ({ accountData }) => {
         padding: "16px",
         borderRadius: "8px",
         marginTop: "16px",
+        boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
       }}
     >
       <CardContent>
@@ -192,10 +194,19 @@ const TransactionList = ({ accountData }) => {
               transaction.accountCurrency === "USD" ? "U$S" : "$";
             const formattedDate = formatDate(transaction.transactionDate);
             const accountType = getTypeOfAccount(transaction);
+            const formattedAmount = transaction.amount.toLocaleString("es-AR", {
+              style: "currency",
+              currency: transaction.accountCurrency,
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            });
+            const displayAmount =
+              transaction.type === "PAYMENT" ? `- ${formattedAmount}` : formattedAmount;
 
             return (
               <Box key={index}>
                 <ListItem>
+                  <TransactionIcon type={transaction.type} />
                   <ListItemText
                     primary={
                       <Box
@@ -212,12 +223,7 @@ const TransactionList = ({ accountData }) => {
                             : "Depósito"}
                         </span>
                         <span>
-                          {transaction.amount.toLocaleString("es-AR", {
-                                    style: "currency",
-                                    currency: transaction.accountCurrency,
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  })}
+                          {displayAmount}
                         </span>
                       </Box>
                     }
