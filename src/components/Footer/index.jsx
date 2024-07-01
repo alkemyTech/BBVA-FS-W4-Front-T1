@@ -56,7 +56,7 @@ const Footer = () => {
           container
           alignItems="center"
           className="footer-container"
-          sx={{ backgroundColor: "#F1F6F5", color: "#472183" }}
+          sx={{ backgroundColor: "#F1F6F5", color: "#472183", minHeight:"10vh" }}
         >
           <Grid item xs={12}>
             <Typography variant="body2" align="center">
