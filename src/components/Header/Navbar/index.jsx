@@ -255,7 +255,7 @@ export default function Navbar() {
                   }
                   underline="none"
                 >
-                  Deposito{" "}
+                  Depósito{" "}
                 </Link>
                 <Link
                   onClick={handleCloseNavMenu}
