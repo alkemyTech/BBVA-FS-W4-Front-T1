@@ -71,7 +71,7 @@ const Login = () => {
       try {
         const response = await dispatch(postLogin(email, password));
         if (response) {
-          navigate("/home");
+          navigate("/inicio");
         }
       } catch (error) {
         setShowAuthError(true);
@@ -179,7 +179,7 @@ const Login = () => {
         </Typography>
         <Typography variant="body1" textAlign={"center"}>
           <Link
-            href="/register"
+            href="/registrar"
             variant="button"
             underline="none"
             sx={{ color: "#5B67E5" }}

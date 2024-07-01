@@ -85,7 +85,7 @@ export default function Navbar() {
                 item
                 variant="h6"
                 component="a"
-                href="/home"
+                href="/inicio"
                 sx={{
                   mr: 2,
                   display: { xs: "none", md: "flex" },
@@ -187,7 +187,7 @@ export default function Navbar() {
                 item
                 variant="h5"
                 component="a"
-                href="/Home"
+                href="/inicio"
                 sx={{
                   mr: 2,
                   display: { xs: "flex", md: "none" },
