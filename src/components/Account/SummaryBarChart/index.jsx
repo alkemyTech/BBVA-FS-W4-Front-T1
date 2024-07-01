@@ -32,7 +32,7 @@ const SummaryBarChart = ({ account }) => {
     return (
       <Skeleton
         variant="rectangular"
-        width={560}
+        width={606}
         height={311}
         sx={{ marginLeft: "2vh", borderRadius: "2vh" }}
       />

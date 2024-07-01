@@ -204,10 +204,10 @@ const Deposito = () => {
                     disabled={isSubmitted}
                   >
                     {transactionConcepts.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
+                    <MenuItem key={option} value={option}>
+                      {option.charAt(0) + option.slice(1).toLowerCase()}
+                    </MenuItem>
+                  ))}
                   </TextField>
 
                   <TextField

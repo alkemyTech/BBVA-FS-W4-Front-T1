@@ -8,6 +8,7 @@ import MySnackbar from "../../UI/MySnackBar";
 import { getAccountBalance } from "../../api/Account";
 import BankAccountCard from "./AccountCard";
 import TransactionList from "./TransactionList";
+import Banner from "./Banner";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -49,7 +50,18 @@ const Home = () => {
     <Container sx={{ pt: 1 }}>
       {loading ? (
         <>
-          <Grid container spacing={2} sx={{ marginTop: "5vh" }}>
+        <Grid sx={{ borderRadius: 8 }}>
+            <Grid>
+              <Skeleton
+                animation="wave"
+                variant="rectangular"
+                width="100%"
+                height={161.6}
+                sx={{ borderRadius: "8px" }}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} sx={{ marginTop: 2 }}>
             {[...Array(expectedAccountCount)].map((_, index) => (
               <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                 <Skeleton
@@ -76,6 +88,7 @@ const Home = () => {
         </>
       ) : (
         <>
+          <Banner />
           <BankAccountCard accountData={accountData} />
           <TransactionList accountData={accountData} />
           <MySnackbar
