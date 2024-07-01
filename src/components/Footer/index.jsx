@@ -10,12 +10,13 @@ const Footer = () => {
   return (
     <>
       {token && (
-        <Grid minHeight={"20vh"}>
+        <Grid minHeight={"25vh"}>
           <Grid
             container
             spacing={2}
             alignItems="center"
             className="footer-container"
+            height={"25vh"}
           >
             <Grid container className="container">
               <Grid container p={1}>
@@ -61,6 +62,7 @@ const Footer = () => {
             color: "#472183",
             minHeight: "10vh",
           }}
+          height={"10vh"}
         >
           <Grid item xs={12}>
             <Typography variant="body2" align="center">

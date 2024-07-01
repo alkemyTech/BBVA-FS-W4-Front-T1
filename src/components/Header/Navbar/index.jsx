@@ -359,6 +359,7 @@ export default function Navbar() {
                   <Link
                     onClick={handleLogout}
                     sx={{
+                      cursor: "pointer",
                       my: 1,
                       color: "black",
                       display: "block",
