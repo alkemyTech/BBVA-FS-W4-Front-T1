@@ -17,6 +17,7 @@ import {
   Pagination,
   Skeleton,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
@@ -28,6 +29,8 @@ import {
 } from "../../Redux/slice/snackBarSlice";
 import MySnackbar from "../../UI/MySnackBar";
 import { getFilteredTransactionsByIdAccount } from "../../api/Transaction";
+import { generateReceipt } from "../../utils/pdfUtils";
+import DownloadIcon from "@mui/icons-material/Download";
 
 const TransactionListDetails = ({ account }) => {
   //console.log("Account", account);
@@ -131,6 +134,10 @@ const TransactionListDetails = ({ account }) => {
     }));
   };
 
+  const handleReceipt = (account, transaction) => {
+    generateReceipt(transaction.type, transaction, account);
+  };
+
   const handleInputRestriction =
     (allowedCharacters = "") =>
     (e) => {
@@ -155,11 +162,13 @@ const TransactionListDetails = ({ account }) => {
       sx={{ position: "relative", minHeight: "70vh" }}
     >
       {loading ? (
-          <Skeleton animation="wave"
-            variant="rectangular"
-            width="100%"
-            height="70vh"
-            sx={{ marginTop: "16px", borderRadius: "8px" }} />
+        <Skeleton
+          animation="wave"
+          variant="rectangular"
+          width="100%"
+          height="70vh"
+          sx={{ marginTop: "16px", borderRadius: "8px" }}
+        />
       ) : (
         <Box sx={{ marginTop: "2vh" }}>
           <Card
@@ -330,9 +339,26 @@ const TransactionListDetails = ({ account }) => {
                                     alignItems: "center",
                                   }}
                                 >
-                                  <Typography component="span">
-                                    Fecha: {formattedDate}
-                                  </Typography>
+                                  <Grid
+                                    container
+                                    justifyContent="flex-start"
+                                    alignItems="center"
+                                  >
+                                    <Grid item xs={2}>
+                                      <Typography component="span">
+                                        Fecha: {formattedDate}
+                                      </Typography>
+                                    </Grid>
+                                    <Tooltip title="Descargar comprobante">
+                                      <IconButton
+                                        onClick={() =>
+                                          handleReceipt(account, transaction)
+                                        }
+                                      >
+                                        <DownloadIcon />
+                                      </IconButton>
+                                    </Tooltip>
+                                  </Grid>
                                   <IconButton
                                     onClick={() => toggleExpand(index)}
                                     aria-expanded={expanded[index]}
