@@ -13,7 +13,7 @@ const Inicio = () => {
   console.log("Token:", token);
   useEffect(() => {
     if (token) {   
-         navigate("/home");          
+         navigate("/inicio");          
     }
   }, [token, navigate]);
 

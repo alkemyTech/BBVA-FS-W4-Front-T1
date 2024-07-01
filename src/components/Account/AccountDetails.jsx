@@ -173,7 +173,7 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
                       border: "1px solid #656ED4",
                       padding: "1vh",
                     }}
-                    onClick={() => handleCardClick2("/account", account)}
+                    onClick={() => handleCardClick2("/cuenta", account)}
                   >
                     <b>Ver movimientos</b>
                   </Button>

@@ -234,7 +234,7 @@ const Register = () => {
           )
         );
         if (response) {
-          navigate("/home");
+          navigate("/inicio");
         }
       } catch (error) {
         setShowAuthError(true);

@@ -37,18 +37,18 @@ function App() {
   };
 
   useEffect(() => {
-    if (!token && window.location.pathname !== "/register") {
+    if (!token && window.location.pathname !== "/registrar") {
       navigate("/");
-    } else if ((token && window.location.pathname === "/register")) {
-      navigate("/home")
+    } else if ((token && window.location.pathname === "/registrar")) {
+      navigate("/inicio")
     }
   }, [token]);
 
   return (
     <Page>
       <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/inicio" element={<Home />} />
+        <Route path="/registrar" element={<Register />} />
         <Route path="/deposito" element={<Deposito />} />
         <Route path="/transferencia" element={<TransferenciaLayout />}>
           <Route index element={<Transferencia />} />
@@ -82,7 +82,7 @@ function App() {
         <Route path="/" element={<Inicio />} />
         <Route path="/cargar-saldo" element={<Deposito />} />
         <Route path="/cargar-pago" element={<Pago />} />
-        <Route path="/account" element={<Account />} />
+        <Route path="/cuenta" element={<Account />} />
         <Route path="/crear-plazo-fijo" element={<CrearPlazoFijo />} />
         <Route path="/plazos-fijos" element={<PlazosFijos />} />
         <Route path="/cuentas" element={<AllAccounts />} />

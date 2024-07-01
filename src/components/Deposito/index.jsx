@@ -97,7 +97,7 @@ const Deposito = () => {
             status: "success",
           })
         );
-        navigate("/home");
+        navigate("/inicio");
       } catch (error) {
         const errorMessage =
           error.response?.data?.message || "Error del servidor";

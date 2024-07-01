@@ -170,7 +170,7 @@ const EnviarDinero = () => {
           status: "success",
         })
       );
-      navigate("/home");
+      navigate("/inicio");
     } catch (error) {
       if (error.message != "Saldo insuficiente") {
         dispatch(

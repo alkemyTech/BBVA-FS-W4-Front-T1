@@ -119,7 +119,7 @@ const AccountCard = ({ accountData }) => {
                   opacity: 0.5,
                 },
               }}
-              onClick={() => handleCardClick(`/account`, account)}
+              onClick={() => handleCardClick(`/cuenta`, account)}
             >
               <CardContent sx={{ position: "relative", zIndex: 1 }}>
                 <Grid container>
@@ -206,7 +206,7 @@ const AccountCard = ({ accountData }) => {
                 },
               }}
               onClick={() =>
-                handleCardClick(`/account`, accountData.accountUsd)
+                handleCardClick(`/cuenta`, accountData.accountUsd)
               }
             >
               <CardContent sx={{ position: "relative", zIndex: 1 }}>
