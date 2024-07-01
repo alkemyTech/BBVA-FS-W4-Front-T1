@@ -73,6 +73,7 @@ const Transferencia = () => {
 
   const handleSelectAccount = async (account, index) => {
     try {
+      setLoading(true);
       if (account) {
         setSelectedAccountIndex(index);
         await dispatch(selectAccount(account));
@@ -85,6 +86,9 @@ const Transferencia = () => {
           status: "error",
         })
       );
+      setIsLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -180,7 +184,7 @@ const Transferencia = () => {
             position="relative"
           >
             <Grid item ml={5}>
-              <ArrowBackComponent />
+              <ArrowBackComponent disabled={loading} />
             </Grid>
           </Grid>
           <Grid
@@ -211,6 +215,7 @@ const Transferencia = () => {
                 variant="contained"
                 fullWidth
                 onClick={handleNewDestiny}
+                disabled={loading}
               >
                 Nuevo destino
               </Button>
@@ -286,19 +291,35 @@ const Transferencia = () => {
                         placement="bottom-end"
                         disableInteractive
                       >
-                        <IconButton size="small" sx={{ p: 0, m: 0, mr: 2 }}>
-                          <Avatar
-                            sx={{
-                              width: 42,
-                              height: 42,
-                              backgroundColor:
-                                account.destinationAccountCurrency === "ARS"
-                                  ? "#35B1FF" // Use theme colors for "ARS"
-                                  : "#8EB052", // Use theme colors for other currencies
-                            }}
-                            alt={account.destinationUserFirstName.charAt(0)}
-                            src="Imagen de usuario"
-                          />
+                        <IconButton
+                          size="small"
+                          sx={{ p: 0, m: 0, mr: 2 }}
+                          disabled={loading}
+                        >
+                          {loading ? (
+                            <Avatar
+                              sx={{
+                                width: 42,
+                                height: 42,
+                                backgroundColor: "#D3D3D3", // Use theme color for loading state
+                              }}
+                              alt={account.destinationUserFirstName.charAt(0)}
+                              src="Imagen de usuario"
+                            />
+                          ) : (
+                            <Avatar
+                              sx={{
+                                width: 42,
+                                height: 42,
+                                backgroundColor:
+                                  account.destinationAccountCurrency === "ARS"
+                                    ? "#35B1FF" // Use theme colors for "ARS"
+                                    : "#8EB052", // Use theme colors for other currencies
+                              }}
+                              alt={account.destinationUserFirstName.charAt(0)}
+                              src="Imagen de usuario"
+                            />
+                          )}
                         </IconButton>
                       </Tooltip>
                       <Grid item mr={"auto"}>
@@ -312,7 +333,8 @@ const Transferencia = () => {
                             account.destinationUserLastName}
                           <span
                             style={{
-                              color: "#72C9FF",
+                              fontWeight: "300",
+                              color: "#grey",
                               marginLeft: "8px",
                             }}
                           >
@@ -343,6 +365,7 @@ const Transferencia = () => {
                             color: "#72C9FF",
                             "&:hover": { color: "#88D1FF" },
                           }}
+                          disabled={loading}
                         >
                           <EditIcon />
                         </IconButton>
@@ -361,6 +384,7 @@ const Transferencia = () => {
                             color: "#C62E2E",
                             "&:hover": { color: "#BA3131" },
                           }}
+                          disabled={loading}
                         >
                           <DeleteIcon />
                         </IconButton>
@@ -377,6 +401,7 @@ const Transferencia = () => {
                             color: "#E68D00",
                             "&:hover": { color: "#ED9406" },
                           }}
+                          disabled={loading}
                         >
                           <PersonIcon />
                         </IconButton>

@@ -92,7 +92,7 @@ const ConfirmarDestino = () => {
             position="relative"
           >
             <Grid item ml={5}>
-              <ArrowBackComponent />
+              <ArrowBackComponent disabled={isLoading} />
             </Grid>
           </Grid>
           <Grid

@@ -11,7 +11,7 @@ export default function Page(props) {
         style={{
           backgroundColor: "#F1F6F5",
           paddingBottom: token ? "5rem" : "0",
-          minHeight: token ? "69.8vh" : "90vh",
+          minHeight: token ? "70vh" : "90vh",
         }}
       >
         {props.children}
