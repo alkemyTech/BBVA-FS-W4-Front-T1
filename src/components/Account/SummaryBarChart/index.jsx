@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { BarChart, ChartsYAxis } from "@mui/x-charts";
 import { getTransactionsSummaryByIdAccount } from "../../../api/Transaction";
-import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
 
 const SummaryBarChart = ({ account }) => {
   const accountId = account.idAccount;
@@ -29,7 +29,14 @@ const SummaryBarChart = ({ account }) => {
   };
 
   if (loading) {
-    return <p>Cargando...</p>;
+    return (
+      <Skeleton
+        variant="rectangular"
+        width={560}
+        height={311}
+        sx={{ marginLeft: "2vh", borderRadius: "2vh" }}
+      />
+    );
   }
 
   const months = data.map((item) => item.month);
@@ -49,12 +56,12 @@ const SummaryBarChart = ({ account }) => {
           "&:hover": {
             boxShadow: "0 16px 24px rgba(0, 0, 0, 0.2)",
           },
-          
+
           marginLeft:"2vh"
         }}
       >
         <CardContent sx={{}}>
-          <Typography>Resumen de Transacciones por Año</Typography>
+          <Typography>Resumen de Transacciones del último año</Typography>
           <BarChart
             width={550}
             height={232}
@@ -68,7 +75,7 @@ const SummaryBarChart = ({ account }) => {
             ]}
             yAxis={[
               {
-                label: "Monto", 
+                label: "Monto",
                 tickFontSize:0,
               },
             ]}
