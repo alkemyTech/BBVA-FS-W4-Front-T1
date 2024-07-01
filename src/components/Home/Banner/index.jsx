@@ -32,7 +32,7 @@ const Banner = () => {
           }}
         >
           <Typography variant="h5" color="white">
-            ¡Durante la Copa América pagá con descuentos!
+            ¡Durante la Copa América 10% de reintegro en tus pagos!
           </Typography>
           <img
             src="src\assets\toppng.com-copa-america-usa-2024-official-logo-4006x3355.png"
