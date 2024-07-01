@@ -13,22 +13,25 @@ const Account = () => {
 
   return (
     <Container>
-      <ArrowBackComponent/>    
-      {account ? (      
-        <Grid container justifyContent="center" > 
-        <AccountDetailsCard account={account} showVerMovimientos={false}/>  
-        <Grid item xs={12}>
-        <SummaryBarChart account={account}/>
-        <TransactionListDetails account={account}/>  
-        
-        </Grid>
-       {/* <MySnackbar
+      <ArrowBackComponent />
+      {account ? (
+        <Grid container justifyContent="center">
+          <Grid item xs={12} lg={6}>
+            <AccountDetailsCard account={account} showVerMovimientos={false} />
+          </Grid>
+          <Grid item xs={12} lg={6}>
+            <SummaryBarChart account={account} />
+          </Grid>
+          <Grid item xs={12}>
+            <TransactionListDetails account={account} />
+          </Grid>
+          {/* <MySnackbar
             open={notification.open}
             handleClose={handleSnackbarClose}
             message={notification.message}
             status={notification.status}
           />*/}
-        </Grid>    
+        </Grid>
       ) : (
         <p>No se recibieron datos de la cuenta</p>
       )}

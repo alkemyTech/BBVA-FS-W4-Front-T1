@@ -118,6 +118,7 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
           "&:hover": {
             boxShadow: "0 16px 24px rgba(0, 0, 0, 0.2)",
           },
+          height:"235"
         }}
       >
         <CardContent>
@@ -180,7 +181,7 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
               )}
             </Grid>
             <Grid item xs={12}>
-              <Accordion
+            {showVerMovimientos &&  <Accordion
                 sx={{
                   boxShadow: "none",
                   borderTop: "none",
@@ -197,6 +198,7 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
                     Ver detalles de la cuenta
                   </Typography>
                 </AccordionSummary>
+                
                 <AccordionDetails sx={{ padding: 0 }}>
                   <Grid container>
                     <Grid item xs={12}>
@@ -264,7 +266,74 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
                     </Grid>
                   </Grid>
                 </AccordionDetails>
-              </Accordion>
+
+              </Accordion>}
+              {!showVerMovimientos && <Grid container>
+                    <Grid item xs={12}>
+                      <Grid container>
+                        <Grid item xs={12}>
+                          <Typography
+                            variant="subtitle1"
+                            component="div"
+                            color="#609AF6"
+                          >
+                            Alias:
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} display="flex" alignItems="center">
+                          <Typography
+                            variant="body1"
+                            component="div"
+                            color="#000000"
+                          >
+                            {alias}
+                          </Typography>
+                          <IconButton
+                            size="small"
+                            onClick={(e) => handleEditClick(e, account)}
+                          >
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="subtitle1"
+                        component="div"
+                        color="#609AF6"
+                      >
+                        CBU:
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        component="div"
+                        color="#000000"
+                      >
+                        {account.cbu}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="subtitle1"
+                        component="div"
+                        color="#609AF6"
+                      >
+                        Límite de Transacción:
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        component="div"
+                        color="#000000"
+                      >
+                        {formatCurrency(
+                          account.transactionLimit,
+                          account.currency
+                        )}
+                      </Typography>
+                    </Grid>
+                  </Grid>}
+
             </Grid>
           </Grid>
         </CardContent>
