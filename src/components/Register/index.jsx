@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -192,8 +193,13 @@ const Register = () => {
       setPasswordError("La contraseña es obligatoria.");
       if (!firstInvalidRef) firstInvalidRef = passwordRef;
       valid = false;
-    } else if (!/^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*\d).{8,}$/.test(password) || password.length < 8) {
-      setPasswordError("La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un símbolo.");
+    } else if (
+      !/^(?=.*[A-Z])(?=.*[@#.!¡?¿$%^&+=])(?=.*\d).{8,}$/.test(password) ||
+      password.length < 8
+    ) {
+      setPasswordError(
+        "La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un símbolo."
+      );
       if (!firstInvalidRef) firstInvalidRef = passwordRef;
       valid = false;
     } else {
@@ -213,16 +219,6 @@ const Register = () => {
     }
 
     if (valid) {
-      console.log({
-        firstName: firstName,
-        lastName: lastName,
-        birthDate: birthDate,
-        gender: gender,
-        documentType: documentType,
-        documentNumber: documentNumber,
-        email: email,
-        password: password,
-      });
       setLoading(true);
       try {
         const response = await dispatch(
@@ -245,7 +241,7 @@ const Register = () => {
         setEmail("");
         setPassword("");
         setConfirmPassword("");
-        setRegisterError(error.message)
+        setRegisterError(error.message);
         console.error("Error during register:", error);
       } finally {
         setLoading(false); // Finaliza la carga
@@ -261,229 +257,249 @@ const Register = () => {
   };
 
   return (
-    <Grid
-      container
-      rowSpacing={3}
-      sx={{
-        margin: "0 auto",
-        bgcolor: "#fff",
-        width: 480,
-        p: 5,
-        borderRadius: 5,
-        boxShadow: 3,
-        display: "flex",
-      }}
-      onSubmit={handleRegister}
-      onKeyDown={handleKeyEnter}
-    >
-      <Grid item xs={12}>
-        <img src="https://i.ibb.co/qn2SwBB/LOGO-SIN-FONDO.png" alt="Logo" />
-      </Grid>
-      <Grid item xs={12}>
-        <Typography component="h1" variant="h5">
-          Hola, Bienvenido 👋
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          required
-          fullWidth
-          label="Nombre/s"
-          name="firstName"
-          autoComplete="firstName"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          error={Boolean(firstNameError)}
-          helperText={firstNameError}
-          inputRef={firstNameRef}
-          onKeyDown={handleInputRestriction("a-zA-ZáéíóúÁÉÍÓÚñÑ ")}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          required
-          fullWidth
-          label="Apellido/s"
-          name="lastName"
-          autoComplete="lastName"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          error={Boolean(lastNameError)}
-          helperText={lastNameError}
-          inputRef={lastNameRef}
-          onKeyDown={handleInputRestriction("a-zA-ZáéíóúÁÉÍÓÚñÑ ")}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <DatePicker
-          label="Fecha de nacimiento"
-          value={birthDate}
-          onChange={(e) => setBirthDate(e)}
-          slotProps={{
-            textField: {
-              required: true,
-              fullWidth: true,
-              error: Boolean(birthDateError),
-              helperText: birthDateError,
-              inputRef: birthDateRef,
-            },
-          }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          select
-          required
-          fullWidth
-          label="Género"
-          name="gender"
-          autoComplete="gender"
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          error={Boolean(genderError)}
-          helperText={genderError}
-          inputRef={genderRef}
-        >
-          <MenuItem value="FEMALE">Femenino</MenuItem>
-          <MenuItem value="MALE">Masculino</MenuItem>
-          <MenuItem value="NON_BINARY">No Aclara</MenuItem>
-        </TextField>
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          select
-          required
-          fullWidth
-          label="Tipo de documento"
-          name="documentType"
-          autoComplete="documentType"
-          value={documentType}
-          onChange={(e) => setDocumentType(e.target.value)}
-          error={Boolean(documentTypeError)}
-          helperText={documentTypeError}
-          inputRef={documentTypeRef}
-        >
-          <MenuItem value="DNI">DNI</MenuItem>
-          <MenuItem value="CUIT">CUIT</MenuItem>
-          <MenuItem value="CUIL">CUIL</MenuItem>
-          <MenuItem value="CDI">CDI</MenuItem>
-        </TextField>
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          required
-          fullWidth
-          label="Número de documento"
-          name="documentNumber"
-          autoComplete="documentNumber"
-          value={documentNumber}
-          onChange={(e) => setDocumentNumber(e.target.value)}
-          error={Boolean(documentNumberError)}
-          helperText={documentNumberError}
-          inputRef={documentNumberRef}
-          onKeyDown={handleInputRestriction("0-9")}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          required
-          fullWidth
-          label="Email"
-          name="email"
-          autoComplete="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          error={Boolean(emailError)}
-          helperText={emailError}
-          inputRef={emailRef}
-          onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ.@_-")}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          required
-          fullWidth
-          name="password"
-          label="Contraseña"
-          id="password"
-          type={showPassword ? "text" : "password"}
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          error={Boolean(passwordError)}
-          helperText={passwordError}
-          inputRef={passwordRef}
-          onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ._-@#$%^&+=")}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  tabIndex={-1}
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          required
-          fullWidth
-          name="confirmPassword"
-          label="Repetir Contraseña"
-          id="confirmPassword"
-          type={showConfirmPassword ? "text" : "password"}
-          autoComplete="current-password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          error={Boolean(confirmPasswordError)}
-          helperText={confirmPasswordError}
-          inputRef={confirmPasswordRef}
-          onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ._-@#$%^&+=")}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={handleClickShowConfirmPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  tabIndex={-1}
-                >
-                  {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Grid>
-      {showAuthError && (
+    <Grid container sx={{backgroundColor: "#F1F6F5", padding:5}}>
+      <Grid
+        container
+        rowSpacing={3}
+        sx={{
+          margin: "0 auto",
+          bgcolor: "#fff",
+          width: 480,
+          p: 5,
+          borderRadius: 5,
+          boxShadow: 3,
+          display: "flex",
+        }}
+        onSubmit={handleRegister}
+        onKeyDown={handleKeyEnter}
+      >
         <Grid item xs={12}>
-          <Alert severity="error">
-            {registerError}
-          </Alert>
+          <img src="https://i.ibb.co/qn2SwBB/LOGO-SIN-FONDO.png" alt="Logo" />
         </Grid>
-      )}
-      <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 3, mb: 2 }}
-          onClick={handleRegister}
-        >
-          {loading ? "Cargando..." : "Registrarse"}
-        </Button>
-      </Grid>
-      <Grid item xs={12}>
-        <Divider />
-      </Grid>
-      <Grid item xs={12}>
-        <Link href="/" variant="body2">
-          {"¿Ya tienes una cuenta? Inicia sesión"}
-        </Link>
+        <Grid item xs={12}>
+          <Typography component="h1" variant="h5">
+            Hola, Bienvenido 👋
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            label="Nombre/s"
+            name="firstName"
+            autoComplete="firstName"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            error={Boolean(firstNameError)}
+            helperText={firstNameError}
+            inputRef={firstNameRef}
+            onKeyDown={handleInputRestriction("a-zA-ZáéíóúÁÉÍÓÚñÑ ")}
+            disabled={loading}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            label="Apellido/s"
+            name="lastName"
+            autoComplete="lastName"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            error={Boolean(lastNameError)}
+            helperText={lastNameError}
+            inputRef={lastNameRef}
+            onKeyDown={handleInputRestriction("a-zA-ZáéíóúÁÉÍÓÚñÑ ")}
+            disabled={loading}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <DatePicker
+            label="Fecha de nacimiento"
+            value={birthDate}
+            maxDate={dayjs()}
+            onChange={(e) => setBirthDate(e)}
+            slotProps={{
+              textField: {
+                required: true,
+                fullWidth: true,
+                error: Boolean(birthDateError),
+                helperText: birthDateError,
+                inputRef: birthDateRef,
+              },
+            }}
+            disabled={loading}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            select
+            required
+            fullWidth
+            label="Género"
+            name="gender"
+            autoComplete="gender"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            error={Boolean(genderError)}
+            helperText={genderError}
+            inputRef={genderRef}
+            disabled={loading}
+          >
+            <MenuItem value="FEMALE">Femenino</MenuItem>
+            <MenuItem value="MALE">Masculino</MenuItem>
+            <MenuItem value="NON_BINARY">No Aclara</MenuItem>
+          </TextField>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            select
+            required
+            fullWidth
+            label="Tipo de documento"
+            name="documentType"
+            autoComplete="documentType"
+            value={documentType}
+            onChange={(e) => setDocumentType(e.target.value)}
+            error={Boolean(documentTypeError)}
+            helperText={documentTypeError}
+            inputRef={documentTypeRef}
+            disabled={loading}
+          >
+            <MenuItem value="DNI">DNI</MenuItem>
+            <MenuItem value="CUIT">CUIT</MenuItem>
+            <MenuItem value="CUIL">CUIL</MenuItem>
+            <MenuItem value="CDI">CDI</MenuItem>
+          </TextField>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            label="Número de documento"
+            name="documentNumber"
+            autoComplete="documentNumber"
+            value={documentNumber}
+            onChange={(e) => setDocumentNumber(e.target.value)}
+            error={Boolean(documentNumberError)}
+            helperText={documentNumberError}
+            inputRef={documentNumberRef}
+            onKeyDown={handleInputRestriction("0-9")}
+            disabled={loading}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            label="Correo electrónico"
+            name="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            error={Boolean(emailError)}
+            helperText={emailError}
+            inputRef={emailRef}
+            onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ.@_-")}
+            disabled={loading}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            name="password"
+            label="Contraseña"
+            id="password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            error={Boolean(passwordError)}
+            helperText={passwordError}
+            inputRef={passwordRef}
+            onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ._-@#$%^&+=")}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            disabled={loading}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Repetir Contraseña"
+            id="confirmPassword"
+            type={showConfirmPassword ? "text" : "password"}
+            autoComplete="current-password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            error={Boolean(confirmPasswordError)}
+            helperText={confirmPasswordError}
+            inputRef={confirmPasswordRef}
+            onKeyDown={handleInputRestriction("0-9a-zA-ZñÑ._-@#$%^&+=")}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowConfirmPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    tabIndex={-1}
+                  >
+                    {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            disabled={loading}
+          />
+        </Grid>
+        {showAuthError && (
+          <Grid item xs={12}>
+            <Alert severity="error">{registerError}</Alert>
+          </Grid>
+        )}
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleRegister}
+          >
+            {loading ? "Cargando..." : "Registrarse"}
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
+        <Grid item xs>
+          <Typography variant="body1" textAlign={"center"}>
+            ¿Ya tenés una cuenta?
+          </Typography>
+          <Typography variant="body1" textAlign={"center"}>
+            <Link
+              href="/"
+              variant="button"
+              underline="none"
+              sx={{ color: "#5B67E5" }}
+            >
+              Iniciá sesión
+            </Link>
+          </Typography>
+        </Grid>
       </Grid>
     </Grid>
   );

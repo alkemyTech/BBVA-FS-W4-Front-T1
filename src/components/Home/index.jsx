@@ -46,7 +46,7 @@ const Home = () => {
     : 2;
 
   return (
-    <Container sx={{ position: "relative", minHeight: "70vh" }}>
+    <Container sx={{ pt: 1 }}>
       {loading ? (
         <>
           <Grid container spacing={2} sx={{ marginTop: "5vh" }}>

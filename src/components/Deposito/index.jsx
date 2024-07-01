@@ -130,15 +130,15 @@ const Deposito = () => {
     <Grid container>
       <Grid container className="container">
         <Grid container justifyContent="center" alignItems="center">
-          <Grid
+        <Grid
             container
             justifyContent="space-between"
             alignItems="center"
-            ml={5}
+            mt={2}
             position="relative"
           >
-            <Grid item>
-              <ArrowBackComponent disabled={isSubmitted} />
+            <Grid item ml={5}>
+              <ArrowBackComponent />
             </Grid>
           </Grid>
           <Box>
