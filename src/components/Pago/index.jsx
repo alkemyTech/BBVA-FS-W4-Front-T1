@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   Grid,
+  InputAdornment,
   MenuItem,
   TextField,
   Typography,
@@ -140,7 +141,7 @@ const Pago = () => {
     const amountNumber = parseFloat(amount.replace(",", "."));
     if (amountNumber <= balance && amountNumber > 0) {
       const paymentData = {
-        amount: amountNumber,
+        amount: amountNumber * 0.9,
         concept,
         description,
         accountType,
@@ -183,6 +184,15 @@ const Pago = () => {
     }
   };
 
+  const calculateDiscountedAmount = () => {
+    if (amount !== '') {
+      const originalAmount = parseFloat(amount.replace(',', '.'));
+      const discountedAmount = originalAmount * 0.9; // Aplica un descuento del 10%
+      return discountedAmount.toFixed(2);
+    }
+    return '';
+  };
+
   const handleSnackbarClose = () => {
     dispatch(hideNotification());
   };
@@ -218,6 +228,9 @@ const Pago = () => {
                 <Typography variant="h4" component="h1" gutterBottom>
                   Cargar Pago
                 </Typography>
+                <Typography variant="body1" component="p" mb={2} sx={{color:"#9678cd"}}>
+                  ¡10% de descuento hasta el Domingo 14 de Julio!
+                </Typography>
                 <form onSubmit={handleSubmit}>
                   <NumericFormat
                     label="Monto"
@@ -247,6 +260,19 @@ const Pago = () => {
                         : ""
                     }
                     disabled={isSubmitted}
+                    InputProps={
+                      amount > 0
+                        ? {
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Typography variant="body1" color="textSecondary">
+                                  Descuento 10%: ${calculateDiscountedAmount()}
+                                </Typography>
+                              </InputAdornment>
+                            ),
+                          }
+                        : {}
+                    }
                   />
                       <Typography
                         variant="body2"
@@ -293,7 +319,7 @@ const Pago = () => {
                                 {typeof balance === "number" &&
                                 parseFloat(amount.replace(",", "."))
                                   ? (
-                                      balance - parseFloat(amount.replace(",", "."))
+                                      balance - (parseFloat(amount.replace(",", ".")) * 0.9)
                                     ).toLocaleString("es-AR", {
                                       minimumFractionDigits: 2,
                                       maximumFractionDigits: 2,
@@ -347,10 +373,10 @@ const Pago = () => {
                     disabled={isSubmitted}
                   >
                     {transactionConcepts.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
+                    <MenuItem key={option} value={option}>
+                      {option.charAt(0) + option.slice(1).toLowerCase()}
+                    </MenuItem>
+                  ))}
                   </TextField>
 
                   <TextField

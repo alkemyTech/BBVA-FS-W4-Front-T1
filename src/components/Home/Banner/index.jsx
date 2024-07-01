@@ -6,50 +6,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const Banner = () => {
-    function SampleNextArrow(props) {
-        const { className, style, onClick } = props;
-        return (
-          <div
-            className={className}
-            style={{
-              ...style,
-              borderRadius: "100%",
-              width: "17px",
-              height: "15px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              right: "10px",
-              zIndex: 2,
-            }}
-            onClick={onClick}
-          />
-        );
-      }
-
-  function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ 
-          ...style, 
-          display: "block", 
-          backgroundColor: "black", 
-          borderRadius: "50%", 
-          width: "15px",
-          height: "15px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          left: '10px', 
-          zIndex: 2 
-        }}
-        onClick={onClick}
-      >
-      </div>
-    );
-  }
   const settings = {
     dots: true,
     infinite: true,
@@ -57,8 +13,8 @@ const Banner = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
-    fade: true
+    autoplaySpeed: 4000,
+    fade: true,
   };
 
   return (
@@ -75,7 +31,7 @@ const Banner = () => {
           }}
         >
           <Typography variant="h5" color="white">
-            ¡Descuentos al realizar pagos durante la Copa América!
+            ¡Durante la Copa América pagá con descuentos!
           </Typography>
           <img
             src="src\assets\toppng.com-copa-america-usa-2024-official-logo-4006x3355.png"
