@@ -31,6 +31,7 @@ import MySnackbar from "../../UI/MySnackBar";
 import { getFilteredTransactionsByIdAccount } from "../../api/Transaction";
 import { generateReceipt } from "../../utils/pdfUtils";
 import DownloadIcon from "@mui/icons-material/Download";
+import TransactionIcon from "../../UI/TransactionIcon";
 
 const TransactionListDetails = ({ account }) => {
   //console.log("Account", account);
@@ -296,9 +297,20 @@ const TransactionListDetails = ({ account }) => {
                     const formattedDate = formatDate(
                       transaction.transactionDate
                     );
+                    const formattedAmount = transaction.amount.toLocaleString("es-AR", {
+              style: "currency",
+              currency: transaction.accountCurrency,
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            });
+            const displayAmount =
+              transaction.type === "PAYMENT" ? `- ${formattedAmount}` : formattedAmount;
+
                     return (
                       <Box key={index}>
                         <ListItem>
+                        <TransactionIcon type={transaction.type} />
+
                           <ListItemText
                             primary={
                               <Box
@@ -315,12 +327,7 @@ const TransactionListDetails = ({ account }) => {
                                     : "Depósito"}
                                 </Typography>
                                 <Typography>
-                                  {transaction.amount.toLocaleString("es-AR", {
-                                    style: "currency",
-                                    currency: account.currency,
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  })}
+                                  {displayAmount}
                                 </Typography>
                               </Box>
                             }
