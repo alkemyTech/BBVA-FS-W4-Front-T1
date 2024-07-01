@@ -29,10 +29,8 @@ const TransactionList = ({ accountData }) => {
   const [concept, setConcept] = useState("");
 
   const formatDate = (dateArray) => {
-    const [year, month, day, hour, minutes] = dateArray;
-    return `${day}/${month}/${year} ${hour}:${
-      minutes < 10 ? "0" + minutes : minutes
-    }`;
+    const [year, month, day, hour, minutes, seconds] = dateArray;
+    return `${day}/${month}/${year} ${hour}:${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
   };
 
   // Ordenar las transacciones fuera del componente
@@ -42,14 +40,16 @@ const TransactionList = ({ accountData }) => {
       a.transactionDate[1] - 1,
       a.transactionDate[2],
       a.transactionDate[3],
-      a.transactionDate[4]
+      a.transactionDate[4],
+      a.transactionDate[5]
     );
     const dateB = new Date(
       b.transactionDate[0],
       b.transactionDate[1] - 1,
       b.transactionDate[2],
       b.transactionDate[3],
-      b.transactionDate[4]
+      b.transactionDate[4],
+      b.transactionDate[5]
     );
     return dateB - dateA;
   });
@@ -232,7 +232,7 @@ const TransactionList = ({ accountData }) => {
                         {accountType === "CAJA_AHORRO"
                           ? "Caja de Ahorro"
                           : "Cuenta Corriente"}{" "}
-                        {transaction.accountCurrency} - {formattedDate}
+                        {transaction.accountCurrency} - {formattedDate.slice(0, -3)}
                         {isWideScreen &&
                           transaction.description &&
                           ` - ${transaction.description}`}
