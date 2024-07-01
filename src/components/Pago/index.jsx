@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import {
@@ -19,7 +19,7 @@ import {
 import ArrowBackComponent from "../../UI/ArrowBack";
 import MySnackbar from "../../UI/MySnackBar";
 import { getAccountBalance } from "../../api/Account";
-import { payment } from "../../api/Transaction";
+import { deposit, payment } from "../../api/Transaction";
 import { NumericFormat } from "react-number-format";
 
 const transactionConcepts = [
@@ -141,9 +141,18 @@ const Pago = () => {
     const amountNumber = parseFloat(amount.replace(",", "."));
     if (amountNumber <= balance && amountNumber > 0) {
       const paymentData = {
-        amount: amountNumber * 0.9,
+        amount: amountNumber,
         concept,
         description,
+        accountType,
+        currency,
+        date: new Date().toISOString(),
+      };      
+
+      const depositData = {
+        amount: amountNumber * 0.1,
+        concept,
+        description: "Reintegro del 10%. Promoción Copa América",
         accountType,
         currency,
         date: new Date().toISOString(),
@@ -153,6 +162,7 @@ const Pago = () => {
         setIsLoading(true);
         setIsSubmitted(true);
         await payment(paymentData);
+        await deposit(depositData);
         dispatch(
           showNotification({
             message: "Pago realizado con éxito",
@@ -185,12 +195,12 @@ const Pago = () => {
   };
 
   const calculateDiscountedAmount = () => {
-    if (amount !== '') {
-      const originalAmount = parseFloat(amount.replace(',', '.'));
-      const discountedAmount = originalAmount * 0.9; // Aplica un descuento del 10%
+    if (amount !== "") {
+      const originalAmount = parseFloat(amount.replace(",", "."));
+      const discountedAmount = originalAmount * 0.1;
       return discountedAmount.toFixed(2);
     }
-    return '';
+    return "";
   };
 
   const handleSnackbarClose = () => {
@@ -201,17 +211,17 @@ const Pago = () => {
     <Grid container>
       <Grid container className="container">
         <Grid container justifyContent="center" alignItems="center">
-        <Grid
-        container
-        justifyContent="space-between"
-        alignItems="center"
-        mt={2}
-        position="relative"
-      >
-        <Grid item ml={5}>
-          <ArrowBackComponent disabled={isSubmitted} />
-        </Grid>
-      </Grid>
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            mt={2}
+            position="relative"
+          >
+            <Grid item ml={5}>
+              <ArrowBackComponent disabled={isSubmitted} />
+            </Grid>
+          </Grid>
           <Box>
             <Card
               sx={{
@@ -228,8 +238,13 @@ const Pago = () => {
                 <Typography variant="h4" component="h1" gutterBottom>
                   Cargar Pago
                 </Typography>
-                <Typography variant="body1" component="p" mb={2} sx={{color:"#9678cd"}}>
-                  ¡10% de descuento hasta el Domingo 14 de Julio!
+                <Typography
+                  variant="body1"
+                  component="p"
+                  mb={2}
+                  sx={{ color: "#9678cd" }}
+                >
+                  ¡10% de reintegro hasta el Domingo 14 de Julio!
                 </Typography>
                 <form onSubmit={handleSubmit}>
                   <NumericFormat
@@ -265,8 +280,11 @@ const Pago = () => {
                         ? {
                             endAdornment: (
                               <InputAdornment position="end">
-                                <Typography variant="body1" color="textSecondary">
-                                  Descuento 10%: ${calculateDiscountedAmount()}
+                                <Typography
+                                  variant="body1"
+                                  color="textSecondary"
+                                >
+                                  Reintegro 10%: ${calculateDiscountedAmount()}
                                 </Typography>
                               </InputAdornment>
                             ),
@@ -274,86 +292,84 @@ const Pago = () => {
                         : {}
                     }
                   />
-                      <Typography
-                        variant="body2"
-                        component="div"
-                        color="textSecondary"
-                        sx={{ textAlign: "right" }}
-                      >
-                        Saldo actual:{" "}
-                        {isFetchingBalance ? (
-                          loadingDots
-                        ) : (
+                  <Typography
+                    variant="body2"
+                    component="div"
+                    color="textSecondary"
+                    sx={{ textAlign: "right" }}
+                  >
+                    Saldo actual:{" "}
+                    {isFetchingBalance ? (
+                      loadingDots
+                    ) : (
+                      <>
+                        {currency === "ARS" && (
                           <>
-                            {currency === "ARS" && (
-                              <>
-                                $
-                                {balance.toLocaleString("es-AR", {
+                            $
+                            {balance.toLocaleString("es-AR", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                          </>
+                        )}
+                        {currency === "USD" &&
+                          accountType === "CAJA_AHORRO" && (
+                            <>
+                              US$
+                              {balance.toLocaleString("es-AR", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
+                            </>
+                          )}
+                      </>
+                    )}
+                    <br />
+                    Saldo restante:{" "}
+                    {isFetchingBalance ? (
+                      loadingDots
+                    ) : (
+                      <>
+                        {currency === "ARS" && (
+                          <>
+                            $
+                            {typeof balance === "number" &&
+                            parseFloat(amount.replace(",", "."))
+                              ? (
+                                  balance -
+                                  parseFloat(amount.replace(",", ".")) * 0.9
+                                ).toLocaleString("es-AR", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : balance.toLocaleString("es-AR", {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
                                 })}
-                              </>
-                            )}
-                            {currency === "USD" &&
-                         
-                          accountType === "CAJA_AHORRO" && (
-                                  <>
-                                    US$
-                                    {balance.toLocaleString("es-AR", {
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2,
-                                    })}
-                                  </>
-                                )}
                           </>
                         )}
-                        <br />
-                        Saldo restante:{" "}
-                        {isFetchingBalance ? (
-                          loadingDots
-                        ) : (
-                          <>
-                            {currency === "ARS" && (
-                              <>
-                                $
-                                {typeof balance === "number" &&
-                                parseFloat(amount.replace(",", "."))
-                                  ? (
-                                      balance - (parseFloat(amount.replace(",", ".")) * 0.9)
-                                    ).toLocaleString("es-AR", {
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2,
-                                    })
-                                  : balance.toLocaleString("es-AR", {
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2,
-                                    })}
-                              </>
-                            )}
-                            {currency === "USD" &&
-                         
+                        {currency === "USD" &&
                           accountType === "CAJA_AHORRO" && (
-                                  <>
-                                    US$
-                                    {typeof balance === "number" &&
+                            <>
+                              US$
+                              {typeof balance === "number" &&
+                              parseFloat(amount.replace(",", "."))
+                                ? (
+                                    balance -
                                     parseFloat(amount.replace(",", "."))
-                                      ? (
-                                          balance -
-                                   
-                                    parseFloat(amount.replace(",", "."))
-                                        ).toLocaleString("es-AR", {
-                                          minimumFractionDigits: 2,
-                                          maximumFractionDigits: 2,
-                                        })
-                                      : balance.toLocaleString("es-AR", {
-                                          minimumFractionDigits: 2,
-                                          maximumFractionDigits: 2,
-                                        })}
-                                  </>
-                                )}
-                          </>
-                        )}
-                      </Typography>
+                                  ).toLocaleString("es-AR", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })
+                                : balance.toLocaleString("es-AR", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
+                            </>
+                          )}
+                      </>
+                    )}
+                  </Typography>
 
                   <TextField
                     select
@@ -373,10 +389,10 @@ const Pago = () => {
                     disabled={isSubmitted}
                   >
                     {transactionConcepts.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option.charAt(0) + option.slice(1).toLowerCase()}
-                    </MenuItem>
-                  ))}
+                      <MenuItem key={option} value={option}>
+                        {option.charAt(0) + option.slice(1).toLowerCase()}
+                      </MenuItem>
+                    ))}
                   </TextField>
 
                   <TextField

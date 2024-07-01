@@ -50,6 +50,16 @@ const theme = createTheme({
           "& label.Mui-focused": {
             color: "var(--TextField-brandBorderFocusedColor)",
           },
+          "& input::-ms-clear, & input::-ms-reveal": {
+            display: "none",
+          },
+          "& input:-webkit-autofill": {
+            WebkitBoxShadow: "0 0 0 1000px white inset !important", // Cambia el color de fondo de selección
+            transition: "background-color 5000s ease-in-out 0s", // Añade una transición de color de fondo de selección
+          },
+          "& input:-webkit-autofill:focus": {
+            WebkitBoxShadow: "0 0 0 1000px white inset !important", // Añade el color de fondo de selección cuando el campo está enfocado
+          },
         },
       },
     },
