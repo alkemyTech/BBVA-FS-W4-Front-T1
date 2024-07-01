@@ -182,13 +182,15 @@ const ConfirmarDestino = () => {
             )}
             <Grid item mb={1} alignSelf="center">
               <Button
-                variant="contained"
+                variant="text"
                 disabled={isLoading}
                 onClick={handleCancelation}
                 sx={{
-                  color: "#FFF",
-                  backgroundColor: "#C62E2E",
-                  "&:hover": { backgroundColor: "#BA3131" },
+                  fontWeight: "600",
+                  color: "grey",
+                  background: "#FFF",
+                  backgroundColor: "#FFF",
+                  "&:hover": { backgroundColor: "#FFF" },
                   marginRight: "2rem",
                 }}
               >
@@ -201,7 +203,15 @@ const ConfirmarDestino = () => {
                 sx={{
                   color: "#FFF",
                   backgroundColor: "#8EB052",
-                  "&:hover": { backgroundColor: "#94B758" },
+                  background:
+                    "linear-gradient(90deg, #94B758 50%, #8EB052 50%)",
+                  backgroundSize: "200% 100%",
+                  backgroundPosition: "100% 0",
+                  transition: "background-position 0.5s",
+                  "&:hover": {
+                    backgroundPosition: "0 0",
+                    backgroundColor: "#FFF",
+                  },
                 }}
               >
                 {isLoading ? "Cargando..." : "Confirmar"}

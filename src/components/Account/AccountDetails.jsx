@@ -358,6 +358,7 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
                 top: 8,
                 color: "grey",
               }}
+            disabled={loading}
             >
               <CloseIcon />
             </IconButton>
@@ -383,6 +384,7 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
             sx={{
               fontWeight: "600",
               color: "grey",
+              background: "#FFF",
               backgroundColor: "#FFF",
               "&:hover": { backgroundColor: "#FFF" },
               marginRight: "2rem",
@@ -399,12 +401,19 @@ const AccountDetailsCard = ({ account, showVerMovimientos }) => {
             sx={{
               color: "#FFF",
               backgroundColor: "#8EB052",
-              "&:hover": { backgroundColor: "#94B758" },
+              background: "linear-gradient(90deg, #94B758 50%, #8EB052 50%)",
+              backgroundSize: "200% 100%",
+              backgroundPosition: "100% 0",
+              transition: "background-position 0.5s",
+              "&:hover": {
+                backgroundPosition: "0 0",
+                backgroundColor: "#FFF",
+              },
               p: 1.2,
             }}
             disabled={loading}
           >
-            Guardar
+            {loading ? "Cargando..." : "Guardar"}
           </Button>
         </DialogActions>
       </Dialog>

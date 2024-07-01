@@ -416,6 +416,7 @@ const Transferencia = () => {
                   top: 8,
                   color: "grey",
                 }}
+                disabled={loading}
               >
                 <CloseIcon />
               </IconButton>
@@ -432,6 +433,7 @@ const Transferencia = () => {
                 sx={{
                   fontWeight: "600",
                   color: "grey",
+                  background: "#FFF",
                   backgroundColor: "#FFF",
                   "&:hover": { backgroundColor: "#FFF" },
                   marginRight: "2rem",
@@ -446,13 +448,20 @@ const Transferencia = () => {
                 onClick={handleDeleteConfirm}
                 sx={{
                   color: "#FFF",
-                  backgroundColor: "#C62E2E",
-                  "&:hover": { backgroundColor: "#BA3131" },
+                  background:
+                    "linear-gradient(90deg, #BA3131 50%, #C62E2E 50%)",
+                  backgroundSize: "200% 100%",
+                  backgroundPosition: "100% 0",
+                  transition: "background-position 0.5s",
+                  "&:hover": {
+                    backgroundPosition: "0 0",
+                    backgroundColor: "#FFF",
+                  },
                   p: 1.2,
                 }}
                 disabled={loading}
               >
-                Si, eliminar
+                {loading ? "Cargando..." : "Si, eliminar"}
               </Button>
             </DialogActions>
           </Dialog>
@@ -475,6 +484,7 @@ const Transferencia = () => {
                   top: 8,
                   color: "grey",
                 }}
+                disabled={loading}
               >
                 <CloseIcon />
               </IconButton>
@@ -503,6 +513,7 @@ const Transferencia = () => {
                 sx={{
                   fontWeight: "600",
                   color: "grey",
+                  background: "#FFF",
                   backgroundColor: "#FFF",
                   "&:hover": { backgroundColor: "#FFF" },
                   marginRight: "2rem",
@@ -518,12 +529,20 @@ const Transferencia = () => {
                 sx={{
                   color: "#FFF",
                   backgroundColor: "#8EB052",
-                  "&:hover": { backgroundColor: "#94B758" },
+                  background:
+                    "linear-gradient(90deg, #94B758 50%, #8EB052 50%)",
+                  backgroundSize: "200% 100%",
+                  backgroundPosition: "100% 0",
+                  transition: "background-position 0.5s",
+                  "&:hover": {
+                    backgroundPosition: "0 0",
+                    backgroundColor: "#FFF",
+                  },
                   p: 1,
                 }}
                 disabled={loading}
               >
-                Guardar
+                {loading ? "Cargando..." : "Guardar"}
               </Button>
             </DialogActions>
           </Dialog>

@@ -1,5 +1,5 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import { Grid, Link } from "@mui/material";
+import { Divider, Grid, Link } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../../Redux/slice/userSlice";
+import { useLocation } from "react-router";
 
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -16,6 +17,7 @@ export default function Navbar() {
 
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -36,11 +38,32 @@ export default function Navbar() {
     dispatch(clearUser());
   };
 
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
+  const navLinkStyles = {
+    color: "white",
+    display: "block",
+    padding: "18px 30px",
+    fontWeight: 600,
+    fontSize: 18,
+    textTransform: "uppercase",
+    transition: "0.3s ease-in-out",
+    "&:hover": {
+      backgroundColor: "#50298E",
+      borderBottom: "1px solid white",
+    },
+  };
+
+  const activeNavLinkStyles = {
+    ...navLinkStyles,
+    backgroundColor: "#50298E",
+    borderBottom: "1px solid white",
+  };
+
   return (
-    <Grid
-      item
-      sx={{ marginBottom: "10vh" }}
-    >
+    <Grid item sx={{ marginBottom: "10vh" }}>
       <AppBar
         position="fixed"
         sx={{
@@ -187,23 +210,23 @@ export default function Navbar() {
                   flexGrow: 1,
                   display: { xs: "none", md: "flex" },
                   justifyContent: "flex-end",
-                  paddingRight: "80px",
+                  height: "71px",
+                  paddingRight: "70px",
                   textTransform: "uppercase",
+                  alignItems: "center",
                 }}
               >
                 <Link
                   onClick={handleCloseNavMenu}
                   href="/transferencia"
-                  sx={{
-                    my: 1,
-                    color: "white",
-                    display: "block",
-                    padding: "6px 30px",
-                    fontWeight: 600,
-                    fontSize: 18,
-                    borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
-                  }}
+                  sx={
+                    isActive("/transferencia") ||
+                    isActive("/transferencia/nuevo-destino") ||
+                    isActive("/transferencia/confirmar-destino") ||
+                    isActive("/transferencia/enviar-dinero")
+                      ? activeNavLinkStyles
+                      : navLinkStyles
+                  }
                   underline="none"
                 >
                   Transferencias{" "}
@@ -211,16 +234,13 @@ export default function Navbar() {
                 <Link
                   onClick={handleCloseNavMenu}
                   href="/plazos-fijos"
-                  sx={{
-                    my: 1,
-                    color: "white",
-                    display: "block",
-                    padding: "6px 30px",
-                    fontWeight: 600,
-                    fontSize: 18,
-                    borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
-                  }}
+                  sx={
+                    isActive("/plazos-fijos") ||
+                    isActive("/crear-plazo-fijo") ||
+                    isActive("/simular-plazo-fijo")
+                      ? activeNavLinkStyles
+                      : navLinkStyles
+                  }
                   underline="none"
                 >
                   Plazo fijo{" "}
@@ -228,16 +248,11 @@ export default function Navbar() {
                 <Link
                   onClick={handleCloseNavMenu}
                   href="/cargar-saldo"
-                  sx={{
-                    my: 1,
-                    color: "white",
-                    display: "block",
-                    padding: "6px 30px",
-                    fontWeight: 600,
-                    fontSize: 18,
-                    borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
-                  }}
+                  sx={
+                    isActive("/cargar-saldo")
+                      ? activeNavLinkStyles
+                      : navLinkStyles
+                  }
                   underline="none"
                 >
                   Deposito{" "}
@@ -245,16 +260,11 @@ export default function Navbar() {
                 <Link
                   onClick={handleCloseNavMenu}
                   href="/cargar-pago"
-                  sx={{
-                    my: 1,
-                    color: "white",
-                    display: "block",
-                    padding: "6px 30px",
-                    fontWeight: 600,
-                    fontSize: 18,
-                    borderRadius: 5,
-                    "&:hover": { backgroundColor: "#50298E", transition: "0.5s" },
-                  }}
+                  sx={
+                    isActive("/cargar-pago")
+                      ? activeNavLinkStyles
+                      : navLinkStyles
+                  }
                   underline="none"
                 >
                   Pago{" "}
@@ -265,7 +275,16 @@ export default function Navbar() {
                 {/*Foto perfil pantalla grande*/}
                 <Tooltip title="Mi perfil">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar sx={{ "&:hover": { backgroundColor: "rgb(130,130,130)", transition: "0.5s" } }} src="Imagen de usuario">{user.firstName[0]}</Avatar>
+                    <Avatar
+                      sx={{
+                        width: 45,
+                        height: 45,
+                        backgroundColor: "#E68D00",
+                      }}
+                      src="Imagen de usuario"
+                    >
+                      {user.firstName[0]}
+                    </Avatar>
                   </IconButton>
                 </Tooltip>
                 {/*Menu usuario*/}
@@ -288,6 +307,7 @@ export default function Navbar() {
                     }}
                   >
                     {user.firstName + " " + user.lastName}
+                    <Divider />
                   </Typography>
                   {/*Menu usuario opciones*/}
                   <Link
@@ -298,6 +318,16 @@ export default function Navbar() {
                       color: "black",
                       display: "block",
                       paddingLeft: "15px",
+                      backgroundColor: "#8EB052",
+                      background:
+                        "linear-gradient(90deg, #CED2FF 50%, #FFF 50%)",
+                      backgroundSize: "200% 100%",
+                      backgroundPosition: "100% 0",
+                      transition: "background-position 0.5s",
+                      "&:hover": {
+                        backgroundPosition: "0 0",
+                        backgroundColor: "#FFF",
+                      },
                     }}
                     underline="none"
                   >
@@ -311,6 +341,16 @@ export default function Navbar() {
                       color: "black",
                       display: "block",
                       paddingLeft: "15px",
+                      backgroundColor: "#8EB052",
+                      background:
+                        "linear-gradient(90deg, #CED2FF 50%, #FFF 50%)",
+                      backgroundSize: "200% 100%",
+                      backgroundPosition: "100% 0",
+                      transition: "background-position 0.5s",
+                      "&:hover": {
+                        backgroundPosition: "0 0",
+                        backgroundColor: "#FFF",
+                      },
                     }}
                     underline="none"
                   >
@@ -323,7 +363,16 @@ export default function Navbar() {
                       color: "black",
                       display: "block",
                       paddingLeft: "15px",
-                      cursor: "pointer",
+                      backgroundColor: "#8EB052",
+                      background:
+                        "linear-gradient(90deg, #CED2FF 50%, #FFF 50%)",
+                      backgroundSize: "200% 100%",
+                      backgroundPosition: "100% 0",
+                      transition: "background-position 0.5s",
+                      "&:hover": {
+                        backgroundPosition: "0 0",
+                        backgroundColor: "#FFF",
+                      },
                     }}
                     underline="none"
                   >
