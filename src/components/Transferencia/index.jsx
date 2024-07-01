@@ -547,7 +547,7 @@ const Transferencia = () => {
             </DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Ingresa nueva referencia para el contacto:
+                Ingrese nueva referencia para el contacto:
               </DialogContentText>
               <TextField
                 autoFocus

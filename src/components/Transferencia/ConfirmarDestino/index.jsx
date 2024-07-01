@@ -168,7 +168,7 @@ const ConfirmarDestino = () => {
             {addToContacts && (
               <Grid item alignSelf="center">
                 <Typography variant="body2" component="h6" mt={-2} mb={2}>
-                  Agrega una referencia de contacto (Opcional)
+                  Agregue una referencia de contacto (Opcional)
                 </Typography>
                 <TextField
                   label="Referencia"
