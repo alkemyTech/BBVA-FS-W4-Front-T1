@@ -304,7 +304,7 @@ const TransactionListDetails = ({ account }) => {
               maximumFractionDigits: 2,
             });
             const displayAmount =
-              transaction.type === "PAYMENT" ? `- ${formattedAmount}` : formattedAmount;
+              transaction.type === "PAYMENT" ? `- ${formattedAmount}` : `+ ${formattedAmount}`;
 
                     return (
                       <Box key={index}>
