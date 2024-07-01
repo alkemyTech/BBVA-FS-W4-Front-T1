@@ -5,7 +5,7 @@ import {
   FormControlLabel,
   Grid,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
@@ -39,16 +39,10 @@ export default function CrearPlazoFijo() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const notification = useSelector((state) => state.notification);
-  const simulatedFixedTerm = useSelector(
-    (state) => state.fixedTerm.data
-  );
-  const selectedDay = useSelector(
-    (state) => state.fixedTerm.selectedDay
-  );
+  const simulatedFixedTerm = useSelector((state) => state.fixedTerm.data);
+  const selectedDay = useSelector((state) => state.fixedTerm.selectedDay);
 
-  const totalInverted = useSelector(
-    (state) => state.fixedTerm.totalInverted
-  );
+  const totalInverted = useSelector((state) => state.fixedTerm.totalInverted);
 
   useEffect(() => {
     setIsLoading(true);
@@ -64,8 +58,6 @@ export default function CrearPlazoFijo() {
     } else {
       handleDayClick("30");
     }
-
-
   }, []);
 
   useEffect(() => {
@@ -97,7 +89,6 @@ export default function CrearPlazoFijo() {
     const diferencia = (fechaDeCierre - fechaActual) / (1000 * 3600 * 24) + 1;
 
     if (parseFloat(amount) <= 0) {
-
       dispatch(
         showNotification({
           message: "El monto debe ser mayor a cero.",
@@ -154,7 +145,7 @@ export default function CrearPlazoFijo() {
       );
       dispatch(clearSimulatedFixedTerm());
       dispatch(clearSelectedDay());
-      dispatch(setTotalInverted(totalInverted+fixedTermData.amount));
+      dispatch(setTotalInverted(totalInverted + fixedTermData.amount));
 
       navigate("/plazos-fijos");
     } catch (error) {
@@ -213,8 +204,18 @@ export default function CrearPlazoFijo() {
   };
 
   return (
-    <Container>
-      <ArrowBackComponent disabled={isLoading} />
+    <Grid container className="container">
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+        position="relative"
+      >
+        <Grid item ml={5}>
+          <ArrowBackComponent disabled={isLoading} />
+        </Grid>
+      </Grid>
       <Grid
         container
         sx={{
@@ -284,7 +285,7 @@ export default function CrearPlazoFijo() {
               borderColor: "#5B67E5",
               "&.MuiButton-contained": {
                 bgcolor: "#5B67E5",
-                color: "#ffffff", 
+                color: "#ffffff",
               },
               "&.MuiButton-outlined": {
                 bgcolor: "#ffffff",
@@ -446,13 +447,12 @@ export default function CrearPlazoFijo() {
           </Button>
         </Grid>
       </Grid>
-
       <MySnackbar
         open={notification.open}
         handleClose={handleSnackbarClose}
         message={notification.message}
         status={notification.status}
       />
-    </Container>
+    </Grid>
   );
 }

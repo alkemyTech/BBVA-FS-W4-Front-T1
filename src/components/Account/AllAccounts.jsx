@@ -41,10 +41,20 @@ const AllAccounts = () => {
   console.log("ACCOUN DATA:", accountData);
 
   return (
-    <Container sx={{ position: "relative" }}>
-      <ArrowBackComponent />
+    <Grid container className="container">
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+        position="relative"
+      >
+        <Grid item ml={5}>
+          <ArrowBackComponent />
+        </Grid>
+      </Grid>{" "}
       {loading ? (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: "100%", pt: 2 }}>
           <Skeleton
             animation="wave"
             variant="rectangular"
@@ -62,18 +72,24 @@ const AllAccounts = () => {
         </Box>
       ) : (
         <>
-          <Grid container spacing={2} >
+          <Grid container spacing={2} pt={2}>
             {accountData.accountArs &&
               accountData.accountArs.map((account, index) => (
-                <AccountDetailsCard account={account} showVerMovimientos={true}/>
+                <AccountDetailsCard
+                  account={account}
+                  showVerMovimientos={true}
+                />
               ))}
             {accountData.accountUsd && (
-              <AccountDetailsCard account={accountData.accountUsd} showVerMovimientos={true}/>
+              <AccountDetailsCard
+                account={accountData.accountUsd}
+                showVerMovimientos={true}
+              />
             )}
           </Grid>
         </>
       )}
-    </Container>
+    </Grid>
   );
 };
 

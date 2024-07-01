@@ -75,10 +75,20 @@ const PlazosFijos = () => {
   };
 
   return (
-    <Container>
-      <ArrowBackComponent />
+    <Grid container className="container">
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+        position="relative"
+      >
+        <Grid item ml={5}>
+          <ArrowBackComponent />
+        </Grid>
+      </Grid>
       {loading ? (
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%", pt:2 }}>
           <Skeleton
             animation="wave"
             variant="rectangular"
@@ -96,7 +106,7 @@ const PlazosFijos = () => {
         </Box>
       ) : (
         <>
-          <Grid container justifyContent="center">
+          <Grid container justifyContent="center" pt={2}>
             <FixedTermDetails totalFixedTerms={totalFixedTerms} />
             <Grid item xs={12}>
               <FixedTermsList
@@ -115,7 +125,7 @@ const PlazosFijos = () => {
           />
         </>
       )}
-    </Container>
+    </Grid>
   );
 };
 

@@ -1,5 +1,4 @@
-import { Container, Grid } from "@mui/material";
-import React from "react";
+import { Grid } from "@mui/material";
 import { useLocation } from "react-router";
 import ArrowBackComponent from "../../UI/ArrowBack";
 import AccountDetailsCard from "./AccountDetails";
@@ -12,10 +11,20 @@ const Account = () => {
   console.log("Las props son:", account);
 
   return (
-    <Container>
-      <ArrowBackComponent />
+    <Grid container className="container">
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+        position="relative"
+      >
+        <Grid item ml={5}>
+          <ArrowBackComponent />
+        </Grid>
+      </Grid>
       {account ? (
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" pt={2}>
           <Grid item xs={12} lg={6}>
             <AccountDetailsCard account={account} showVerMovimientos={false} />
           </Grid>
@@ -35,7 +44,7 @@ const Account = () => {
       ) : (
         <p>No se recibieron datos de la cuenta</p>
       )}
-    </Container>
+    </Grid>
   );
 };
 

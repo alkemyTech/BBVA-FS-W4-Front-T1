@@ -4,7 +4,7 @@ import {
   Divider,
   Grid,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
@@ -37,7 +37,7 @@ const SimularPlazoFijo = () => {
       closingDate,
     };
     dispatch(setSimulatedFixedTerm(simulatedFixedTerm));
-    dispatch(setSelectedDay(Object.keys(selectedDays)[0]))
+    dispatch(setSelectedDay(Object.keys(selectedDays)[0]));
     navigate("/crear-plazo-fijo");
   };
 
@@ -96,9 +96,9 @@ const SimularPlazoFijo = () => {
   };
 
   useEffect(() => {
-    handleDayClick("30")
-  }, [])
-  
+    handleDayClick("30");
+  }, []);
+
   useEffect(() => {
     if (amount && closingDate) {
       fetchData();
@@ -106,8 +106,18 @@ const SimularPlazoFijo = () => {
   }, [amount, closingDate]);
 
   return (
-    <Container>
-      <ArrowBackComponent />
+    <Grid container className="container">
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+        position="relative"
+      >
+        <Grid item ml={5}>
+          <ArrowBackComponent />
+        </Grid>
+      </Grid>{" "}
       <Grid
         container
         sx={{
@@ -170,11 +180,11 @@ const SimularPlazoFijo = () => {
               borderColor: "#5B67E5",
               "&.MuiButton-contained": {
                 bgcolor: "#5B67E5",
-                color: "#ffffff", 
+                color: "#ffffff",
               },
               "&.MuiButton-outlined": {
                 bgcolor: "#ffffff",
-                color: "#5B67E5", 
+                color: "#5B67E5",
               },
               "&:hover": {
                 backgroundColor: "#5B67E5",
@@ -389,7 +399,7 @@ const SimularPlazoFijo = () => {
           </Button>
         </Grid>
       </Grid>
-    </Container>
+    </Grid>
   );
 };
 

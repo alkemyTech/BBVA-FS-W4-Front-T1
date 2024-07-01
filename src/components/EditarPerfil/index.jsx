@@ -134,10 +134,10 @@ export default function EditarPerfil() {
             container
             justifyContent="space-between"
             alignItems="center"
-            ml={5}
+            mt={2}
             position="relative"
           >
-            <Grid item>
+            <Grid item ml={5}>
               <ArrowBackComponent disabled={loading} />
             </Grid>
           </Grid>

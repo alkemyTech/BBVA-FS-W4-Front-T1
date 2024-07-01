@@ -157,10 +157,7 @@ const TransactionListDetails = ({ account }) => {
   };
 
   return (
-    <Container
-      disableGutters={true}
-      sx={{ position: "relative", minHeight: "70vh" }}
-    >
+    <Grid container className="container" width={"100%"}>
       {loading ? (
         <Skeleton
           animation="wave"
@@ -170,7 +167,7 @@ const TransactionListDetails = ({ account }) => {
           sx={{ marginTop: "16px", borderRadius: "8px" }}
         />
       ) : (
-        <Box sx={{ marginTop: "2vh" }}>
+        <Box sx={{ marginTop: "2vh", width:"100%" }}>
           <Card
             sx={{
               backgroundColor: "#ffffff",
@@ -424,7 +421,7 @@ const TransactionListDetails = ({ account }) => {
         message={notification.message}
         status={notification.status}
       />
-    </Container>
+    </Grid>
   );
 };
 

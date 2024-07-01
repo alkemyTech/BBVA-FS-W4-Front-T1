@@ -1,8 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Box, Typography, Card, CardContent, Grid, Avatar, Button } from "@mui/material";
-import { deepPurple } from '@mui/material/colors';
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Grid,
+  Avatar,
+  Button,
+} from "@mui/material";
+import { deepPurple } from "@mui/material/colors";
 import ArrowBackComponent from "../../UI/ArrowBack";
 
 const Perfil = () => {
@@ -14,7 +22,7 @@ const Perfil = () => {
 
   // Función para manejar el clic en el botón de editar
   const handleEditClick = () => {
-    navigate('/editar-perfil'); // Cambia '/editar-perfil' por la ruta correcta
+    navigate("/editar-perfil"); // Cambia '/editar-perfil' por la ruta correcta
   };
 
   return (
@@ -25,10 +33,10 @@ const Perfil = () => {
             container
             justifyContent="space-between"
             alignItems="center"
-            ml={5}
+            mt={2}
             position="relative"
           >
-            <Grid item>
+            <Grid item ml={5}>
               <ArrowBackComponent />
             </Grid>
           </Grid>
@@ -39,16 +47,16 @@ const Perfil = () => {
               borderRadius: 2,
               boxShadow: 3,
               maxWidth: 600,
-              margin: 'auto',
+              margin: "auto",
             }}
           >
-            <Typography 
-              variant="h4" 
-              component="h4" 
-              gutterBottom 
-              sx={{ 
-                color: "#4b56d2", 
-                textAlign: "center" 
+            <Typography
+              variant="h4"
+              component="h4"
+              gutterBottom
+              sx={{
+                color: "#4b56d2",
+                textAlign: "center",
               }}
             >
               Perfil del Usuario
@@ -58,8 +66,11 @@ const Perfil = () => {
               <CardContent>
                 <Grid container spacing={2} alignItems="center">
                   <Grid item xs={12} display="flex" justifyContent="center">
-                    <Avatar sx={{ bgcolor: deepPurple[500], width: 72, height: 72 }}>
-                      {firstName[0]}{lastName[0]}
+                    <Avatar
+                      sx={{ bgcolor: deepPurple[500], width: 72, height: 72 }}
+                    >
+                      {firstName[0]}
+                      {lastName[0]}
                     </Avatar>
                   </Grid>
                   <Grid item xs={12} textAlign="center">
@@ -74,7 +85,11 @@ const Perfil = () => {
                   </Grid>
                   {/* Agrega más campos según los datos disponibles en tu estado */}
                   <Grid item xs={12} textAlign="center" sx={{ mt: 2 }}>
-                    <Button variant="contained" color="primary" onClick={handleEditClick}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleEditClick}
+                    >
                       Editar datos
                     </Button>
                   </Grid>

@@ -191,17 +191,17 @@ const Pago = () => {
     <Grid container>
       <Grid container className="container">
         <Grid container justifyContent="center" alignItems="center">
-          <Grid
-            container
-            justifyContent="space-between"
-            alignItems="center"
-            ml={5}
-            position="relative"
-          >
-            <Grid item>
-              <ArrowBackComponent disabled={isSubmitted} />
-            </Grid>
-          </Grid>
+        <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+        position="relative"
+      >
+        <Grid item ml={5}>
+          <ArrowBackComponent disabled={isSubmitted} />
+        </Grid>
+      </Grid>
           <Box>
             <Card
               sx={{
