@@ -37,9 +37,19 @@ const SimularPlazoFijo = () => {
       closingDate,
     };
     dispatch(setSimulatedFixedTerm(simulatedFixedTerm));
-    dispatch(setSelectedDay(Object.keys(selectedDays)[0]));
-    navigate("/crear-plazo-fijo");
+  
+    // Encuentra la clave cuyo valor es true en selectedDays
+    const selectedDay = Object.entries(selectedDays).find(([key, value]) => value === true)?.[0];
+  
+    if (selectedDay) {
+      dispatch(setSelectedDay(selectedDay));
+      navigate("/crear-plazo-fijo");
+    } else {
+      // Manejar el caso en que no se encuentre ningún día seleccionado
+      console.error("No hay días seleccionados");
+    }
   };
+  
 
   const handleDayClick = (day) => {
     if (day === "Otro") {
