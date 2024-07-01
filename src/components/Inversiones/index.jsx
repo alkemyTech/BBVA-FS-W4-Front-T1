@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Container, CircularProgress, Grid, Skeleton, Box } from "@mui/material";
+import {
+  Container,
+  CircularProgress,
+  Grid,
+  Skeleton,
+  Box,
+} from "@mui/material";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getFixedTerms } from "../../api/FixedTerm";
@@ -40,9 +46,7 @@ const PlazosFijos = () => {
   );
   useEffect(() => {
     setTotalFixedTerms(totalInvertedFixedTerms);
-  }, [])
-  
-  
+  }, []);
 
   const fetchData = async (page) => {
     setLoading(true);
@@ -51,7 +55,7 @@ const PlazosFijos = () => {
       setFixedTerms(data.fixedTerms);
       setTotalPages(data.countPages); // Establecemos el total de páginas desde el backend
       // console.log(totalMoney(data.fixedTerms));
-      
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -74,7 +78,7 @@ const PlazosFijos = () => {
     <Container>
       <ArrowBackComponent />
       {loading ? (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: "100%" }}>
           <Skeleton
             animation="wave"
             variant="rectangular"

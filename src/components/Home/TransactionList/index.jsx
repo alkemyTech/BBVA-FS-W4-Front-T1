@@ -94,7 +94,7 @@ const TransactionList = ({ accountData }) => {
   return (
     <Card
       sx={{
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#FFF",
         padding: "16px",
         borderRadius: "8px",
         marginTop: "16px",
