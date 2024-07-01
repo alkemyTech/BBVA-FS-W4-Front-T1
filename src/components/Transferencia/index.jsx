@@ -15,11 +15,13 @@ import {
   Skeleton,
   Tooltip,
   Avatar,
+  InputAdornment,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import SearchIcon from "@mui/icons-material/Search";
 import MySnackbar from "../../UI/MySnackBar";
 import { useNavigate } from "react-router";
 import {
@@ -46,6 +48,7 @@ const Transferencia = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [newNickname, setNewNickname] = useState("");
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -167,6 +170,16 @@ const Transferencia = () => {
     dispatch(hideNotification());
   };
 
+  const filteredAccounts = thirdAccounts.filter((account) => {
+    const fullName =
+      `${account.destinationUserFirstName} ${account.destinationUserLastName}`.toLowerCase();
+    const nickname = account.nickname ? account.nickname.toLowerCase() : "";
+    return (
+      fullName.includes(searchTerm.toLowerCase()) ||
+      nickname.includes(searchTerm.toLowerCase())
+    );
+  });
+
   return (
     <Grid container>
       <Grid container className="container">
@@ -254,160 +267,178 @@ const Transferencia = () => {
             >
               {thirdAccounts.length > 0 ? (
                 <>
-                  <Grid item mb={2}>
+                  <Grid item>
                     <Typography variant="h6" component="h4">
                       Contactos
                     </Typography>
                   </Grid>
-                  {thirdAccounts.map((account, index) => (
-                    <ListItemButton
-                      key={index}
-                      onClick={() =>
-                        handleSelectAccount(
-                          account.destinationAccountCbu,
-                          index
-                        )
-                      }
-                      sx={{
-                        borderBottom: "1px solid #F1F6F5",
-                        minWidth: "100%",
-                        p: 1,
-                        paddingTop: 1.2,
-                        "&:hover": { backgroundColor: "#F9F9F9" },
-                        ...(index === 0
-                          ? { borderTop: "1px solid #F9F9F9" }
-                          : {}),
-                        pointerEvents:
-                          selectedAccountIndex !== null ? "none" : "auto",
-                      }}
-                    >
-                      <Tooltip
-                        TransitionComponent={Zoom}
-                        title={
-                          account.destinationUserFirstName +
-                          " " +
-                          account.destinationUserLastName
+                  <Grid item alignSelf={"flex-start"} display={"flex"} alignItems={"center"}>
+                    <SearchIcon />
+                    <TextField
+                      label="Buscar contacto"
+                      variant="standard"
+                      fullWidth
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      sx={{ ml: 1, mb: 2 }}
+                      disabled={loading}
+                    />
+                  </Grid>
+                  {filteredAccounts.length > 0 ? (
+                    filteredAccounts.map((account, index) => (
+                      <ListItemButton
+                        key={index}
+                        onClick={() =>
+                          handleSelectAccount(
+                            account.destinationAccountCbu,
+                            index
+                          )
                         }
-                        placement="bottom-end"
-                        disableInteractive
+                        sx={{
+                          borderBottom: "1px solid #F1F6F5",
+                          minWidth: "100%",
+                          p: 1,
+                          paddingTop: 1.2,
+                          "&:hover": { backgroundColor: "#F9F9F9" },
+                          ...(index === 0
+                            ? { borderTop: "1px solid #F9F9F9" }
+                            : {}),
+                          pointerEvents:
+                            selectedAccountIndex !== null ? "none" : "auto",
+                        }}
                       >
-                        <IconButton
-                          size="small"
-                          sx={{ p: 0, m: 0, mr: 2 }}
-                          disabled={loading}
-                        >
-                          {loading ? (
-                            <Avatar
-                              sx={{
-                                width: 42,
-                                height: 42,
-                                backgroundColor: "#D3D3D3", // Use theme color for loading state
-                              }}
-                              alt={account.destinationUserFirstName.charAt(0)}
-                              src="Imagen de usuario"
-                            />
-                          ) : (
-                            <Avatar
-                              sx={{
-                                width: 42,
-                                height: 42,
-                                backgroundColor:
-                                  account.destinationAccountCurrency === "ARS"
-                                    ? "#35B1FF" // Use theme colors for "ARS"
-                                    : "#8EB052", // Use theme colors for other currencies
-                              }}
-                              alt={account.destinationUserFirstName.charAt(0)}
-                              src="Imagen de usuario"
-                            />
-                          )}
-                        </IconButton>
-                      </Tooltip>
-                      <Grid item mr={"auto"}>
-                        <Typography
-                          variant="body1"
-                          component="div"
-                          textAlign={"start"}
-                        >
-                          {account.destinationUserFirstName +
+                        <Tooltip
+                          TransitionComponent={Zoom}
+                          title={
+                            account.destinationUserFirstName +
                             " " +
-                            account.destinationUserLastName}
-                          <span
-                            style={{
-                              fontWeight: "300",
-                              color: "#grey",
-                              marginLeft: "8px",
-                            }}
-                          >
-                            {account.nickname
-                              ? "(" + account.nickname + ")"
-                              : account.nickname}
-                          </span>
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          component="div"
-                          textAlign={"start"}
-                        >
-                          {account.destinationAccountBank +
-                            " - " +
-                            account.destinationAccountCurrency}
-                        </Typography>
-                      </Grid>
-                      <Tooltip
-                        TransitionComponent={Zoom}
-                        title="Editar referencia"
-                        placement="bottom-end"
-                        disableInteractive
-                      >
-                        <IconButton
-                          onMouseDown={(e) => handleEditClick(e, account)}
-                          sx={{
-                            color: "#72C9FF",
-                            "&:hover": { color: "#88D1FF" },
-                          }}
-                          disabled={loading}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip
-                        TransitionComponent={Zoom}
-                        title="Eliminar contacto"
-                        placement="bottom"
-                        disableInteractive
-                      >
-                        <IconButton
-                          onMouseDown={(e) =>
-                            handleDeleteClick(e, account.idThirdAccount)
+                            account.destinationUserLastName
                           }
-                          sx={{
-                            color: "#C62E2E",
-                            "&:hover": { color: "#BA3131" },
-                          }}
-                          disabled={loading}
+                          placement="bottom-end"
+                          disableInteractive
                         >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip
-                        TransitionComponent={Zoom}
-                        title="Detalle de contacto"
-                        placement="bottom-start"
-                        disableInteractive
-                      >
-                        <IconButton
-                          onMouseDown={(e) => handleDetailClick(e, account)}
-                          sx={{
-                            color: "#E68D00",
-                            "&:hover": { color: "#ED9406" },
-                          }}
-                          disabled={loading}
+                          <IconButton
+                            size="small"
+                            sx={{ p: 0, m: 0, mr: 2 }}
+                            disabled={loading}
+                          >
+                            {loading ? (
+                              <Avatar
+                                sx={{
+                                  width: 42,
+                                  height: 42,
+                                  backgroundColor: "#D3D3D3", // Use theme color for loading state
+                                }}
+                                alt={account.destinationUserFirstName.charAt(0)}
+                                src="Imagen de usuario"
+                              />
+                            ) : (
+                              <Avatar
+                                sx={{
+                                  width: 42,
+                                  height: 42,
+                                  backgroundColor:
+                                    account.destinationAccountCurrency === "ARS"
+                                      ? "#35B1FF" // Use theme colors for "ARS"
+                                      : "#8EB052", // Use theme colors for other currencies
+                                }}
+                                alt={account.destinationUserFirstName.charAt(0)}
+                                src="Imagen de usuario"
+                              />
+                            )}
+                          </IconButton>
+                        </Tooltip>
+                        <Grid item mr={"auto"}>
+                          <Typography
+                            variant="body1"
+                            component="div"
+                            textAlign={"start"}
+                          >
+                            {account.destinationUserFirstName +
+                              " " +
+                              account.destinationUserLastName}
+                            <span
+                              style={{
+                                fontWeight: "300",
+                                color: "#grey",
+                                marginLeft: "8px",
+                              }}
+                            >
+                              {account.nickname
+                                ? "(" + account.nickname + ")"
+                                : account.nickname}
+                            </span>
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            component="div"
+                            textAlign={"start"}
+                          >
+                            {account.destinationAccountBank +
+                              " - " +
+                              account.destinationAccountCurrency}
+                          </Typography>
+                        </Grid>
+                        <Tooltip
+                          TransitionComponent={Zoom}
+                          title="Editar referencia"
+                          placement="bottom-end"
+                          disableInteractive
                         >
-                          <PersonIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </ListItemButton>
-                  ))}
+                          <IconButton
+                            onMouseDown={(e) => handleEditClick(e, account)}
+                            sx={{
+                              color: "#72C9FF",
+                              "&:hover": { color: "#88D1FF" },
+                            }}
+                            disabled={loading}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip
+                          TransitionComponent={Zoom}
+                          title="Eliminar contacto"
+                          placement="bottom"
+                          disableInteractive
+                        >
+                          <IconButton
+                            onMouseDown={(e) =>
+                              handleDeleteClick(e, account.idThirdAccount)
+                            }
+                            sx={{
+                              color: "#C62E2E",
+                              "&:hover": { color: "#BA3131" },
+                            }}
+                            disabled={loading}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip
+                          TransitionComponent={Zoom}
+                          title="Detalle de contacto"
+                          placement="bottom-start"
+                          disableInteractive
+                        >
+                          <IconButton
+                            onMouseDown={(e) => handleDetailClick(e, account)}
+                            sx={{
+                              color: "#E68D00",
+                              "&:hover": { color: "#ED9406" },
+                            }}
+                            disabled={loading}
+                          >
+                            <PersonIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </ListItemButton>
+                    ))
+                  ) : (
+                    <Typography mt={1}>
+                      No se encontraron coincidencias en su búsqueda
+                    </Typography>
+                  )}
                 </>
               ) : (
                 <Typography variant="body1" component="div">
