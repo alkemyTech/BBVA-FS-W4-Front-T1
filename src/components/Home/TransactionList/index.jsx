@@ -12,7 +12,7 @@ import {
   Pagination,
   TextField,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
@@ -30,7 +30,9 @@ const TransactionList = ({ accountData }) => {
 
   const formatDate = (dateArray) => {
     const [year, month, day, hour, minutes] = dateArray;
-    return `${day}/${month}/${year} ${hour}:${minutes}`;
+    return `${day}/${month}/${year} ${hour}:${
+      minutes < 10 ? "0" + minutes : minutes
+    }`;
   };
 
   // Ordenar las transacciones fuera del componente
@@ -40,14 +42,14 @@ const TransactionList = ({ accountData }) => {
       a.transactionDate[1] - 1,
       a.transactionDate[2],
       a.transactionDate[3],
-      a.transactionDate[4],
+      a.transactionDate[4]
     );
     const dateB = new Date(
       b.transactionDate[0],
       b.transactionDate[1] - 1,
       b.transactionDate[2],
       b.transactionDate[3],
-      b.transactionDate[4],
+      b.transactionDate[4]
     );
     return dateB - dateA;
   });
@@ -199,7 +201,9 @@ const TransactionList = ({ accountData }) => {
               maximumFractionDigits: 2,
             });
             const displayAmount =
-              transaction.type === "PAYMENT" ? `- ${formattedAmount}` : `+ ${formattedAmount}`;
+              transaction.type === "PAYMENT"
+                ? `- ${formattedAmount}`
+                : `+ ${formattedAmount}`;
 
             return (
               <Box key={index}>
@@ -220,9 +224,7 @@ const TransactionList = ({ accountData }) => {
                             ? "Pago"
                             : "Depósito"}
                         </span>
-                        <span>
-                          {displayAmount}
-                        </span>
+                        <span>{displayAmount}</span>
                       </Box>
                     }
                     secondary={
