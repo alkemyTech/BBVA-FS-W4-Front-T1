@@ -424,7 +424,7 @@ const Transferencia = () => {
                           <IconButton
                             onMouseDown={(e) => handleDetailClick(e, account)}
                             sx={{
-                              color: "#E68D00",
+                              color: "#F3B36F",
                               "&:hover": { color: "#ED9406" },
                             }}
                             disabled={loading}

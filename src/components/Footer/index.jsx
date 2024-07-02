@@ -1,6 +1,5 @@
-import { Grid, Box, Typography } from "@mui/material";
+import { Grid, Box, Typography, Link } from "@mui/material";
 import "./index.css";
-import React from "react";
 import { Copyright } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 
@@ -26,9 +25,34 @@ const Footer = () => {
                     flexDirection="column"
                     alignItems="flex-start"
                   >
-                    <Typography variant="subtitle1">Redes sociales</Typography>
-                    <Typography variant="subtitle1">Contacto</Typography>
-                    <Typography variant="subtitle1">Mi cuenta</Typography>
+                    <Link sx={{ color: "#FFF" }} underline="none">
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ textShadow: "0 0 5px black" }}
+                      >
+                        Redes sociales
+                      </Typography>
+                    </Link>
+                    <Link sx={{ color: "#FFF" }} underline="none">
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ textShadow: "0 0 5px black" }}
+                      >
+                        Contacto
+                      </Typography>
+                    </Link>
+                    <Link
+                      sx={{ color: "#FFF" }}
+                      href="/perfil"
+                      underline="none"
+                    >
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ textShadow: "0 0 5px black" }}
+                      >
+                        Mi cuenta
+                      </Typography>
+                    </Link>
                   </Box>
                 </Grid>
                 <Grid item xs={4}>
@@ -36,13 +60,21 @@ const Footer = () => {
                     <img
                       src="https://i.ibb.co/nwf2QBf/patita-blanca.png"
                       alt="Logo"
-                      style={{ height: "75px" }}
+                      style={{
+                        height: "75px",
+                        filter:
+                          "drop-shadow(2px 2px 4px #000) brightness(150%)",
+                      }}
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} pt={2}>
                   <Box display="flex" justifyContent="center">
-                    <Typography variant="body2" align="center">
+                    <Typography
+                      variant="body2"
+                      align="center"
+                      sx={{ textShadow: "0 0 5px black" }}
+                    >
                       Copyright © 2024 - Magic Dogs Alkywall
                     </Typography>
                   </Box>
@@ -58,7 +90,7 @@ const Footer = () => {
           alignItems="center"
           className="footer-container"
           sx={{
-            backgroundColor: "#F1F6F5",
+            background: "#F1F6F5",
             color: "#472183",
             minHeight: "10vh",
           }}

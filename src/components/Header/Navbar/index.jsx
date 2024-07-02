@@ -43,23 +43,28 @@ export default function Navbar() {
   };
 
   const navLinkStyles = {
-    color: "white",
+    color: "#E4E4E4",
     display: "block",
-    padding: "18px 30px",
+    marginRight: "50px",
     fontWeight: 600,
     fontSize: 18,
     textTransform: "uppercase",
-    transition: "0.3s ease-in-out",
+    textShadow: "0px 0px 3px #000",
+    transition: "0.2s",
     "&:hover": {
-      backgroundColor: "#50298E",
-      borderBottom: "1px solid white",
+      color: "#FFF",
+      textShadow: "0px 0px 9px #000",
+      filter: "brightness(200%)",
     },
   };
 
   const activeNavLinkStyles = {
     ...navLinkStyles,
-    backgroundColor: "#50298E",
-    borderBottom: "1px solid white",
+    color: "#FFF",
+    textShadow: "0px 0px 9px #000",
+    borderBottom: "3px solid #FFF",
+    filter: "brightness(200%)",
+
   };
 
   return (
@@ -67,7 +72,7 @@ export default function Navbar() {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: "#472183",
+          background: "linear-gradient(90deg, #472183 0%, #7045B5 100%)",
           height: "10vh",
           display: "flex",
           justifyContent: "center",
@@ -97,7 +102,10 @@ export default function Navbar() {
               >
                 <img
                   src="https://i.ibb.co/pQnLqjn/LOGO-SIN-FONDO-letras-blancas-POSTA.png"
-                  style={{ maxWidth: "15vw" }}
+                  style={{
+                    maxWidth: "15vw",
+                    filter: "drop-shadow(2px 2px 4px #000) brightness(150%)",
+                  }}
                 />
               </Grid>
               {/*Menu Hambur pantalla chica*/}
@@ -279,7 +287,11 @@ export default function Navbar() {
                       sx={{
                         width: 45,
                         height: 45,
-                        backgroundColor: "#E68D00",
+                        backgroundColor: "#F3B36F",
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+                        textShadow: "0px 2px 6px #000",
+                        transition: "0.2s",
+                        "&:hover": { transform: "scale(1.1)" },
                       }}
                       src="Imagen de usuario"
                     >

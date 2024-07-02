@@ -1,7 +1,7 @@
 .footer-container {
-    display: flex;
-    justify-content: space-between;
-    background-color: #472183;
-    color: #F1F6F5;
-    padding: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #472183 0%, #7045b5 100%);
+  color: #f1f6f5;
+  padding: 1.2rem;
 }
