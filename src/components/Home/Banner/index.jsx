@@ -90,7 +90,7 @@ const Banner = () => {
             />
           </Grid>
         </Link>
-        <Link href="/crear-plazo-fijo" underline="none">
+        <Link href="/plazos-fijos" underline="none">
           <Grid
             container
             justifyContent="center"
